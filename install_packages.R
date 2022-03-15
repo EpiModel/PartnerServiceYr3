@@ -6,3 +6,6 @@ remotes::install_github(c("EpiModel/EpiModelHIV-p@PartnerServicesYr3",
                           "EpiModel/ARTnetData",
                           "EpiModel/ARTnet"))
 
+
+#renv
+renv::snapshot()
