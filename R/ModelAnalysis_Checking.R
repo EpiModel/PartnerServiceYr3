@@ -14,15 +14,6 @@
   plot(sim, y=c("tot.tests.B","tot.tests.H","tot.tests.W"), legend=T, leg.cex = 0.5, main="Total tests in B,H,W")
   plot(sim, y=c("tot.tests.ibt","tot.tests.pbt"), legend=T, leg.cex = 0.5, main="Total IBT vs PBT")
   
-  #Network plots
-  # par(mfrow=c(1,2))
-  # plot(sim, type="network", col.status = T, at=1, sims=1)
-  # plot(sim, type="network", col.status = T, at=500, sims=1)
-  
-  #Time-specific model summaries
-  # summary(sim, at=1)
-  # summary(sim, at=50)
-  # summary(sim, at=100)
 
   #Data extraction
     #all sims
