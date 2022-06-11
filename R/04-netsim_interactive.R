@@ -8,7 +8,7 @@ suppressMessages(library("EpiModelHIV"))
 suppressMessages(library("EpiModelHPC"))
 
 # Load the `NETSIZE` value and the formatted `netsize_string`
-NETSIZE <- 1e4     # to override (before sourcing the file)
+# NETSIZE <- 1e4     # to override (before sourcing the file)
 # source("R/utils-netsize.R")
 
 ## Parameters
@@ -30,7 +30,7 @@ param <- param_msm(
   prep.start.prob        = rep(0.66, 3),
   
   #partner identification params at baseline
-  part.ident.start       = 1*52,                                                   #turn on partner identification to start at timestep=1 (default=Inf i.e. no partner identification)
+  part.ident.start       = 1*52,                                                #turn on partner identification to start 1 year after network initialization (default=Inf i.e. no partner identification)
   part.index.window.int  = 0,                                                   #Num. of prior ts that a ND case is eligible for partner notification (set to 1 ?to be considered if ND in prior time step?)
   part.index.prob        = 0.667,                                               #Probability that an index case would initiate PS
   part.ident.main.window = 24,                                                  #Num of ts that a main partner qualifies for partner identification (default=12wks)
@@ -49,12 +49,13 @@ pkgload::load_all("C:/Users/Uonwubi/OneDrive - Emory University/Desktop/Personal
 
 control <- control_msm(
   simno = 1,
-  nsteps = 3*52,                                                                #i.e. 2 years
+  nsteps = 4*52,                                                                #i.e. 4 years (1 without partner ident and 3 with)
   nsims = 1,
   ncores = 5,
   verbose = TRUE
 )
 
-#debug(partident_msm)
+#debug(hivtest_msm)
 sim <- netsim(est, param, init, control)
+#undebug(hivtest_msm)
 
