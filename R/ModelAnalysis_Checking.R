@@ -22,8 +22,9 @@
     #head(df.allsims,10); tail(df.allsims,10)
     
     library(dplyr)
+    library(tidyverse)
     #Tested for HIV B4 PS
-    p_tb4PS<-df.allsims %>% filter(time<1*PS) %>% group_by(sim) %>% 
+    p_tb4PS<-df.allsims %>% filter(time<1*52) %>% group_by(sim) %>% 
       summarise(totpop=1000, 
                 incidHIV=sum(incid, na.rm = T), 
                 ndindexes=sum(recent_diagn, na.rm = T), 
@@ -34,13 +35,14 @@
                 ndpart.ident2=sum(tot.part.ident, na.rm=T), 
                 ndpart.eligTst=sum(elig.part.for.pbt, na.rm = T),
                 ndpart.tested=sum(tot.tests.pbt, na.rm = T),
+                ave.pp.elig.retst=round(mean(eligPP.forTst, na.rm = T),0),
                 pp.tested=sum(tot.tests.PP, na.rm = T),
                 tot.tests.ibt=sum(tot.tests.ibt, na.rm=T), 
-                tot.tested=sum(tot.tests, na.rm=T)); p_tb4PS
+                tot.tested=sum(tot.tests, na.rm=T))
     
     #Tested for HIV after PS
     p_tafterPS<-df.allsims %>% filter(time>=1*52) %>% group_by(sim) %>% 
-      summarise(totpop=10000, 
+      summarise(totpop=1000, 
                 incidHIV=sum(incid, na.rm = T), 
                 ndindexes=sum(recent_diagn, na.rm = T), 
                 ndindexes.elig=sum(elig_indexes,na.rm = T), 
@@ -50,8 +52,11 @@
                 ndpart.ident2=sum(tot.part.ident, na.rm=T), 
                 ndpart.eligTst=sum(elig.part.for.pbt, na.rm = T),
                 ndpart.tested=sum(tot.tests.pbt, na.rm = T),
+                ave.pp.elig.retst=round(mean(eligPP.forTst, na.rm = T),0),
                 pp.tested=sum(tot.tests.PP, na.rm = T),
                 tot.tests.ibt=sum(tot.tests.ibt, na.rm=T), 
-                tot.tested=sum(tot.tests, na.rm=T)); p_tafterPS
+                tot.tested=sum(tot.tests, na.rm=T))
+    
+    p_t<-data.frame(rbind(b4=p_tb4PS,after=p_tafterPS)) %>% tibble::add_column(time=c("b4","after"), .before="sim") %>% select(-c(sim, totpop));p_t
     
   
