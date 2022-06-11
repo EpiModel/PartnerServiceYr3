@@ -22,29 +22,36 @@
     #head(df.allsims,10); tail(df.allsims,10)
     
     library(dplyr)
-    #Tested for HIV
-    NewHIV<-df.allsims %>% group_by(sim) %>% summarise(totpop=1000,
-                                                       tot.tested=sum(tot.tests, na.rm=T), tot.tests.nprep=sum(tot.tests.nprep, na.rm=T), tot.tests.ibt=sum(tot.tests.ibt, na.rm=T), tot.tests.pbt=sum(tot.tests.pbt, na.rm=T),
-                                                       totNewHIV=sum(incid, na.rm = T), 
-                                                       totpop.B=round(mean(num.B, na.rm=T),0), tested.B=sum(tot.tests.B, na.rm = T), totNewHIV.B=sum(incid.B, na.rm = T), 
-                                                       totpop.H=round(mean(num.H, na.rm=T),0), tested.H=sum(tot.tests.H, na.rm = T), totNewHIV.H=sum(incid.H, na.rm = T),
-                                                       totpop.W=round(mean(num.W, na.rm=T),0), tested.W=sum(tot.tests.W, na.rm = T), totNewHIV.W=sum(incid.W, na.rm = T)) %>% 
-      mutate(incidpct.tot=totNewHIV/totpop, incidpct.B=totNewHIV.B/totpop.B, incidpct.H=totNewHIV.H/totpop.H, incidpct.W=totNewHIV.W/totpop.W);NewHIV
+    #Tested for HIV B4 PS
+    p_tb4PS<-df.allsims %>% filter(time<1*PS) %>% group_by(sim) %>% 
+      summarise(totpop=1000, 
+                incidHIV=sum(incid, na.rm = T), 
+                ndindexes=sum(recent_diagn, na.rm = T), 
+                ndindexes.elig=sum(elig_indexes,na.rm = T), 
+                ndindexes.initPS=sum(found_indexes, na.rm = T),
+                ndpart.elicit=sum(elig_partners, na.rm = T), 
+                ndpart.ident=sum(found_partners, na.rm = T), 
+                ndpart.ident2=sum(tot.part.ident, na.rm=T), 
+                ndpart.eligTst=sum(elig.part.for.pbt, na.rm = T),
+                ndpart.tested=sum(tot.tests.pbt, na.rm = T),
+                pp.tested=sum(tot.tests.PP, na.rm = T),
+                tot.tests.ibt=sum(tot.tests.ibt, na.rm=T), 
+                tot.tested=sum(tot.tests, na.rm=T)); p_tb4PS
     
-    p_t<-df.allsims %>% group_by(sim) %>% 
-      summarise(totpop=1000, incidHIV=sum(incid, na.rm = T), ndindexes=sum(recent_diagn, na.rm = T), ndindexes.elig=sum(elig_indexes,na.rm = T), ndindexes.initPS=sum(found_indexes, na.rm = T),
-                ndpart.elicit=sum(elig_partners, na.rm = T), ndpart.ident=sum(found_partners, na.rm = T), ndpart.ident2=sum(tot.part.ident, na.rm=T), ndpart.eligTst=sum(elig.part.for.pbt, na.rm = T),ndpart.tested=sum(tot.tests.pbt, na.rm = T),
-                tot.tests.ibt=sum(tot.tests.ibt, na.rm=T), tot.tested=sum(tot.tests, na.rm=T)); p_t
+    #Tested for HIV after PS
+    p_tafterPS<-df.allsims %>% filter(time>=1*52) %>% group_by(sim) %>% 
+      summarise(totpop=10000, 
+                incidHIV=sum(incid, na.rm = T), 
+                ndindexes=sum(recent_diagn, na.rm = T), 
+                ndindexes.elig=sum(elig_indexes,na.rm = T), 
+                ndindexes.initPS=sum(found_indexes, na.rm = T),
+                ndpart.elicit=sum(elig_partners, na.rm = T), 
+                ndpart.ident=sum(found_partners, na.rm = T), 
+                ndpart.ident2=sum(tot.part.ident, na.rm=T), 
+                ndpart.eligTst=sum(elig.part.for.pbt, na.rm = T),
+                ndpart.tested=sum(tot.tests.pbt, na.rm = T),
+                pp.tested=sum(tot.tests.PP, na.rm = T),
+                tot.tests.ibt=sum(tot.tests.ibt, na.rm=T), 
+                tot.tested=sum(tot.tests, na.rm=T)); p_tafterPS
     
-    #just the means
-    df.means<-as.data.frame(sim, out="mean")
-    head(df.means,10)
-    tail(df.means,10)
   
-  #NetworkDynamic objects
-  nw1<-get_network(sim, sim=1); nw1
-  df.nw1<-as.data.frame(nw1)
-  head(df.nw1,10)
-  
-plot(sim, type = "formation")
-sim2<-mutate_epi(sim,i.num=)
