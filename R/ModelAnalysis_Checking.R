@@ -65,11 +65,11 @@
                 tot.pos.pbt=sum(tot.pos.tests.pbtND, na.rm = T) + sum(tot.pos.tests.pbtPP, na.rm = T),
                 tot.tests=sum(tot.tests, na.rm=T),
                 tot.pos.tests=sum(tot.pos.tests.ibt, na.rm = T)+sum(tot.retests.PP, na.rm = T)+sum(tot.pos.tests.pbtND, na.rm = T) + sum(tot.pos.tests.pbtPP, na.rm = T)) %>% 
-      mutate(ppn_pos_tests_arePP=tot.pos.PP.ibt/tot.pos.tests)
+      mutate(ppn_pos_tests_arePP=round(tot.pos.PP.ibt/tot.pos.tests,3))
     
-    p_tyrND
-    p_tyrPP
-    p_tyrTOT
+    knitr::kable(p_tyrND)
+    knitr::kable(p_tyrPP)
+    knitr::kable(p_tyrTOT)
     
 
   
