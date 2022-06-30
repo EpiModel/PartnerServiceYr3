@@ -39,8 +39,8 @@ param <- param_msm(
   part.ident.main.prob   = 0.5,                                                 #Probability that an elicited main partner is identified
   part.ident.casl.prob   = 0.5,
   part.ident.ooff.prob   = 0.5,
-  part.hiv.test.rate     = rep(0.84, 3),                                        #using param from complete case analysis in combprevnet
-  prevpos.retest.start   = 1*52+1,                                                #New parameter to set start time to PP retesting
+  part.hiv.test.rate     = rep(0.84, 3),                                        #using param from complete case analysis in combprevnet (YR2 study)
+  prevpos.retest.start   = 1*52+1,                                              #New parameter to set start time to PP retesting
   hiv.test.ratePP        = c(2/(2*52),1/(2*52),0)
 )
 init <- init_msm()
