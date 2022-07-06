@@ -26,50 +26,50 @@
     
     #Testing by year
     #p_tyr<-df.allsims %>% mutate(yr=cut(time,breaks = c(seq(0,10*52,by=52)), labels = c("1","2","3","4","5","6","7","8","9","10"),include.lowest = T)) %>% group_by(yr) %>% 
-  
-    p_tyrND<-as.data.frame(df.allsims) %>% mutate(yr=cut(time,breaks = c(seq(0,4*52,by=52)), labels = c("1","2","3","4"),include.lowest = T)) %>% group_by(yr) %>% 
-      summarise(totpop=1000, 
-                incidHIV=sum(incid, na.rm = T),                                 
-                new.diag=sum(recent_diagn, na.rm = T), 
-                nd.elig.for.ps=sum(elig_indexesND,na.rm = T), 
-                nd.initiat.ps=sum(found_indexesND, na.rm = T),
-                ndpart.elicited=sum(elig_partnersND, na.rm = T), 
-                ndpart.found=sum(found_partnersND, na.rm = T), 
-                part.ident.at.psND=sum(tot.part.identND, na.rm = T),
-                ndpart.elig.for.hivtest=sum(elig.part.for.testND, na.rm = T),
-                pbt.doneND=sum(tot.tests.pbtND, na.rm = T),        
-                pbt.pos.testsND=sum(tot.pos.tests.pbtND, na.rm = T))       
-                
-    p_tyrPP<-as.data.frame(df.allsims) %>% mutate(yr=cut(time,breaks = c(seq(0,4*52,by=52)), labels = c("1","2","3","4"),include.lowest = T)) %>% group_by(yr) %>% 
-                summarise(totpop=1000, 
-                #ave.pp.elig.retest.pertimestep=round(mean(eligPP.for.retest, na.rm = T),0),
-                tot.ibt.amongPP=sum(tot.retests.PP, na.rm = T),
-                pp.retests=sum(recent_retests, na.rm = T),               
-                pp.elig.for.ps=sum(elig_indexesPP,na.rm = T), 
-                pp.initiat.ps=sum(found_indexesPP, na.rm = T),
-                pppart.elicited=sum(elig_partnersPP, na.rm = T), 
-                pppart.found=sum(found_partnersPP, na.rm = T), 
-                part.ident.at.psPP=sum(tot.part.identPP, na.rm = T),
-                pppart.elig.for.hivtest=sum(elig.part.for.testPP, na.rm = T),
-                pbt.donePP=sum(tot.tests.pbtPP, na.rm = T),        
-                pbt.pos.testsPP=sum(tot.pos.tests.pbtPP, na.rm = T))
-    
-    p_tyrTOT<-as.data.frame(df.allsims) %>% mutate(yr=cut(time,breaks = c(seq(0,4*52,by=52)), labels = c("1","2","3","4"),include.lowest = T)) %>% group_by(yr) %>% 
+ 
+    tst_summ<-as.data.frame(df.allsims) %>% mutate(yr=cut(time,breaks = c(seq(0,4*52,by=52)), labels = c("1","2","3","4"),include.lowest = T)) %>% group_by(yr) %>% 
       summarise(totpop=1000,     
-                #tot.part.identified.at.ps=sum(tot.part.ident, na.rm = T),
-                tot.nonPP.ibt=sum(tot.tests.ibt, na.rm=T), 
-                tot.pos.nonPP.ibt=sum(tot.pos.tests.ibt, na.rm = T),
-                tot.PP.ibt=sum(tot.retests.PP, na.rm = T),
-                tot.pos.PP.ibt=sum(tot.retests.PP, na.rm = T),
-                tot.pbt=sum(tot.tests.pbtND, na.rm = T)+sum(tot.tests.pbtPP, na.rm = T),
-                tot.pos.pbt=sum(tot.pos.tests.pbtND, na.rm = T) + sum(tot.pos.tests.pbtPP, na.rm = T),
-                tot.tests=sum(tot.tests, na.rm=T),
-                tot.pos.tests=sum(tot.pos.tests.ibt, na.rm = T)+sum(tot.retests.PP, na.rm = T)+sum(tot.pos.tests.pbtND, na.rm = T) + sum(tot.pos.tests.pbtPP, na.rm = T)) %>% 
-      mutate(ppn_pos_tests_arePP=round(tot.pos.PP.ibt/tot.pos.tests,3))
+                tot.ibt.noPP=sum(tot.tests.ibt, na.rm=T), 
+                pos.ibt.nonPP=sum(tot.pos.tests.ibt, na.rm = T),
+                
+                tot.ibt.PP=sum(tot.retests.PP, na.rm = T),
+                pos.ibt.PP=sum(tot.retests.PP, na.rm = T),
+                nic.ibt.PP=sum(retested.nic, na.rm = T),
+                nic.pct=nic.ibt.PP/tot.ibt.PP,
+                norx.nic=sum(retested.nic.rxnaive, na.rm = T),
+                nic.pct=norx.nic/nic.ibt.PP,
+                
+                tot.pbt=sum(tested.part, na.rm = T),
+                pos.pbt=sum(positive.part, na.rm = T),
+                
+                all.tests=sum(tot.tests, na.rm=T),
+                all.pos.tests=sum(tot.pos.tests.ibt, na.rm = T) + sum(tot.retests.PP, na.rm = T) + sum(positive.part, na.rm = T)) %>% 
+      mutate(ppn_pos_tests_arePP=round(pos.ibt.PP/all.pos.tests,3))
     
-    knitr::kable(p_tyrND)
-    knitr::kable(p_tyrPP)
-    knitr::kable(p_tyrTOT)
+    ps_summ<-as.data.frame(df.allsims) %>% mutate(yr=cut(time,breaks = c(seq(0,4*52,by=52)), labels = c("1","2","3","4"),include.lowest = T)) %>% group_by(yr) %>% 
+      summarise(totpop=1000, 
+                incidHIV=sum(incid, na.rm = T),   
+                
+                new.diag=sum(recent.diagn, na.rm = T), 
+                nd.elig.for.ps=sum(elig.indexes.nd,na.rm = T), 
+                nd.initiate.ps=sum(found.indexes.nd, na.rm = T),
+                
+                pp.retests=sum(recent.retests, na.rm = T),               
+                pp.elig.for.ps=sum(elig.indexes.pp, na.rm = T), 
+                pp.initiate.ps=sum(found.indexes.pp, na.rm = T),
+                
+                partn.eligible=sum(elig.partners, na.rm = T), 
+                partn.found=sum(found.partners, na.rm = T), 
+                
+                partn.ident.4pbt=sum(tot.part.ident, na.rm = T),
+                partn.elig.4pbt=sum(elig.part, na.rm = T),
+                partn.tested=sum(tested.part, na.rm = T),        
+                partn.positive=sum(positive.part, na.rm = T))       
+                
+ 
+    
+    knitr::kable(tst_summ)
+    knitr::kable(ps_summ)
     
 
   
