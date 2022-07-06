@@ -37,7 +37,7 @@
                 nic.ibt.PP=sum(retested.nic, na.rm = T),
                 nic.pct=nic.ibt.PP/tot.ibt.PP,
                 norx.nic=sum(retested.nic.rxnaive, na.rm = T),
-                nic.pct=norx.nic/nic.ibt.PP,
+                norx.pct=norx.nic/nic.ibt.PP,
                 
                 tot.pbt=sum(tested.part, na.rm = T),
                 pos.pbt=sum(positive.part, na.rm = T),
@@ -61,6 +61,12 @@
                 partn.eligible=sum(elig.partners, na.rm = T), 
                 partn.found=sum(found.partners, na.rm = T), 
                 
+                posPart.indexes=sum(posPart.indexes, na.rm = T),               
+                posPart.elig.for.ps=sum(elig.indexes.posPart, na.rm = T), 
+                
+                gen2.partn.eligible=sum(elig.partners.gen2, na.rm = T),
+                gen2.partn.found=sum(found.partners.gen2, na.rm = T),
+
                 partn.ident.4pbt=sum(tot.part.ident, na.rm = T),
                 partn.elig.4pbt=sum(elig.part, na.rm = T),
                 partn.tested=sum(tested.part, na.rm = T),        
