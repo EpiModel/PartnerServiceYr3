@@ -30,7 +30,7 @@ param <- param_msm(
   prep.start.prob        = rep(0.66, 3),
   
   #partner identification params at baseline
-  part.ident.start       = 0*52+1,                                              #turn on partner identification to start 1 year after network initialization (default=Inf i.e. no partner identification)
+  part.ident.start       = 1*52+1,                                              #turn on partner identification to start 1 year after network initialization (default=Inf i.e. no partner identification)
   part.index.window.int  = 0,                                                   #Num. of prior ts that a ND case is eligible for partner notification (set to 1 ?to be considered if ND in prior time step?)
   part.index.prob        = 0.667,                                               #Probability that an index case would initiate PS
   part.ident.main.window = 24,                                                  #Num of ts that a main partner qualifies for partner identification (default=12wks)
@@ -41,7 +41,7 @@ param <- param_msm(
   part.ident.ooff.prob   = 0.5,
   part.hiv.test.rate     = rep(0.84, 3),                                        #using param from complete case analysis in combprevnet (YR2 study)
   prevpos.retest.start   = 1*52+1,                                              #New parameter to set start time to PP retesting
-  part.ppindex.prob      = 0.667,                                             #Probability that a PP index would initiate PS
+  part.ppindex.prob      = 0.667,                                               #Probability that a PP index would initiate PS
   hiv.test.ratePP        = c(2/(2*52),1/(2*52),0)
 )
 init <- init_msm()
@@ -50,13 +50,14 @@ pkgload::load_all("C:/Users/Uonwubi/OneDrive - Emory University/Desktop/Personal
 
 control <- control_msm(
   simno = 1,
-  nsteps = 4*52,                                                                #i.e. 4 years (1 without partner ident and 3 with)
+  nsteps = 4*52,                                                                #i.e. 4 years (1 without PS and 3 with)
   nsims = 1,
   ncores = 5,
   verbose = TRUE
 )
 
 #debug(partident_msm)
+#debug(hivtest_msm)
 sim <- netsim(est, param, init, control)
 #undebug(partident_msm)
 
