@@ -28,7 +28,7 @@
     #p_tyr<-df.allsims %>% mutate(yr=cut(time,breaks = c(seq(0,10*52,by=52)), labels = c("1","2","3","4","5","6","7","8","9","10"),include.lowest = T)) %>% group_by(yr) %>% 
  
     tst_summ<-as.data.frame(df.allsims) %>% mutate(yr=cut(time,breaks = c(seq(0,4*52,by=52)), labels = c("1","2","3","4"),include.lowest = T)) %>% group_by(yr) %>% 
-      summarise(totpop=1000,     
+      summarise(totpop=10000,     
                 tot.ibt.noPP=sum(tot.tests.ibt, na.rm=T), 
                 pos.ibt.nonPP=sum(tot.pos.tests.ibt, na.rm = T),
                 
@@ -39,6 +39,8 @@
                 norx.nic=sum(retested.nic.rxnaive, na.rm = T),
                 norx.pct=norx.nic/nic.ibt.PP,
                 
+                gen12.partn.ident.4pbt=sum(tot.part.ident, na.rm = T),
+                gen12.partn.elig.4pbt=sum(elig.part, na.rm = T),
                 tot.pbt=sum(tested.part, na.rm = T),
                 pos.pbt=sum(positive.part, na.rm = T),
                 
@@ -46,8 +48,8 @@
                 all.pos.tests=sum(tot.pos.tests.ibt, na.rm = T) + sum(tot.retests.PP, na.rm = T) + sum(positive.part, na.rm = T)) %>% 
       mutate(ppn_pos_tests_arePP=round(pos.ibt.PP/all.pos.tests,3))
     
-    ps_summ<-as.data.frame(df.allsims) %>% mutate(yr=cut(time,breaks = c(seq(0,4*52,by=52)), labels = c("1","2","3","4"),include.lowest = T)) %>% group_by(yr) %>% 
-      summarise(totpop=1000, 
+    psGen1_summ<-as.data.frame(df.allsims) %>% mutate(yr=cut(time,breaks = c(seq(0,4*52,by=52)), labels = c("1","2","3","4"),include.lowest = T)) %>% group_by(yr) %>% 
+      summarise(totpop=10000, 
                 incidHIV=sum(incid, na.rm = T),   
                 
                 new.diag=sum(recent.diagn, na.rm = T), 
@@ -58,24 +60,47 @@
                 pp.elig.for.ps=sum(elig.indexes.pp, na.rm = T), 
                 pp.initiate.ps=sum(found.indexes.pp, na.rm = T),
                 
-                partn.eligible=sum(elig.partners, na.rm = T), 
-                partn.found=sum(found.partners, na.rm = T), 
+                gen1.partn.eligible=sum(elig.partners, na.rm = T), 
+                gen1.partn.found=sum(found.partners, na.rm = T)) 
                 
-                posPart.indexes=sum(posPart.indexes, na.rm = T),               
-                posPart.elig.for.ps=sum(elig.indexes.posPart, na.rm = T), 
+
+    psGen2_summ<-as.data.frame(df.allsims) %>% mutate(yr=cut(time,breaks = c(seq(0,4*52,by=52)), labels = c("1","2","3","4"),include.lowest = T)) %>% group_by(yr) %>% 
+      summarise(totpop=10000,
+                gen1.partn.found=sum(found.partners, na.rm = T), 
+                
+                gen1.posPart.indexes=sum(posPart.indexes, na.rm = T),               
+                gen1.posPart.elig.for.ps=sum(elig.indexes.posPart, na.rm = T), 
                 
                 gen2.partn.eligible=sum(elig.partners.gen2, na.rm = T),
                 gen2.partn.found=sum(found.partners.gen2, na.rm = T),
 
+                all.partn.found=sum(found.partners.all, na.rm = T),
+                
                 partn.ident.4pbt=sum(tot.part.ident, na.rm = T),
                 partn.elig.4pbt=sum(elig.part, na.rm = T),
                 partn.tested=sum(tested.part, na.rm = T),        
-                partn.positive=sum(positive.part, na.rm = T))       
+                partn.positive=sum(positive.part, na.rm = T))    
+    
+    
+    ppreinit_summ<-as.data.frame(df.allsims) %>% mutate(yr=cut(time,breaks = c(seq(0,4*52,by=52)), labels = c("1","2","3","4"),include.lowest = T)) %>% group_by(yr) %>% 
+      summarise(totpop=10000,
+                pp.retested=sum(tot.retests.PP, na.rm = T),
+                pp.positive=sum(tot.retests.PP, na.rm = T),
                 
+                pp.retests.psside=sum(recent.retests, na.rm = T),               
+                pp.elig.for.ps=sum(elig.indexes.pp, na.rm = T), 
+                pp.found=sum(found.indexes.pp, na.rm = T),
+                pp.found2=sum(found.indexes.pp.un, na.rm = T),
+                
+                pp.elig.reinit=sum(pp.elig.for.reinit, na.rm = T),
+                pp.reinit=sum(pp.reinit.tx, na.rm = T))
+
  
     
     knitr::kable(tst_summ)
-    knitr::kable(ps_summ)
+    knitr::kable(psGen1_summ)
+    knitr::kable(psGen2_summ)
+    knitr::kable(ppreinit_summ)
     
 
   
