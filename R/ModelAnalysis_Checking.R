@@ -26,8 +26,9 @@
     
     #Testing by year
     #p_tyr<-df.allsims %>% mutate(yr=cut(time,breaks = c(seq(0,10*52,by=52)), labels = c("1","2","3","4","5","6","7","8","9","10"),include.lowest = T)) %>% group_by(yr) %>% 
+    #mutate(yr=cut(time,breaks = c(seq(0,4*52,by=52)), labels = c("1","2","3","4"),include.lowest = T)) %>% group_by(yr) %>
  
-    tst_summ<-as.data.frame(df.allsims) %>% mutate(yr=cut(time,breaks = c(seq(0,4*52,by=52)), labels = c("1","2","3","4"),include.lowest = T)) %>% group_by(yr) %>% 
+    tst_summ<-as.data.frame(df.allsims) %>% mutate(yr=cut(time,breaks = c(seq(0,10*52,by=52)), labels = c("1","2","3","4","5","6","7","8","9","10"),include.lowest = T)) %>% group_by(yr) %>%
       summarise(totpop=10000,     
                 tot.ibt.noPP=sum(tot.tests.ibt, na.rm=T), 
                 pos.ibt.nonPP=sum(tot.pos.tests.ibt, na.rm = T),
@@ -48,7 +49,7 @@
                 all.pos.tests=sum(tot.pos.tests.ibt, na.rm = T) + sum(tot.retests.PP, na.rm = T) + sum(positive.part, na.rm = T)) %>% 
       mutate(ppn_pos_tests_arePP=round(pos.ibt.PP/all.pos.tests,3))
     
-    psGen1_summ<-as.data.frame(df.allsims) %>% mutate(yr=cut(time,breaks = c(seq(0,4*52,by=52)), labels = c("1","2","3","4"),include.lowest = T)) %>% group_by(yr) %>% 
+    psGen1_summ<-as.data.frame(df.allsims) %>% mutate(yr=cut(time,breaks = c(seq(0,10*52,by=52)), labels = c("1","2","3","4","5","6","7","8","9","10"),include.lowest = T)) %>% group_by(yr) %>%
       summarise(totpop=10000, 
                 incidHIV=sum(incid, na.rm = T),   
                 
@@ -64,7 +65,7 @@
                 gen1.partn.found=sum(found.partners, na.rm = T)) 
                 
 
-    psGen2_summ<-as.data.frame(df.allsims) %>% mutate(yr=cut(time,breaks = c(seq(0,4*52,by=52)), labels = c("1","2","3","4"),include.lowest = T)) %>% group_by(yr) %>% 
+    psGen2_summ<-as.data.frame(df.allsims) %>% mutate(yr=cut(time,breaks = c(seq(0,10*52,by=52)), labels = c("1","2","3","4","5","6","7","8","9","10"),include.lowest = T)) %>% group_by(yr) %>% 
       summarise(totpop=10000,
                 gen1.partn.found=sum(found.partners, na.rm = T), 
                 
@@ -82,7 +83,7 @@
                 partn.positive=sum(positive.part, na.rm = T))    
     
     
-    ppreinit_summ<-as.data.frame(df.allsims) %>% mutate(yr=cut(time,breaks = c(seq(0,4*52,by=52)), labels = c("1","2","3","4"),include.lowest = T)) %>% group_by(yr) %>% 
+    ppreinit_summ<-as.data.frame(df.allsims) %>% mutate(yr=cut(time,breaks = c(seq(0,10*52,by=52)), labels = c("1","2","3","4","5","6","7","8","9","10"),include.lowest = T)) %>% group_by(yr) %>% 
       summarise(totpop=10000,
                 pp.retested=sum(tot.retests.PP, na.rm = T),
                 pp.positive=sum(tot.retests.PP, na.rm = T),
