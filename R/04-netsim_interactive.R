@@ -50,7 +50,7 @@ pkgload::load_all("C:/Users/Uonwubi/OneDrive - Emory University/Desktop/Personal
 
 control <- control_msm(
   simno = 1,
-  nsteps = 4*52,                                                                #i.e. 4 years (1 without PS and 3 with)
+  nsteps = 10*52,                                                                #i.e. 4 years (1 without PS and 3 with)
   nsims = 1,
   ncores = 5,
   verbose = TRUE
