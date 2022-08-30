@@ -10,7 +10,7 @@ library("EpiModelHPC")
 # hpc_configs <- swf_configs_hyak(hpc = "mox", partition = "csde")
 hpc_configs <- swf_configs_rsph(
   partition = "epimodel",
-  mail_user = "user@emory.edu"
+  mail_user = "uonwubi@emory.edu"
 )
 max_cores <- 10
 
@@ -21,10 +21,7 @@ wf <- create_workflow(
 )
 
 # Update RENV on the HPC -------------------------------------------------------
-#
-# this template will run:
-#   git pull
-#   renv::restore()
+# this template will run: git pull and renv::restore()
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_renv_restore(
@@ -35,7 +32,6 @@ wf <- add_workflow_step(
 )
 
 # Estimate the networks --------------------------------------------------------
-#
 # this template uses the syntax of `base::do.call`
 # the arguments in `args` will be made available as variables to the script on
 # the HPC
