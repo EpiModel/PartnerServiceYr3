@@ -71,9 +71,22 @@ wf <- add_workflow_step(
   )
 )
 
-# to send the workflows on the HPC
-# scp -r ~/git/BigNets/workflows/estimation sph:/projects/epimodel/sjenness/BigNets/workflows/estimation
-# from the BigNets folder on Mox: workflows/estimation/start_workflow.sh
+# to send the workflows on the HPC (Run on R terminal, not console)
+  # Sample code
+  # scp -r ~/git/BigNets/workflows/estimation sph:/projects/epimodel/sjenness/BigNets/workflows/estimation
+
+  # Mine
+  # scp -r workflows/estimation sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows/estimation
+
+# to execute the workflow (do on the HPC)
+  # ./workflows/estimation/start_workflow.sh 
+  # chmod +x workflows/estimation/start_workflow.sh    *****(works better for Windows users)****
+
+
 
 # to get the data back
-# scp -r sph:projects/epimodel/sjenness/BigNets/data/input data/input/
+  # Sample code
+  # scp -r sph:projects/epimodel/sjenness/BigNets/data/input data/input/
+
+  # Mine
+  # scp -r sph:projects/epimodel/uonwubi/PartnerService/data/input data/input
