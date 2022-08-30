@@ -15,9 +15,9 @@ suppressMessages(library("EpiModelHPC"))
 suppressMessages(library("ARTnet"))
 
 # Load the `NETSIZE` value and the formatted `netsize_string`
-NETSIZE <- 1e5 # to override (before sourcing the file)
-netsize_string <- format(NETSIZE, scientific = FALSE)
-#source("R/utils-netsize.R")
+# NETSIZE <- 1e5 # to override (before sourcing the file)
+# netsize_string <- format(NETSIZE, scientific = FALSE)
+source("R/utils-netsize.R")
 
 # 0. Initialize Network --------------------------------------------------------
 
