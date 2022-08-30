@@ -3,8 +3,8 @@
 ##
 
 # Required variables:
-ncores<-4
-nsims<-10
+ncores<-10
+nsims<-100
 nsteps<-500
 # if (interactive()) {
 #   ncores <- 2
