@@ -58,7 +58,7 @@ wf <- add_workflow_step(
     r_script = "R/02-diagnostics.R",
     args = list(
       ncores = max_cores,
-      nsims = 50,
+      nsims = 100,
       nsteps = 500
     ),
     setup_lines = hpc_configs$r_loader
@@ -75,7 +75,7 @@ wf <- add_workflow_step(
   # Sample code
   # scp -r ~/git/BigNets/workflows/estimation sph:/projects/epimodel/sjenness/BigNets/workflows/estimation
 
-  # Mine
+  # Mine (copy and run in R terminal)
   # scp -r workflows/estimation sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows/estimation
 
 # to execute the workflow (do on the HPC)
