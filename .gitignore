@@ -40,3 +40,6 @@ vignettes/*.pdf
 
 #Ignore datafiles 
 *.rds
+
+#ignore workflow files
+workflows/
