@@ -4,7 +4,7 @@
 
 # Required variables:
 ncores<-10
-nsims<-50
+nsims<-100
 nsteps<-500
 # if (interactive()) {
 #   ncores <- 2
