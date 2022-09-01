@@ -19,7 +19,7 @@ suppressMessages({
 
 # Load the `NETSIZE` value and the formatted `netsize_string`
 # NETSIZE <- 1e4 # to override (before sourcing the file)
-#source("R/utils-netsize.R")
+source("R/utils-netsize.R")
 
 fn <- paste0("data/input/netest-", netsize_string, ".rds")
 est <- readRDS(fn)
