@@ -58,7 +58,7 @@ wf <- add_workflow_step(
     r_script = "R/02-diagnostics.R",
     args = list(
       ncores = max_cores,
-      nsims = 100,
+      nsims = 50,
       nsteps = 500
     ),
     setup_lines = hpc_configs$r_loader
