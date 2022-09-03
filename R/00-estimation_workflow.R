@@ -78,9 +78,9 @@ wf <- add_workflow_step(
   # Mine (copy and run in R terminal)
   # scp -r workflows/estimation sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows/estimation
 
-# to execute the workflow (do on the HPC)
+# to execute the workflow (do on the HPC *****Windows users have to run both code lines****)
+  # chmod +x workflows/estimation/start_workflow.sh    
   # ./workflows/estimation/start_workflow.sh 
-  # chmod +x workflows/estimation/start_workflow.sh    *****(works better for Windows users)****
 
 
 
@@ -89,4 +89,4 @@ wf <- add_workflow_step(
   # scp -r sph:projects/epimodel/sjenness/BigNets/data/input data/input/
 
   # Mine
-  # scp -r sph:projects/epimodel/uonwubi/PartnerService/data/input data/input
+  # scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/input data/input
