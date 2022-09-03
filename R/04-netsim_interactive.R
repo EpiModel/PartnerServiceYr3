@@ -25,7 +25,7 @@ param <- param_msm(
   tx.halt.partial.rate   = c(0.0062, 0.0055, 0.0031),
   tx.reinit.partial.rate = c(0.00255, 0.00255, 0.00255),
   hiv.trans.scale        = c(2.44, 0.424, 0.270),
-  riskh.start            = 52,                                                  #why is this set to week 52? Why not ts=2nd week?
+  riskh.start            = 52,                                                  
   prep.start             = 52,
   prep.start.prob        = rep(0.66, 3),
   
