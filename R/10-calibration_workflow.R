@@ -9,7 +9,7 @@ library("EpiModelHPC")
 # hpc_configs <- swf_configs_hyak(hpc = "mox", partition = "csde")
 hpc_configs <- swf_configs_rsph(
   partition = "preemptable",
-  mail_user = "user@emory.edu"
+  mail_user = "uonwubi@emory.edu"
 )
 
 max_cores <- 32
@@ -69,7 +69,7 @@ wf <- add_workflow_step(
     scenarios_list = scenarios.list,
     output_dir = "data/output/calib",
     libraries = "EpiModelHIV",
-    n_rep = 100,
+    n_rep = 100,                                                                          #num of simulations per scenario
     n_cores = max_cores,
     max_array_size = 500,
     setup_lines = hpc_configs$r_loader
@@ -103,8 +103,16 @@ wf <- add_workflow_step(
   )
 )
 # to send the workflows on the HPC
-# scp -r workflows klone.hyak.uw.edu:gscratch/BigNets/
-# from the BigNets folder on Klone: workflows/calibration/start_workflow.sh
+  # Sample
+  # scp -r workflows klone.hyak.uw.edu:gscratch/BigNets/
+  
+  # Mine (copy and run in R terminal)
+  # scp -r workflows/calibration sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows/calibration
+
+# to execute the workflow (do on the HPC *****Windows users have to run both code lines****)
+  # chmod +x workflows/estimation/start_workflow.sh    
+  # ./workflows/estimation/start_workflow.sh 
+
 
 # to get the data back
 # scp klone.hyak.uw.edu:gscratch/BigNets/data/output/calib/assessments.rds data/output/calib/
