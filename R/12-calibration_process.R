@@ -13,6 +13,7 @@ if (interactive()) {
 }
 
 # Setup ------------------------------------------------------------------------
+install.packages("future.apply")
 suppressMessages({
   library("EpiModelHIV")
   library("future.apply")
