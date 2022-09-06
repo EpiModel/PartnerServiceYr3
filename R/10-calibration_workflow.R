@@ -69,7 +69,7 @@ wf <- add_workflow_step(
     scenarios_list = scenarios.list,
     output_dir = "data/output/calib",
     libraries = "EpiModelHIV",
-    n_rep = 100,                                                                          #num of simulations per scenario
+    n_rep = 100,                                                                          #num. of simulations per scenario
     n_cores = max_cores,
     max_array_size = 500,
     setup_lines = hpc_configs$r_loader
@@ -104,7 +104,7 @@ wf <- add_workflow_step(
 )
 # to send the workflows on the HPC
   # Sample
-  # scp -r workflows klone.hyak.uw.edu:gscratch/BigNets/
+  # scp -r workflows/calibration <user>@clogin01.sph.emory.edu:projects/BigNets/workflows/
   
   # Mine (copy and run in R terminal)
   # scp -r workflows/calibration sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows/calibration
