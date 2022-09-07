@@ -4,9 +4,9 @@
 
 # Required variables:
 ncores<-10
-# if (interactive()) {
-#   ncores <- 2
-# }
+if (interactive()) {
+  ncores <- 4
+}
 
 ## Packages ##
 library("methods")
