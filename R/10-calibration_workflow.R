@@ -110,8 +110,8 @@ wf <- add_workflow_step(
   # scp -r workflows/calibration sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows/calibration
 
 # to execute the workflow (do on the HPC *****Windows users have to run both code lines****)
-  # chmod +x workflows/estimation/start_workflow.sh    
-  # ./workflows/estimation/start_workflow.sh 
+  # chmod +x workflows/calibration/start_workflow.sh    
+  # ./workflows/calibration/start_workflow.sh 
 
 
 # to get the data back
