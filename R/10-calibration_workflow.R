@@ -43,22 +43,22 @@ control <- control_msm(
   cumulative.edgelist = TRUE,
   truncate.el.cuml = 0,
   .tracker.list = calibration_trackers, # created in R/utils-targets.R,
-  # .checkpoint.dir = cp_dir,
-  # .checkpoint.clear = FALSE,
-  # .checkpoint.steps = 30 * 52,
+  .checkpoint.dir = cp_dir,
+  .checkpoint.clear = FALSE,
+  .checkpoint.steps = 30 * 52,
   verbose = FALSE,
   raw.output = FALSE
 )
 
 # insert test values here
 scenarios.df <- tibble(
-  .scenario.id = "choose_restart",
-  .at = 1
-  # .scenario.id = c("0", "1", "2", "3"),
+  # .scenario.id = "choose_restart",
   # .at = 1,
-  # hiv.trans.scale_1	= c(4, 4.1, 4.2, 4.3),
-  # hiv.trans.scale_2	= c(.53, .53, .53, .53),
-  # hiv.trans.scale_3	= c(.33, .32, .32, .32)
+  .scenario.id = c("base", "interv1", "interv2", "both"),
+  .at = 1,
+  prevpos.retest.start	= c(Inf, interv_start, Inf, interv_start),
+  part.ppindex.prob	= c(0, 0.667, 0, 0.667),
+  second.genps.start	= c(Inf, Inf, interv_start, interv_start)
 )
 scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
 
