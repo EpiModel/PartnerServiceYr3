@@ -30,6 +30,7 @@ df_params <- readr::read_csv(csv_params)
 param <- param.net(
   data.frame.params = df_params,
   prevpos.retest.start = interv_start,
+  second.genps.start = interv_start,
   part.index.prob        = 0.667,                                                         #Probability that an ND-index case would initiate PS
   part.ppindex.prob      = 0.667,                                                         #Probability that an PP-index case would initiate PS
   part.ident.main.window = 24,                                                            #Num of ts that a main partner qualifies for partner identification (default=12wks)
