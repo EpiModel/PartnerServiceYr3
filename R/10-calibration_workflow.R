@@ -52,13 +52,10 @@ control <- control_msm(
 
 # insert test values here
 scenarios.df <- tibble(
-  .scenario.id = "choose_restart",
+  .scenario.id = c("base", "interv1", "interv2", "both"),
   .at = 1,
-  # .scenario.id = c("base", "interv1", "interv2", "both"),
-  # .at = 1,
-  # prevpos.retest.start	= c(Inf, interv_start, Inf, interv_start),
-  # part.ppindex.prob	= c(0, 0.667, 0, 0.667),
-  # second.genps.start	= c(Inf, Inf, interv_start, interv_start)
+  prevpos.retest.start	= c(Inf, interv_start, Inf, interv_start),
+  second.genps.start	= c(Inf, Inf, interv_start, interv_start)
 )
 scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
 
