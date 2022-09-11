@@ -29,6 +29,10 @@ df_params <- readr::read_csv(csv_params)
 
 param <- param.net(
   data.frame.params = df_params,
+  netstats = netstats,
+  epistats = epistats,
+  
+  #other params
   part.ident.main.window = 24,                                                            #Num of ts that a main partner qualifies for partner identification (default=12wks)
   part.ident.casl.window = 24,
   part.ident.ooff.window = 24,
@@ -36,14 +40,14 @@ param <- param.net(
   part.ident.casl.prob   = 0.5,
   part.ident.ooff.prob   = 0.5,
   part.hiv.test.rate     = rep(0.84, 3),                                                  #using param from complete case analysis in combprevnet (YR2 study)
-  prevpos.retest.start = Inf,
-  second.genps.start = Inf,
   part.index.prob        = 0.667,                                                         #Probability that an ND-index case would initiate PS
   part.ppindex.prob      = 0.667,                                                         #Probability that an PP-index case would initiate PS
-  netstats = netstats,
-  epistats = epistats,
   riskh.start = prep_start - 53,
-  prep.start = prep_start
+  prep.start = prep_start,
+  
+  #interv start times
+  prevpos.retest.start = Inf,
+  second.genps.start = Inf,
 )
 
 # Initial conditions -----------------------------------------------------------
