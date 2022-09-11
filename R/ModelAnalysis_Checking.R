@@ -96,12 +96,61 @@ ppreinit_summ<-as.data.frame(df.allsims) %>% mutate(yr=cut(time,breaks = c(seq(0
             pp.elig.reinit=sum(pp.elig.for.reinit, na.rm = T),
             pp.reinit=sum(pp.reinit.tx, na.rm = T))
 
-
-
 knitr::kable(tst_summ)
 knitr::kable(psGen1_summ)
 knitr::kable(psGen2_summ)
 knitr::kable(ppreinit_summ)
 
 
+#checking use_scenario()
+#total tests
+plot(d_list$base$time, d_list$base$tot.tests,
+     type = "l", col = 1, lwd = 2, ylim = c(0, 250))
+lines(d_list$interv1$time, d_list$interv1$tot.tests,
+      type = "l", col = 2, lwd = 2)
+lines(d_list$interv2$time, d_list$interv2$tot.tests,
+      type = "l", col = 3, lwd = 2)
+lines(d_list$both$time, d_list$both$tot.tests,
+      type = "l", col = 4, lwd = 2)
+abline(v = c(52, 104), lty = 2)
+legend("topleft", legend = names(d_list),
+       col = 1:4, lwd = 2, cex = 0.9, bty = "n")
 
+#found gen 1 partners
+plot(d_list$base$time, d_list$base$found.partners,
+     type = "l", col = 1, lwd = 2, ylim = c(0, 20))
+lines(d_list$interv1$time, d_list$interv1$found.partners,
+      type = "l", col = 2, lwd = 2)
+lines(d_list$interv2$time, d_list$interv2$found.partners,
+      type = "l", col = 3, lwd = 2)
+lines(d_list$both$time, d_list$both$found.partners,
+      type = "l", col = 4, lwd = 2)
+abline(v = c(52, 104), lty = 2)
+legend("topleft", legend = names(d_list),
+       col = 1:4, lwd = 2, cex = 0.9, bty = "n")
+
+#found 2 gen partners
+plot(d_list$base$time, d_list$base$found.partners.gen2,
+     type = "l", col = 1, lwd = 2, ylim = c(0, 10))
+lines(d_list$interv1$time, d_list$interv1$found.partners.gen2,
+      type = "l", col = 2, lwd = 2)
+lines(d_list$interv2$time, d_list$interv2$found.partners.gen2,
+      type = "l", col = 3, lwd = 2)
+lines(d_list$both$time, d_list$both$found.partners.gen2,
+      type = "l", col = 4, lwd = 2)
+abline(v = c(52, 104), lty = 2)
+legend("topleft", legend = names(d_list),
+       col = 1:4, lwd = 2, cex = 0.9, bty = "n")
+
+#i.prev
+plot(d_list$base$time, d_list$base$i.prev,
+     type = "l", col = 1, lwd = 2, ylim = c(0, 1))
+lines(d_list$interv1$time, d_list$interv1$i.prev,
+      type = "l", col = 2, lwd = 2)
+lines(d_list$interv2$time, d_list$interv2$i.prev,
+      type = "l", col = 3, lwd = 2)
+lines(d_list$both$time, d_list$both$i.prev,
+      type = "l", col = 4, lwd = 2)
+abline(v = c(52, 104), lty = 2)
+legend("topleft", legend = names(d_list),
+       col = 1:4, lwd = 2, cex = 0.9, bty = "n")
