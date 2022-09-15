@@ -66,7 +66,7 @@ wf <- add_workflow_step(
     scenarios_list = scenarios.list,
     output_dir = "data/output/calib",
     libraries = "EpiModelHIV",
-    n_rep = 100,                                                                          #num. of simulations per scenario
+    n_rep = 10,                                                                          #num. of simulations per scenario
     n_cores = max_cores,
     max_array_size = 500,
     setup_lines = hpc_configs$r_loader
