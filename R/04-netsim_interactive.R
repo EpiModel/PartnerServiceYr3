@@ -42,13 +42,14 @@ param <- param_msm(
   part.hiv.test.rate     = rep(0.84, 3),                                                  #using param from complete case analysis in combprevnet (YR2 study)
   prevpos.retest.start   = 1*52+1,                                                        #New parameter to set start time to PP retesting
   second.genps.start     = 2*52+1,
-  part.ppindex.prob      = 0.667,                                                         #Probability that a PP index would initiate PS
+  part.ppindex.prob      = 0.667                                                          #Probability that a PP index would initiate PS
 )
 
 init <- init_msm()
 
 pkgload::load_all("C:/Users/Uonwubi/OneDrive - Emory University/Desktop/Personal/RSPH EPI Docs/RA2/GitRepos/EpiModelHIV-p")
 
+#debug(control_msm)
 control <- control_msm(
   simno = 1,
   nsteps = 3*52,                                                                          #i.e. 4 years (1 without PS and 3 with)
@@ -58,14 +59,14 @@ control <- control_msm(
 )
 
 #debug(partident_msm)
-debug(hivtest_msm)
-#options(error=recover)
+#debug(hivtest_msm)
+
 sim <- netsim(est, param, init, control)
 #undebug(partident_msm)
 #undebug(hivtest_msm)
-#options(error=NULL)
 
-# #param object to test the use_scenario() function
+
+# #param object to test use_scenario() function
 # param <- param_msm(
 #   netstats               = netstats,
 #   epistats               = epistats,
