@@ -17,9 +17,9 @@
       "RemoteUsername": "EpiModel",
       "RemoteRepo": "ARTnet",
       "RemoteRef": "HEAD",
-      "RemoteSha": "a4480db0e422a62631ff97b95fef7c75b46df7f7",
+      "RemoteSha": "887349f7360a18a228c715b1d7d7001c00d7c3a9",
       "RemoteHost": "api.github.com",
-      "Hash": "6bc02a4ab301fbde82beda3ec42866fd",
+      "Hash": "00d31d4f7a1c83b4127679fa01d7ebf2",
       "Requirements": [
         "ARTnetData",
         "EpiModel",
@@ -63,9 +63,9 @@
       "RemoteUsername": "EpiModel",
       "RemoteRepo": "EpiModel",
       "RemoteRef": "HEAD",
-      "RemoteSha": "4285531345aa0e7dc82a7843adc807dc529a4293",
+      "RemoteSha": "0dddd8a28793e97a1f1cd7d0f37a61d8b728b8b3",
       "RemoteHost": "api.github.com",
-      "Hash": "7529a026f4b8c0bd88189594cd3f5fab",
+      "Hash": "cd0de2ffa37494cc9515728cccde4e81",
       "Requirements": [
         "RColorBrewer",
         "Rcpp",
