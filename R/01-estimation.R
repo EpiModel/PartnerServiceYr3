@@ -45,7 +45,7 @@ netstats <- build_netstats(
 saveRDS(netstats, file = paste0("data/input/netstats-", netsize_string, ".rds"))
 
 num <- netstats$demog$num
-nw <- EpiModel::network_initialize(num, directed = FALSE)
+nw <- EpiModel::network_initialize(num) 
 
 attr.names <- names(netstats$attr)
 attr.values <- netstats$attr
