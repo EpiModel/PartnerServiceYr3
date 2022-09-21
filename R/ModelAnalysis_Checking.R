@@ -6,22 +6,27 @@ sim
 par(mfrow=c(2,2))
 plot(sim, leg.cex = 0.4)
 plot(sim, y=c("incid.B","incid.H","incid.W"), qnts = F, legend=T, leg.cex = 0.5, main="HIV incidence")
-abline(v=c(52*1,52*2), col="grey84", lty=c(2,2))
+abline(v=seq(0, 10*52, by=52), col="grey84", lty=c(2,2))
 plot(sim, y=c("prepElig.B","prepElig.H","prepElig.W"), legend=T, leg.cex = 0.5, main="PrEP eligibility")
-abline(v=c(52*1,52*2), col="grey84", lty=c(2,2))
+abline(v=seq(0, 10*52, by=52), col="grey84", lty=c(2,2))
 plot(sim, y=c("prepCurr.B","prepCurr.H","prepCurr.W"), legend=T, leg.cex = 0.5, main='Current PrEP use')
-abline(v=c(52*1,52*2), col="grey84", lty=c(2,2))
+abline(v=seq(0, 10*52, by=52), col="grey84", lty=c(2,2))
 
 
 par(mfrow=c(2,2))
-plot(sim, y=c("incid","incid.B","incid.H","incid.W"), qnts = F, legend=T, leg.cex = 0.5, main="Incident HIV")
-abline(v=c(52*1,52*2), col="grey84", lty=c(2,2))
-plot(sim, y=c("tot.tests","tot.tests.ibtnotPP", "tot.tests.ibtPP", "tot.tests.pbt"), legend=T, leg.cex = 0.5, main="HIV testing by groups")
-abline(v=c(52*1,52*2), col="grey84", lty=c(2,2))
-plot(sim, y=c("tot.tests","tot.tests.ibtnotPP","retested.nic"), legend=T, leg.cex = 0.5, main="Tests by HIV status")
-abline(v=c(52*1,52*2), col="grey84", lty=c(2,2))
-plot(sim, y=c("tot.tests.ibtPP","retested.nic.rxnaive"), legend=T, leg.cex = 0.5, main="Retests among PP and in Tx naive")
-abline(v=c(52*1,52*2), col="grey84", lty=c(2,2))
+plot(sim, y=c("tot.tests","tot.tests.ibt", "tot.tests.pbt"), legend=T, leg.cex = 0.5, main="Indiv-based vs Partner-based testing")
+abline(v=seq(0*52, 9*52, by=52), col="grey94", lty=c(2,2))
+abline(v=4*52, col="grey64", lty=2)
+plot(sim, y=c("tot.tests.ibt","tot.tests.ibtNegunk", "tot.tests.ibtLateAIDs", "tot.tests.ibtPrEP", "tot.tests.ibtPP"), legend=T, leg.cex = 0.5, main="Indiv-based testing by groups")
+abline(v=seq(0*52, 9*52, by=52), col="grey94", lty=c(2,2))
+abline(v=4*52, col="grey64", lty=2)
+plot(sim, y=c("tot.tests.ibtPP","pp.tests.nic","pp.tests.ic"), legend=T, leg.cex = 0.5, main="PP retesting by HIV care status")
+abline(v=seq(0*52, 9*52, by=52), col="grey94", lty=c(2,2))
+abline(v=4*52, col="grey64", lty=2)
+plot(sim, y=c("tot.tests.ibtPP","pp.tests.nicrxnaive","pp.tests.nicooc"), legend=T, leg.cex = 0.5, main="PP retesting by cummul. tx status")
+abline(v=seq(0*52, 9*52, by=52), col="grey94", lty=c(2,2))
+abline(v=4*52, col="grey64", lty=2)
+
 
 #Data extraction
 #all sims
