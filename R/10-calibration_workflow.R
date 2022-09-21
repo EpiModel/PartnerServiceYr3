@@ -100,9 +100,6 @@ wf <- add_workflow_step(
   )
 )
 # to send the workflows on the HPC
-  # Sample
-  # scp -r workflows/calibration <user>@clogin01.sph.emory.edu:projects/BigNets/workflows/
-  
   # Mine (copy and run in R terminal)
   # scp -r workflows/calibration sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows/calibration
 
