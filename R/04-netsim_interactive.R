@@ -30,29 +30,31 @@ param <- param_msm(
   prep.start.prob        = rep(0.66, 3),
 
   #partner identification params at baseline
-  part.ident.start       = 1*52+1,                                                        #turn on partner identification to start 1 year after network initialization (default=Inf i.e. no partner identification)
-  part.index.window.int  = 0,                                                             #Num. of prior ts that a ND case is eligible for partner notification (set to 1 ?to be considered if ND in prior time step?)
-  part.index.prob        = 0.667,                                                         #Probability that an index case would initiate PS
-  part.ident.main.window = 24,                                                            #Num of ts that a main partner qualifies for partner identification (default=12wks)
-  part.ident.casl.window = 24,
-  part.ident.ooff.window = 24,
-  part.ident.main.prob   = 0.5,                                                           #Probability that an elicited main partner is identified
+  part.index.window.int  = 0,                                                             
+  part.index.prob        = 0.667,                                                         
+  part.ident.main.window = 52,                                                            
+  part.ident.casl.window = 52,
+  part.ident.ooff.window = 52,
+  part.ident.main.prob   = 0.5,                                                           
   part.ident.casl.prob   = 0.5,
   part.ident.ooff.prob   = 0.5,
-  part.hiv.test.rate     = rep(0.84, 3),                                                  #using param from complete case analysis in combprevnet (YR2 study)
-  prevpos.retest.start   = 1*52+1,                                                        #New parameter to set start time to PP retesting
-  second.genps.start     = 2*52+1,
-  part.ppindex.prob      = 0.667                                                          #Probability that a PP index would initiate PS
+  part.hiv.test.rate     = rep(0.394, 3), 
+  part.tx.init.rate      = rep(0.387, 3),
+  
+  #interv start times
+  part.ident.start       = 1*52+1,                                                        
+  prevpos.retest.start   = 5*52+1,                                                        
+  second.genps.start     = 7*52+1,
+  part.ppindex.prob      = 0.64                                                          
 )
 
 init <- init_msm()
 
-pkgload::load_all("C:/Users/Uonwubi/OneDrive - Emory University/Desktop/Personal/RSPH EPI Docs/RA2/GitRepos/EpiModelHIV-p")
+#pkgload::load_all("C:/Users/Uonwubi/OneDrive - Emory University/Desktop/Personal/RSPH EPI Docs/RA2/GitRepos/EpiModelHIV-p")
 
-#debug(control_msm)
 control <- control_msm(
   simno = 1,
-  nsteps = 3*52,                                                                          #i.e. 4 years (1 without PS and 3 with)
+  nsteps = 10*52,                                                                         
   nsims = 1,
   ncores = 5,
   verbose = TRUE
@@ -62,8 +64,13 @@ control <- control_msm(
 #debug(hivtest_msm)
 
 sim <- netsim(est, param, init, control)
+
 #undebug(partident_msm)
 #undebug(hivtest_msm)
+
+
+
+
 
 
 # #param object to test use_scenario() function
