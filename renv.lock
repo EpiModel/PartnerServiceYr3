@@ -86,9 +86,9 @@
       "RemoteUsername": "EpiModel",
       "RemoteRepo": "EpiModelHIV-p",
       "RemoteRef": "PartnerServicesYr3",
-      "RemoteSha": "29b20111afbd662e7e6d23bea202e25b34d4445f",
+      "RemoteSha": "6f3d8971e4db6006bced63af0fac43f86950b216",
       "RemoteHost": "api.github.com",
-      "Hash": "54f74e287940c5396166ff3d5de425af",
+      "Hash": "fa36ca935ed6bf78b0fde7a8ccc7d83d",
       "Requirements": [
         "EpiModel",
         "ergm",
