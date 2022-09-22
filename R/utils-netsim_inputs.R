@@ -45,8 +45,10 @@ param <- param.net(
   part.tx.init.rate      = rep(0.387, 3),
   riskh.start = prep_start - 53,
   prep.start = prep_start,
+  part.index.window.int  = 0,                                                             
   
   #interv start times
+  part.ident.start    = prep_start,                                                        
   prevpos.retest.start = Inf,
   second.genps.start = Inf,
 )
