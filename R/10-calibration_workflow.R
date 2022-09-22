@@ -72,7 +72,7 @@ wf <- add_workflow_step(
     scenarios_list = scenarios.list,
     output_dir = "data/output/calib",
     libraries = "EpiModelHIV",
-    n_rep = 2,                                                                            #num. of simulations per scenario
+    n_rep = 1,                                                                            #num. of simulations per scenario
     n_cores = max_cores,
     max_array_size = 500,
     setup_lines = hpc_configs$r_loader
@@ -115,6 +115,7 @@ wf <- add_workflow_step(
 
 
 # to get the data back
-# scp klone.hyak.uw.edu:gscratch/BigNets/data/output/calib/assessments.rds data/output/calib/
-#
-# here I only download the processed data. Not all the simulations
+# 
+# scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/output/calib data/output
+
+# 
