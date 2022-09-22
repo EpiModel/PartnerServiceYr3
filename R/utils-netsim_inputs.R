@@ -17,7 +17,7 @@ netstats <- readRDS(paste0("data/input/netstats-", netsize_string, ".rds"))
 est <- readRDS(paste0("data/input/netest-", netsize_string, ".rds"))
 
 # Relevant times
-calibration_length <- 52 * 60
+calibration_length <- 52 * 10
 prep_start         <- calibration_length + 52 * 5 + 1
 interv_start       <- prep_start + 52 * 5
 nsteps             <- interv_start + 52 * 10 - 1
@@ -33,15 +33,16 @@ param <- param.net(
   epistats = epistats,
   
   #other params
-  part.ident.main.window = 24,                                                            #Num of ts that a main partner qualifies for partner identification (default=12wks)
-  part.ident.casl.window = 24,
-  part.ident.ooff.window = 24,
-  part.ident.main.prob   = 0.5,                                                           #Probability that an elicited main partner is identified
+  part.ident.main.window = 52,                                                            
+  part.ident.casl.window = 52,
+  part.ident.ooff.window = 52,
+  part.ident.main.prob   = 0.5,                                                           
   part.ident.casl.prob   = 0.5,
   part.ident.ooff.prob   = 0.5,
-  part.hiv.test.rate     = rep(0.84, 3),                                                  #using param from complete case analysis in combprevnet (YR2 study)
-  part.index.prob        = 0.667,                                                         #Probability that an ND-index case would initiate PS
-  part.ppindex.prob      = 0.667,                                                         #Probability that an PP-index case would initiate PS
+  part.index.prob        = 0.667,
+  part.ppindex.prob      = 0.64,                                                         
+  part.hiv.test.rate     = rep(0.394, 3),                                                  
+  part.tx.init.rate      = rep(0.387, 3),
   riskh.start = prep_start - 53,
   prep.start = prep_start,
   
