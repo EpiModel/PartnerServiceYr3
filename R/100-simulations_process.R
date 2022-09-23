@@ -28,6 +28,8 @@ calib_files <- list.files(
 #source("R/utils-netsim_inputs.R")
 
 process_sim <- function(file_name, ts) {
+  file_name<-calib_files[1]
+  ts<-10*52
   # keep only the file name without extension and split around `__`
   name_elts <- fs::path_file(file_name) %>%
     fs::path_ext_remove() %>%
@@ -36,9 +38,10 @@ process_sim <- function(file_name, ts) {
   scenario_name <- name_elts[[1]][2]
   batch_num <- as.numeric(name_elts[[1]][3])
   
-  d <- as_tibble(readRDS(file_name))
-  d <- d %>%
+  d0 <- as_tibble(readRDS(file_name))
+  d <- d0 %>%
     filter(time >= max(d$time) - ts) %>% 
+    mutate(time=row_number()) %>% 
     mutate(scenario_name = scenario_name, 
            batch = batch_num)
  
