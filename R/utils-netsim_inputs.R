@@ -20,7 +20,7 @@ est <- readRDS(paste0("data/input/netest-", netsize_string, ".rds"))
 calibration_length <- 52 * 10
 prep_start         <- calibration_length + 52 * 5 + 1
 interv_start       <- prep_start + 52 * 5
-nsteps             <- interv_start + 52 * 4 - 1
+nsteps             <- interv_start + 52 * 10 - 1
 
 
 # Parameters -------------------------------------------------------------------
@@ -43,9 +43,9 @@ param <- param.net(
   part.ppindex.prob      = 0.64,                                                         
   part.hiv.test.rate     = rep(0.394, 3),                                                  
   part.tx.init.rate      = rep(0.387, 3),
+  part.index.window.int  = 0, 
   riskh.start = prep_start - 53,
   prep.start = prep_start,
-  part.index.window.int  = 0,                                                             
   
   #interv start times
   part.ident.start    = prep_start,                                                        
