@@ -38,11 +38,11 @@ source("R/utils-targets.R")
 cp_dir <- "data/cp_recal"
 
 control <- control_msm(
-  nsteps = calibration_length,
+  nsteps = nsteps,
   nsims = 1, ncores = 1,
   cumulative.edgelist = TRUE,
   truncate.el.cuml = 0,
-  .tracker.list = calibration_trackers, # created in R/utils-targets.R,
+  #.tracker.list = calibration_trackers, # created in R/utils-targets.R,
   # .checkpoint.dir = cp_dir,
   # .checkpoint.clear = FALSE,
   # .checkpoint.steps = 30 * 52,
@@ -72,7 +72,7 @@ wf <- add_workflow_step(
     scenarios_list = scenarios.list,
     output_dir = "data/output/calib",
     libraries = "EpiModelHIV",
-    n_rep = 1,                                                                            #num. of simulations per scenario
+    n_rep = 1,                                                                            
     n_cores = max_cores,
     max_array_size = 500,
     setup_lines = hpc_configs$r_loader
