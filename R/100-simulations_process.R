@@ -28,8 +28,6 @@ calib_files <- list.files(
 #source("R/utils-netsim_inputs.R")
 
 process_sim <- function(file_name, ts) {
-  file_name<-calib_files[1]
-  ts<-10*52
   # keep only the file name without extension and split around `__`
   name_elts <- fs::path_file(file_name) %>%
     fs::path_ext_remove() %>%
