@@ -2,7 +2,7 @@
 ## 100-Processing simulations
 ##
 
-ncores<-5
+#ncores<-5
  
 # Setup ------------------------------------------------------------------------
 install.packages("future.apply")
