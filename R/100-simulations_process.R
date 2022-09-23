@@ -9,6 +9,7 @@ install.packages("future.apply")
 suppressMessages({
   library("EpiModelHIV")
   library("future.apply")
+  library("tidyverse")
 })
 
 if (fs::dir_exists(cp_dir)) fs::dir_delete(cp_dir)
