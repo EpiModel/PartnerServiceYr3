@@ -85,6 +85,25 @@ wf <- add_workflow_step(
   )
 )
 
+# Get only intervention data------------------------------------------------------
+# produce a combined data frame with all scenarios combined
+wf <- add_workflow_step(
+  wf_summary = wf,
+  step_tmpl = step_tmpl_do_call_script(
+    r_script = "R/100-simulations_process.R",
+    args = list(
+      ncores = 10,
+      cp_dir = cp_dir
+    ),
+    setup_lines = hpc_configs$r_loader
+  ),
+  sbatch_opts = list(
+    "cpus-per-task" = max_cores,
+    "time" = "04:00:00",
+    "mem-per-cpu" = "4G",
+    "mail-type" = "END"
+  )
+)
 # # Process calibrations ---------------------------------------------------------
 # # produce a data frame with the calibration targets for each scenario
 # wf <- add_workflow_step(
