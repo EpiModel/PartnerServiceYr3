@@ -51,18 +51,18 @@ control <- control_msm(
 )
 
 # insert test values here
-# scenarios.df <- tibble(
-#   .scenario.id = c("base", "interv1", "interv2", "both"),
-#   .at = 1,
-#   prevpos.retest.start	= c(Inf, interv_start, Inf, interv_start),
-#   second.genps.start	= c(Inf, Inf, interv_start, interv_start)
-# )
 scenarios.df <- tibble(
-  .scenario.id = c("base", "both"),
+  .scenario.id = c("base", "interv1", "interv2", "both"),
   .at = 1,
-  prevpos.retest.start	= c(Inf, interv_start),
-  second.genps.start	= c(Inf, interv_start)
+  prevpos.retest.start	= c(Inf, interv_start, Inf, interv_start),
+  second.genps.start	= c(Inf, Inf, interv_start, interv_start)
 )
+# scenarios.df <- tibble(
+#   .scenario.id = c("base", "both"),
+#   .at = 1,
+#   prevpos.retest.start	= c(Inf, interv_start),
+#   second.genps.start	= c(Inf, interv_start)
+# )
 scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
 
 wf <- add_workflow_step(
