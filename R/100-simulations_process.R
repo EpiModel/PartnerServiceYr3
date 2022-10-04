@@ -15,11 +15,11 @@ suppressMessages({
 if (fs::dir_exists(cp_dir)) fs::dir_delete(cp_dir)
 
 future::plan(future::multicore, workers = ncores)
-calib_dir <- "data/output/calib"
+modtst_dir <- "data/output/modeltest"
 
 # Process each file in parallel ------------------------------------------------
-calib_files <- list.files(
-  calib_dir,
+modtst_files <- list.files(
+  modtst_dir,
   pattern = "^sim__.*rds$",
   full.names = TRUE
 )
@@ -44,14 +44,14 @@ process_sim <- function(file_name, ts) {
 }
 
 intervds <- future.apply::future_lapply(
-  calib_files,
+  modtst_files,
   process_sim,
   ts = 10*52
 )
 
 # Merge all and combine --------------------------------------------------------
 intervdata <- bind_rows(intervds)
-saveRDS(intervdata, paste0(calib_dir, "/intervdata_allsce.rds"))
+saveRDS(intervdata, paste0(modtst_dir, "/allscenarios.rds"))
 
 # assessments <- assessments %>%
 #   select(- c(sim, batch)) %>%
