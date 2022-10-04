@@ -5,7 +5,7 @@
 # Required variables:
 ncores<-10
 if (interactive()) {
-  ncores <- 4
+  ncores <- 1
 }
 
 ## Packages ##
