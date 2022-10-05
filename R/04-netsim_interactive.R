@@ -71,7 +71,7 @@ source("R/utils-netsize.R")
 
 
 
-# #param object to test use_scenario() function
+# #Test use_scenario() function
 # param <- param_msm(
 #   netstats               = netstats,
 #   epistats               = epistats,
@@ -142,6 +142,7 @@ source("R/utils-netsize.R")
 # }
 #  
 
+#Test multiple simulation error message on the HPC
 epistats <- readRDS("data/input/epistats.rds")
 netstats <- readRDS(paste0("data/input/netstats-", netsize_string, ".rds"))
 est <- readRDS(paste0("data/input/netest-", netsize_string, ".rds"))
@@ -211,7 +212,7 @@ control <- control_msm(
 )
 
 #run netsim() looped over the scenarios
-debug(saveout.net)
+#debug(acts_msm)
 for (scenario in scenarios.list){
   print(scenario$id)
   sc.param <- use_scenario(param, scenario)
