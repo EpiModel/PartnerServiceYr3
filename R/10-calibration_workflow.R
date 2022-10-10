@@ -70,16 +70,7 @@ control <- control_msm(
     prevpos.retest.start	= c(Inf, interv_start, Inf, interv_start),
     second.genps.start	= c(Inf, Inf, interv_start, interv_start)
   )
-
-# #Two scenarios
-  # scenarios.df <- tibble(
-  #   .scenario.id = c("base", "both"),
-  #   .at = 1,
-  #   prevpos.retest.start	= c(Inf, interv_start),
-  #   second.genps.start	= c(Inf, interv_start)
-  # )
 scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
-
 
 
 
@@ -92,7 +83,7 @@ wf <- add_workflow_step(
     scenarios_list = scenarios.list,
     output_dir = "data/output/modeltest",
     libraries = "EpiModelHIV",
-    n_rep = 100,                                                                            
+    n_rep = 20,                                                                            
     n_cores = max_cores,
     max_array_size = 500,
     setup_lines = hpc_configs$r_loader
