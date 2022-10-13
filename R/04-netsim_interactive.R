@@ -148,10 +148,10 @@ netstats <- readRDS(paste0("data/input/netstats-", netsize_string, ".rds"))
 est <- readRDS(paste0("data/input/netest-", netsize_string, ".rds"))
 
 # Relevant times
-calibration_length <- 52 * 1
+calibration_length <- 52 * 4
 prep_start         <- calibration_length + 52 * 1 + 1
-interv_start       <- prep_start + 52 * 1
-nsteps             <- interv_start + 52 * 2
+interv_start       <- prep_start + 52 * 1 + 1
+nsteps             <- interv_start + 52 * 4 - 2
 
 
 # Parameters -------------------------------------------------------------------
@@ -189,10 +189,10 @@ init <- init_msm()
 
 #set up scenarios
 scenarios.df <- tibble::tibble(
-  .scenario.id = c("base"),#, "interv1", "interv2", "both"),
+  .scenario.id = c("base", "interv1", "interv2", "both"),
   .at = 1,
-  prevpos.retest.start	= c(Inf),#, interv_start, Inf, interv_start),
-  second.genps.start	= c(Inf)#, Inf, interv_start, interv_start)
+  prevpos.retest.start	= c(Inf, interv_start, Inf, interv_start),
+  second.genps.start	= c(Inf, Inf, interv_start, interv_start)
 )
 scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
 
@@ -201,12 +201,12 @@ d_list <- vector(mode = "list",
                length = length(scenarios.list))
 names(d_list) <- names(scenarios.list)
 
-#set up init, control, update EMHIHp and run netsim()
+#set up init, control, update EMHIVp and run netsim()
 pkgload::load_all("C:/Users/Uonwubi/OneDrive - Emory University/Desktop/Personal/RSPH EPI Docs/RA2/GitRepos/EpiModelHIV-p")
 control <- control_msm(
   simno = 1,
   nsteps = nsteps,
-  nsims = 2,
+  nsims = 3,
   ncores = 5,
   verbose = TRUE
 )
