@@ -5,7 +5,6 @@
 # Setup ------------------------------------------------------------------------
 library("slurmworkflow")
 library("EpiModelHPC")
-# The size of network to be used is defined in "R/utils-netsize.R"
 
 # hpc_configs <- swf_configs_hyak(hpc = "mox", partition = "csde")
 hpc_configs <- swf_configs_rsph(
@@ -20,8 +19,9 @@ wf <- create_workflow(
   default_sbatch_opts = hpc_configs$default_sbatch_opts
 )
 
+
 # Update RENV on the HPC -------------------------------------------------------
-# this template will run: git pull and renv::restore()
+# Will run: git pull and renv::restore()
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_renv_restore(
@@ -31,10 +31,8 @@ wf <- add_workflow_step(
   sbatch_opts = hpc_configs$renv_sbatch_opts
 )
 
+
 # Estimate the networks --------------------------------------------------------
-# this template uses the syntax of `base::do.call`
-# the arguments in `args` will be made available as variables to the script on
-# the HPC
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
@@ -71,11 +69,8 @@ wf <- add_workflow_step(
   )
 )
 
-# to send the workflows on the HPC (Run on R terminal, not console)
-  # Sample code
-  # scp -r ~/git/BigNets/workflows/estimation sph:/projects/epimodel/sjenness/BigNets/workflows/estimation
 
-  # Mine (copy and run in R terminal)
+# to send the workflows on the HPC (Run on R terminal, not console)
   # scp -r workflows/estimation sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows/estimation
 
 # to execute the workflow (do on the HPC *****Windows users have to run both code lines****)
@@ -85,8 +80,4 @@ wf <- add_workflow_step(
 
 
 # to get the data back
-  # Sample code
-  # scp -r sph:projects/epimodel/sjenness/BigNets/data/input data/input/
-
-  # Mine
   # scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/input data/input
