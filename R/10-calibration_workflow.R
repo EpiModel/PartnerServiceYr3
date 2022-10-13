@@ -63,13 +63,12 @@ control <- control_msm(
 
 #Set up scenarios
 #-----------------------------------------------------------------------------------------
-#Four scenarios
-  scenarios.df <- tibble(
-    .scenario.id = c("base", "interv1", "interv2", "both"),
-    .at = 1,
-    prevpos.retest.start	= c(Inf, interv_start, Inf, interv_start),
-    second.genps.start	= c(Inf, Inf, interv_start, interv_start)
-  )
+scenarios.df <- tibble::tibble(
+  .scenario.id = c("base", "interv1", "interv2", "both"),
+  .at = 1,
+  prevpos.retest.start	= c(Inf, interv_start, Inf, interv_start),
+  second.genps.start	= c(Inf, Inf, interv_start, interv_start)
+)
 scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
 
 
@@ -83,7 +82,7 @@ wf <- add_workflow_step(
     scenarios_list = scenarios.list,
     output_dir = "data/output/modeltest",
     libraries = "EpiModelHIV",
-    n_rep = 20,                                                                            
+    n_rep = 100,                                                                            
     n_cores = max_cores,
     max_array_size = 500,
     setup_lines = hpc_configs$r_loader
@@ -101,9 +100,9 @@ wf <- add_workflow_step(
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
-    r_script = "R/100-simulations_process.R",
+    r_script = "R/100-get_interv_data.R",
     args = list(
-      ncores = 10,
+      ncores = 20,
       cp_dir = cp_dir
     ),
     setup_lines = hpc_configs$r_loader
