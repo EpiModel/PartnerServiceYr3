@@ -39,8 +39,10 @@ df.allsims<-do.call("rbind",d_list) %>%
   rename(scenario_name=scenario) %>% 
   mutate(batch=1)
 
+interv_yr<-4
+
 df<-df.allsims %>% 
-  filter(time>=max(time)-(2*52)+1) %>% 
+  filter(time>=max(time)-(interv_yr*52)+1) %>% 
   mutate(scenario=ifelse(scenario_name=="base",1,
                          ifelse(scenario_name=="interv1",2,
                                 ifelse(scenario_name=="interv2",3,4)))) %>% 
@@ -55,7 +57,7 @@ df<-df.allsims %>%
   select(-time) %>% rename(time=time2) %>% 
   mutate(year=cut(time, 
                   breaks = seq(0,max(time),52),
-                  labels = c(1:2))) %>% 
+                  labels = c(1:interv_yr))) %>% 
   #filter(!is.na(year)) %>% 
   select(scenario, scenario1, sim, batch, time, year,
          num, incid, i.num,
@@ -65,9 +67,10 @@ df<-df.allsims %>%
          recent.diagn, elig.indexes.nd, found.indexes.nd,
          recent.retests, elig.indexes.pp, found.indexes.pp,
          elig.partners, found.partners,
-         posPart.indexes, elig.indexes.posPart, 
+         negunkPart.indexes,posPart.indexes, elig.indexes.posPart, 
          elig.partners.gen2, found.partners.gen2,
-         found.partners.all)
+         found.partners.all,
+         tot.part.ident, elig.part, positive.part)
 
 
 #Functions
@@ -107,7 +110,7 @@ getYrMeanTbl<-function(dat,var){
     facet_wrap(scenario1~.)
   
   #Table
-  incid.yr10<-df %>% filter(time >= max(time)-1*52+1) %>% group_by(scenario1, sim) %>% 
+  incid.yr10<-df %>% filter(time >= max(time)-(interv_yr-1)*52+1) %>% group_by(scenario1, sim) %>% 
     summarise(incid=sum(incid, na.rm = T)) %>% 
     mutate(ir=incid/10000*100) %>% 
     group_by(scenario1) %>% 
@@ -278,22 +281,23 @@ getYrMeanTbl<-function(dat,var){
              footnote_as_chunk = T)  
   
   #Table 4 - Wave 2 Partners
+  negunkpart.indexes<-getYrMeanTbl(df,negunkPart.indexes)
   pospart.indexes<-getYrMeanTbl(df,posPart.indexes)
   eligindexes.pospart<-getYrMeanTbl(df,elig.indexes.posPart)
   eligPart.gen2<-getYrMeanTbl(df,elig.partners.gen2)
   foundPart.gen2<-getYrMeanTbl(df,found.partners.gen2)
   
   
-  pospartIN<-left_join(foundPart, pospart.indexes,by="scenario1")
+  pospartIN<-left_join(foundPart, negunkpart.indexes,by="scenario1")
+  pospartIN<-left_join(pospartIN, pospart.indexes,by="scenario1") 
   pospartIN<-left_join(pospartIN, eligindexes.pospart,by="scenario1") 
   pospartPA<-left_join(eligPart.gen2,foundPart.gen2,by="scenario1")
-  pospart<-left_join(pospartIN,pospartPA,by="scenario1") %>% 
-    mutate_all(funs(stringr::str_replace(.,"0(0-0)","0")))
+  pospart<-left_join(pospartIN,pospartPA,by="scenario1") 
   
   
   kable(pospart, 
-        col.names = c("Scenario","Found Wave 1 Partners", "HIV+ Wave 1 Partners",
-                      "Eligible Pos. Partner Index","Eligible Wave 2 Partners","Found Wave 2 Partners"),
+        col.names = c("Scenario","Found Wave 1 Partn.", "HIV-/unk Wave 1 Partn.","HIV+ Wave 1 Partn.",
+                      "Eligible Pos. Partn. Index","Eligible Wave 2 Partners","Found Wave 2 Partners"),
         caption = "Median (95\\% SI) Partner Service Measures: Wave 2 Partners") %>% kable_classic() %>% kable_styling(latex_options=c("hold_position"),position="left") %>% 
     footnote(general = "ND=newly diagnosed cases; PP=Previous positive cases; Wave 1=Partners to index cases", 
              general_title = "Note:",
@@ -302,14 +306,21 @@ getYrMeanTbl<-function(dat,var){
   
   #Table -  Found Partners v PBT
   foundpartAll<-getYrMeanTbl(df, found.partners.all)
+  PartIdentAll_test<-getYrMeanTbl(df,tot.part.ident)
+  eligpartAll_test<-getYrMeanTbl(df, elig.part)
+  pospartAll_test<-getYrMeanTbl(df, positive.part)
   
   foundvPBT<-left_join(foundPart, foundPart.gen2,by="scenario1")
   foundvPBT<-left_join(foundvPBT, foundpartAll,by="scenario1")
+  foundvPBT<-left_join(foundvPBT, PartIdentAll_test,by="scenario1")
+  foundvPBT<-left_join(foundvPBT, eligpartAll_test,by="scenario1")
   foundvPBT<-left_join(foundvPBT, tot.pbt,by="scenario1")
+  foundvPBT<-left_join(foundvPBT, pospartAll_test,by="scenario1")
   
   
   kable(foundvPBT, 
-        col.names = c("Scenario","Found Wave 1 Partners", "Found Wave 2 Partners","All Partners (Unique)","Partner-based Tests"),
+        col.names = c("Scenario","Found Wave 1 Partners", "Found Wave 2 Partners","All Found Partners (Unique)",
+                      "Partn. ident. for Testing","Partn. Elig. for Testing (NegUnk)","Partner-based Tests","Partners Positive after Testing"),
         caption = "Median (95\\% SI) Partner Service Measures: Wave 2 Partners") %>% kable_classic() %>% kable_styling(latex_options=c("hold_position"),position="left") %>% 
     footnote(general = "ND=newly diagnosed cases; PP=Previous positive cases; Wave 1=Partners to index cases", 
              general_title = "Note:",
