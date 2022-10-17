@@ -1,31 +1,31 @@
 #Model output
 #Summary netsim object
-sim
+# sim
 
 #Epidemic plots
-par(mfrow=c(2,2))
-plot(sim, leg.cex = 0.4)
-plot(sim, y=c("incid.B","incid.H","incid.W"), qnts = F, legend=T, leg.cex = 0.5, main="HIV incidence")
-abline(v=seq(0, 10*52, by=52), col="grey84", lty=c(2,2))
-plot(sim, y=c("prepElig.B","prepElig.H","prepElig.W"), legend=T, leg.cex = 0.5, main="PrEP eligibility")
-abline(v=seq(0, 10*52, by=52), col="grey84", lty=c(2,2))
-plot(sim, y=c("prepCurr.B","prepCurr.H","prepCurr.W"), legend=T, leg.cex = 0.5, main='Current PrEP use')
-abline(v=seq(0, 10*52, by=52), col="grey84", lty=c(2,2))
-
-
-par(mfrow=c(2,2))
-plot(sim, y=c("tot.tests","tot.tests.ibt", "tot.tests.pbt"), legend=T, leg.cex = 0.5, main="Indiv-based vs Partner-based testing")
-abline(v=seq(0*52, 9*52, by=52), col="grey94", lty=c(2,2))
-abline(v=4*52, col="grey64", lty=2)
-plot(sim, y=c("tot.tests.ibt","tot.tests.ibtNegunk", "tot.tests.ibtLateAIDs", "tot.tests.ibtPrEP", "tot.tests.ibtPP"), legend=T, leg.cex = 0.5, main="Indiv-based testing by groups")
-abline(v=seq(0*52, 9*52, by=52), col="grey94", lty=c(2,2))
-abline(v=4*52, col="grey64", lty=2)
-plot(sim, y=c("tot.tests.ibtPP","pp.tests.nic","pp.tests.ic"), legend=T, leg.cex = 0.5, main="PP retesting by HIV care status")
-abline(v=seq(0*52, 9*52, by=52), col="grey94", lty=c(2,2))
-abline(v=4*52, col="grey64", lty=2)
-plot(sim, y=c("tot.tests.ibtPP","pp.tests.nicrxnaive","pp.tests.nicooc"), legend=T, leg.cex = 0.5, main="PP retesting by cummul. tx status")
-abline(v=seq(0*52, 9*52, by=52), col="grey94", lty=c(2,2))
-abline(v=4*52, col="grey64", lty=2)
+# par(mfrow=c(2,2))
+# plot(sim, leg.cex = 0.4)
+# plot(sim, y=c("incid.B","incid.H","incid.W"), qnts = F, legend=T, leg.cex = 0.5, main="HIV incidence")
+# abline(v=seq(0, 10*52, by=52), col="grey84", lty=c(2,2))
+# plot(sim, y=c("prepElig.B","prepElig.H","prepElig.W"), legend=T, leg.cex = 0.5, main="PrEP eligibility")
+# abline(v=seq(0, 10*52, by=52), col="grey84", lty=c(2,2))
+# plot(sim, y=c("prepCurr.B","prepCurr.H","prepCurr.W"), legend=T, leg.cex = 0.5, main='Current PrEP use')
+# abline(v=seq(0, 10*52, by=52), col="grey84", lty=c(2,2))
+# 
+# 
+# par(mfrow=c(2,2))
+# plot(sim, y=c("tot.tests","tot.tests.ibt", "tot.tests.pbt"), legend=T, leg.cex = 0.5, main="Indiv-based vs Partner-based testing")
+# abline(v=seq(0*52, 9*52, by=52), col="grey94", lty=c(2,2))
+# abline(v=4*52, col="grey64", lty=2)
+# plot(sim, y=c("tot.tests.ibt","tot.tests.ibtNegunk", "tot.tests.ibtLateAIDs", "tot.tests.ibtPrEP", "tot.tests.ibtPP"), legend=T, leg.cex = 0.5, main="Indiv-based testing by groups")
+# abline(v=seq(0*52, 9*52, by=52), col="grey94", lty=c(2,2))
+# abline(v=4*52, col="grey64", lty=2)
+# plot(sim, y=c("tot.tests.ibtPP","pp.tests.nic","pp.tests.ic"), legend=T, leg.cex = 0.5, main="PP retesting by HIV care status")
+# abline(v=seq(0*52, 9*52, by=52), col="grey94", lty=c(2,2))
+# abline(v=4*52, col="grey64", lty=2)
+# plot(sim, y=c("tot.tests.ibtPP","pp.tests.nicrxnaive","pp.tests.nicooc"), legend=T, leg.cex = 0.5, main="PP retesting by cummul. tx status")
+# abline(v=seq(0*52, 9*52, by=52), col="grey94", lty=c(2,2))
+# abline(v=4*52, col="grey64", lty=2)
 
 
 #Data extraction
@@ -70,7 +70,11 @@ df<-df.allsims %>%
          negunkPart.indexes,posPart.indexes, elig.indexes.posPart, 
          elig.partners.gen2, found.partners.gen2,
          found.partners.all,
-         tot.part.ident, elig.part, positive.part)
+         tot.part.ident, elig.part, positive.part,
+         #lateAIDS
+         elig.lateAIDS.pre,elig.lateAIDS.post,
+         #Prev pos eligible for testing per time step
+         eligPP.for.retest)
 
 
 #Functions
@@ -267,7 +271,7 @@ getYrMeanTbl<-function(dat,var){
              general_title = "Note:",
              footnote_as_chunk = T)
 
-  #Table 4 - Wave 1 Partners
+  #Table- Wave 1 Partners
   eligPart<-getYrMeanTbl(df,elig.partners)
   foundPart<-getYrMeanTbl(df,found.partners)
   
@@ -280,7 +284,7 @@ getYrMeanTbl<-function(dat,var){
              general_title = "Note:",
              footnote_as_chunk = T)  
   
-  #Table 4 - Wave 2 Partners
+  #Table- Wave 2 Partners
   negunkpart.indexes<-getYrMeanTbl(df,negunkPart.indexes)
   pospart.indexes<-getYrMeanTbl(df,posPart.indexes)
   eligindexes.pospart<-getYrMeanTbl(df,elig.indexes.posPart)
@@ -325,3 +329,45 @@ getYrMeanTbl<-function(dat,var){
     footnote(general = "ND=newly diagnosed cases; PP=Previous positive cases; Wave 1=Partners to index cases", 
              general_title = "Note:",
              footnote_as_chunk = T)
+
+  
+  #Troubleshoot LateAIDS always = 0
+  lateaid.pre<-getYrMeanTbl(df, elig.lateAIDS.pre)
+  lateaids.post<-getYrMeanTbl(df, elig.lateAIDS.post)
+  lateaids.both<-left_join(lateaid.pre, lateaids.post, by="scenario1")
+  
+  kable(lateaids.both, 
+        col.names = c("Scenario","Num. late tester pre", "Num late testers post")) %>% kable_classic() %>% kable_styling(latex_options=c("hold_position"),position="left") %>% 
+    footnote(general = "ND=newly diagnosed cases; PP=Previous positive cases; Wave 1=Partners to index cases", 
+             general_title = "Note:",
+             footnote_as_chunk = T)
+  
+  #Troubleshoot toggling prevpos retest rate
+    #plot - num eligible versus num PP retests per week
+    ggplot(data=df, aes(x=time))+
+      geom_smooth(aes(y=eligPP.for.retest),se=F)+
+      geom_smooth(aes(y=tot.tests.ibtPP),se=F, color="red")+
+      #geom_line()+
+      labs(x="Time (wks)",
+           y="Count")+
+      scale_x_continuous(expand = c(0.01,0.01))+
+      #scale_color_manual(name="",values=c("black","steelblue","green","red"))+
+      theme_bw()+
+      theme(panel.grid.major.y = element_line(colour = "grey86", size=0.1),
+            panel.grid.minor=element_blank(),
+            panel.grid.major.x=element_blank())+
+      facet_wrap(~scenario1)  
+  
+    #table
+    table.pp<-summary(arsenal::tableby(scenario1~notest(eligPP.for.retest,"medianrange") + notest(tot.tests.ibtPP, "medianrange"), 
+                                       dat=df %>% filter(!is.na(year))), text=T)
+    # elig.pp<-df %>%
+    #   filter(!is.na(year)) %>% 
+    #   group_by(scenario, scenario1, sim, .groups='drop') %>%
+    #   summarise(med=median(eligPP.for.retest),) %>% 
+    #   mutate(simyr.mu=tot/10) %>%  #get mean tests per year for each sim
+    #   group_by(scenario1, .groups='drop') %>% 
+    #   summarise(med=median(simyr.mu)) %>% 
+    #   mutate_if(is.numeric,round,digits=0) %>% 
+    #   select(scenario1,med)
+    
