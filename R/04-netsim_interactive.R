@@ -206,7 +206,7 @@ pkgload::load_all("C:/Users/Uonwubi/OneDrive - Emory University/Desktop/Personal
 control <- control_msm(
   simno = 1,
   nsteps = nsteps,
-  nsims = 3,
+  nsims = 1,
   ncores = 5,
   verbose = TRUE
 )
