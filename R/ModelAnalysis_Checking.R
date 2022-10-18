@@ -41,14 +41,50 @@ df.allsims<-do.call("rbind",d_list) %>%
 
 interv_yr<-4
 
-df<-df.allsims %>% 
-  filter(time>=max(time)-(interv_yr*52)+1) %>% 
-  mutate(scenario=ifelse(scenario_name=="base",1,
-                         ifelse(scenario_name=="interv1",2,
-                                ifelse(scenario_name=="interv2",3,4)))) %>% 
-  mutate(scenario1=ifelse(scenario_name=="base","Base",
-                          ifelse(scenario_name=="interv1","+ PP retests",
-                                 ifelse(scenario_name=="interv2","+ Wave 2 PS","+ Both")))) %>% 
+# df<-df.allsims %>% 
+#   filter(time>=max(time)-(interv_yr*52)+1) %>% 
+#   mutate(scenario=ifelse(scenario_name=="base",1,
+#                          ifelse(scenario_name=="interv1",2,
+#                                 ifelse(scenario_name=="interv2",3,4)))) %>% 
+#   mutate(scenario1=ifelse(scenario_name=="base","Base",
+#                           ifelse(scenario_name=="interv1","+ PP retests",
+#                                  ifelse(scenario_name=="interv2","+ Wave 2 PS","+ Both")))) %>% 
+#   mutate(scenario1=fct_relevel(scenario1,"Base","+ PP retests","+ Wave 2 PS","+ Both")) %>% 
+#   mutate(sim2=ifelse(batch>1,sim +((batch-1)*10),sim)) %>% 
+#   select(-sim) %>% rename(sim=sim2) %>% 
+#   group_by(scenario, sim) %>% 
+#   mutate(time2=row_number()) %>% ungroup() %>% 
+#   select(-time) %>% rename(time=time2) %>% 
+#   mutate(year=cut(time, 
+#                   breaks = seq(0,max(time),52),
+#                   labels = c(1:interv_yr))) %>% 
+#   #filter(!is.na(year)) %>% 
+#   select(scenario, scenario1, sim, batch, time, year,
+#          num, incid, i.num,
+#          tot.tests, tot.tests.ibt, tot.tests.pbt, 
+#          tot.tests.ibtNegunk, tot.tests.ibtLateAIDs, tot.tests.ibtPrEP, tot.tests.ibtPP,
+#          pp.tests.nic,pp.tests.ic,
+#          recent.diagn, elig.indexes.nd, found.indexes.nd,
+#          recent.retests, elig.indexes.pp, found.indexes.pp,
+#          elig.partners, found.partners,
+#          negunkPart.indexes,posPart.indexes, elig.indexes.posPart, 
+#          elig.partners.gen2, found.partners.gen2,
+#          found.partners.all,
+#          tot.part.ident, elig.part, positive.part,
+#          #lateAIDS
+#          elig.lateAIDS.pre,elig.lateAIDS.post,
+#          #Prev pos eligible for testing per time step
+#          eligPP.for.retest)
+
+interv_yr<-15
+df<-readRDS('C:/Users/Uonwubi/OneDrive - Emory University/Desktop/Personal/RSPH EPI Docs/RA2/GitRepos/PartnerServicesYr3/data/output/modeltest/allscenarios.rds') %>% 
+rename(scena=scenario) %>% 
+  mutate(scenario=ifelse(scena=="base",1,
+                         ifelse(scena=="interv1",2,
+                                ifelse(scena=="interv2",3,4)))) %>% 
+  mutate(scenario1=ifelse(scena=="base","Base",
+                          ifelse(scena=="interv1","+ PP retests",
+                                 ifelse(scena=="interv2","+ Wave 2 PS","+ Both")))) %>% 
   mutate(scenario1=fct_relevel(scenario1,"Base","+ PP retests","+ Wave 2 PS","+ Both")) %>% 
   mutate(sim2=ifelse(batch>1,sim +((batch-1)*10),sim)) %>% 
   select(-sim) %>% rename(sim=sim2) %>% 
@@ -56,9 +92,9 @@ df<-df.allsims %>%
   mutate(time2=row_number()) %>% ungroup() %>% 
   select(-time) %>% rename(time=time2) %>% 
   mutate(year=cut(time, 
-                  breaks = seq(0,max(time),52),
+                  breaks = seq(0,interv_yr*52,52),
                   labels = c(1:interv_yr))) %>% 
-  #filter(!is.na(year)) %>% 
+  filter(!is.na(year)) %>% 
   select(scenario, scenario1, sim, batch, time, year,
          num, incid, i.num,
          tot.tests, tot.tests.ibt, tot.tests.pbt, 
@@ -74,8 +110,11 @@ df<-df.allsims %>%
          #lateAIDS
          elig.lateAIDS.pre,elig.lateAIDS.post,
          #Prev pos eligible for testing per time step
-         eligPP.for.retest)
-
+         eligPP.for.retest,
+         #PrEP trackers
+         prepStartPart, #prepStartGen, prepStartAll,
+         #ART reengagement trackers
+         pp.elig.for.reinit, pp.reinit.tx)
 
 #Functions
 getYrMeanTbl<-function(dat,var){
@@ -158,6 +197,8 @@ getYrMeanTbl<-function(dat,var){
     labs(x="Year",
          y="Incidence Rate (per 100PY)")+
     scale_x_discrete(expand = c(0.01,0.01))+
+    geom_vline(aes(xintercept=4), color="red", lty="dashed")+
+    geom_vline(aes(xintercept=5), color="black", lty="dashed")+
     #scale_y_continuous(limits=c(0,2),breaks=seq(0,2,0.25),expand=c(0.01,0.01)) +
     theme_bw()+
     theme(panel.grid.major.y = element_line(colour = "grey86", size=0.1),
