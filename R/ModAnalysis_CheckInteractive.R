@@ -31,19 +31,22 @@ abline(v=seq(0, 10*52, by=52), col="grey84", lty=c(2,2))
 #Data extraction
 library(dplyr)
 library(tidyverse)
+library(kableExtra)
 
 #all sims
 # df.allsims<-as.data.frame(sim)
 
-d1<-names(as.data.frame(d_list[1]))
-d2<-as.data.frame(d_list[2]) %>% select(-interv1.num.PP)
-d3<-names(as.data.frame(d_list[3]))
-d4<-as.data.frame(d_list[4]) %>% select(-both.num.PP)
-
-df.allsims<-do.call("rbind",d_list[,1:111]) %>%
+d1<-do.call(rbind, d_list[1])
+d2<-do.call(rbind, d_list[2]) %>% select(-num.PP)
+d3<-do.call(rbind, d_list[3])
+d4<-do.call(rbind, d_list[4]) %>% select(-num.PP)
+df.allsims<-rbind(d1,d2,d3,d4)%>%
   rename(scenario_name=scenario) %>%
   mutate(batch=1)
-df.allsims<-rbind(d1,d2,d3,d4)
+
+# df.allsims<-do.call("rbind",d_list[,1:111]) %>%
+#   rename(scenario_name=scenario) %>%
+#   mutate(batch=1)
 interv_yr<-4
 
 df<-df.allsims %>%
@@ -61,7 +64,7 @@ df<-df.allsims %>%
   mutate(time2=row_number()) %>% ungroup() %>%
   select(-time) %>% rename(time=time2) %>%
   mutate(year=cut(time,
-                  breaks = seq(0,max(time),52),
+                  breaks = seq(0,interv_yr*52,52),
                   labels = c(1:interv_yr))) %>%
   #filter(!is.na(year)) %>%
   select(scenario, scenario1, sim, batch, time, year,
@@ -236,7 +239,8 @@ getYrMeanTbl<-function(dat,var){
     
     #pp.artreinit.elig<-getYrMeanTbl(df,pp.elig.for.reinit)
     pp.artreinit<-getYrMeanTbl(df,pp.reinit.tx)
-    pp.found.check<-getYrMeanTbl(df,found.indexes.pp.un)
+    pp.found.check<-getYrMeanTbl(df,found.indexes.pp.un);pp.found.check
+    pp.indexfound<-getYrMeanTbl(df,found.indexes.pp);pp.indexfound
     
     #part.artreinit.elig<-getYrMeanTbl(df,part.elig.for.reinit)
     part.artreinit<-getYrMeanTbl(df,part.reinit.tx)
