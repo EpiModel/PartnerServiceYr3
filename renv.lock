@@ -90,9 +90,9 @@
       "RemoteUsername": "EpiModel",
       "RemoteRepo": "EpiModelHIV-p",
       "RemoteRef": "PartnerServicesYr3",
-      "RemoteSha": "90615af9e8e5de2eb5e559f8dd06e6ba4fdcb9a7",
+      "RemoteSha": "83d2b879e84e56c4b0e19d2f9d094727af295e1a",
       "RemoteHost": "api.github.com",
-      "Hash": "5e272ed066af1cec12742e696b024d6b",
+      "Hash": "5371c695d737a78c62798821a8756291",
       "Requirements": [
         "EpiModel",
         "dplyr",
