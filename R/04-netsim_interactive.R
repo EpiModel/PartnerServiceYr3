@@ -148,8 +148,8 @@ netstats <- readRDS(paste0("data/input/netstats-", netsize_string, ".rds"))
 est <- readRDS(paste0("data/input/netest-", netsize_string, ".rds"))
 
 # Relevant times
-calibration_length <- 52 * 4
-prep_start         <- calibration_length + 52 * 1 + 1
+calibration_length <- 53 * 0
+prep_start         <- calibration_length + 52 * 0 + 1
 interv_start       <- prep_start + 52 * 1 + 1
 nsteps             <- interv_start + 52 * 4 - 2
 
@@ -164,9 +164,9 @@ param <- param.net(
   epistats = epistats,
   
   #other params
-  part.ident.main.window = 52,                                                            
-  part.ident.casl.window = 52,
-  part.ident.ooff.window = 52,
+  part.ident.main.window = 10,                                                            
+  part.ident.casl.window = 10,
+  part.ident.ooff.window = 10,
   part.ident.main.prob   = 0.5,                                                           
   part.ident.casl.prob   = 0.5,
   part.ident.ooff.prob   = 0.5,
@@ -212,7 +212,10 @@ control <- control_msm(
 )
 
 #run netsim() looped over the scenarios
-#debug(acts_msm)
+# debug(hivtest_msm)
+# debug(partident_msm)
+# debug(hivtx_msm)
+
 for (scenario in scenarios.list){
   print(scenario$id)
   sc.param <- use_scenario(param, scenario)
@@ -223,4 +226,6 @@ for (scenario in scenarios.list){
   d_sim[["scenario"]] <- scenario$id
   d_list[[scenario$id]] <-d_sim
 }
-
+# undebug(hivtest_msm)
+# undebug(partident_msm)
+# undebug(hivtx_msm)
