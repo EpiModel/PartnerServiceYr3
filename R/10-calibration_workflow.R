@@ -15,7 +15,7 @@ hpc_configs <- swf_configs_rsph(
   mail_user = "uonwubi@emory.edu"
 )
 
-max_cores <- 10
+max_cores <- 32
 cp_dir <- "data/cp_recal"
 
 
