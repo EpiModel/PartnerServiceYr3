@@ -11,7 +11,7 @@ hpc_configs <- swf_configs_rsph(
   partition = "epimodel",
   mail_user = "uonwubi@emory.edu"
 )
-max_cores <- 10
+max_cores <- 32
 
 # Workflow creation ------------------------------------------------------------
 wf <- create_workflow(
