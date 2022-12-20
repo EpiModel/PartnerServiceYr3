@@ -2,7 +2,7 @@
 ## 100-Get intervention data for local analysis
 
 #ncores<-5
- 
+
 # Setup ------------------------------------------------------------------------
 install.packages("future.apply")
 suppressMessages({
@@ -28,17 +28,17 @@ process_sim <- function(file_name, ts) {
   name_elts <- fs::path_file(file_name) %>%
     fs::path_ext_remove() %>%
     strsplit(split = "__")
-  
+
   scenario_name <- name_elts[[1]][2]
   batch_num <- as.numeric(name_elts[[1]][3])
-  
+
   d <- as_tibble(readRDS(file_name))
   d <- d %>%
-    filter(time >= max(d$time) - ts) %>% 
-    mutate(time=row_number()) %>% 
-    mutate(scenario = scenario_name, 
+    filter(time >= max(d$time) - ts) %>%
+    mutate(time=row_number()) %>%
+    mutate(scenario = scenario_name,
            batch = batch_num)
- 
+
   return(d)
 }
 
