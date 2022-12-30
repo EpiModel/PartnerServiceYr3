@@ -1,9 +1,10 @@
 # This code installs the packages only available on GitHub (not on CRAN)
 renv::install(c(
-  "EpiModel/ARTnet",
+  "EpiModel/EpiModel@main",
+  "EpiModel/ARTnet@main",
   "EpiModel/EpiModelHIV-p@PartnerServicesYr3",
-  "EpiModel/EpiModelHPC",
-  "EpiModel/slurmworkflow"
+  "EpiModel/EpiModelHPC@main",
+  "EpiModel/slurmworkflow@main"
 ))
 
 # This code finds and install the libraries used by the project (CRAN version)
@@ -13,6 +14,6 @@ renv::hydrate()
 if (FALSE) {
   library("rmarkdown")
   library("pkgload")
-  library("Rglpk")
   library("sessioninfo")
 }
+

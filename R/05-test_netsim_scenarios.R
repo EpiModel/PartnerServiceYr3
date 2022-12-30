@@ -3,12 +3,17 @@
 ##    and parameters defined in spreadsheet, with example of running model scenarios defined
 ##    with data frame approach
 
+
+# Setup  -----------------------------------------------------------------------
+context <- "local"
+source("R/utils-0_project_settings.R")
+
+# Libraries  -------------------------------------------------------------------
 library("EpiModelHIV")
 library("dplyr")
 
 # Necessary files
-path_to_est <- "data/intermediate/estimates/netest.rds"
-source("R/utils-default_inputs.R") # generate `param` and `init`
+source("R/utils-default_inputs.R") # generate `path_to_est`, `param` and `init`
 
 # Controls
 source("R/utils-targets.R")
@@ -79,3 +84,6 @@ plot(sim, y = "ir100")
 # Convert to data frame
 df <- as_tibble(sim)
 head(df)
+
+# remove the folder
+unlink("data/intermediate/scenario_test")

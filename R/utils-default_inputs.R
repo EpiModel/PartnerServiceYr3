@@ -1,9 +1,11 @@
-library("EpiModel")
+library("EpiModelHIV")
 
 source("R/utils-0_project_settings.R")
 
-epistats <- readRDS("data/intermediate/estimates/epistats.rds")
-netstats <- readRDS("data/intermediate/estimates/netstats.rds")
+epistats <- readRDS(paste0(est_dir, "epistats-", context, ".rds"))
+netstats <- readRDS(paste0(est_dir, "netstats-", context, ".rds"))
+path_to_est <- paste0(est_dir, "netest-", context, ".rds")
+path_to_restart <- paste0(est_dir, "restart-", context, ".rds")
 
 # `netsim` Parameters
 param <- param.net(

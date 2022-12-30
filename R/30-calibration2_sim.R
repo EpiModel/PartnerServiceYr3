@@ -1,5 +1,5 @@
 ##
-## 10. Epidemic Model Parameter Calibration, Local simulation runs
+## 10. Epidemic Model Parameter Calibration - phase 2, Local simulation runs
 ##
 
 # Setup ------------------------------------------------------------------------
@@ -15,9 +15,11 @@ source("R/utils-default_inputs.R") # generate `path_to_est`, `param` and `init`
 # Controls
 source("R/utils-targets.R")
 control <- control_msm(
-  nsteps              = calibration_end,
+  start               = restart_time,
+  nsteps              = intervention_start,
   nsims               = 1,
   ncores              = 1,
+  initialize.FUN      = reinit_msm,
   cumulative.edgelist = TRUE,
   truncate.el.cuml    = 0,
   .tracker.list       = calibration_trackers,
@@ -27,14 +29,14 @@ control <- control_msm(
 # insert test values here
 n_scenarios <- 2
 scenarios_df <- tibble(
-  # mandatory columns
   .scenario.id = as.character(seq_len(n_scenarios)),
-  .at          = 1,
-  # parameters to test columns
-  ugc.prob     = seq(0.3225, 0.3275, length.out = n_scenarios), # best 0.325
-  rgc.prob     = plogis(qlogis(ugc.prob) + log(1.25)),
-  uct.prob     = seq(0.29, 0.294, length.out = n_scenarios), # best 0.291
-  rct.prob     = plogis(qlogis(uct.prob) + log(1.25))
+  .at                 = 1,
+  prep.start.prob_1   = seq(0.28, 0.31, length.out = n_scenarios),
+  prep.start.prob_2   = prep.start.prob_1,
+  prep.start.prob_3   = prep.start.prob_1,
+  prep.discont.rate_1 = rep(0.021, n_scenarios),
+  prep.discont.rate_2 = prep.discont.rate_1,
+  prep.discont.rate_3 = prep.discont.rate_1
 )
 scenarios_list <- EpiModel::create_scenario_list(scenarios_df)
 
@@ -43,7 +45,7 @@ scenarios_list <- EpiModel::create_scenario_list(scenarios_df)
 # following pattern: "sim__<scenario name>__<batch number>.rds".
 # See ?EpiModelHPC::netsim_scenarios for details
 EpiModelHPC::netsim_scenarios(
-  path_to_est, param, init, control, scenarios_list,
+  path_to_restart, param, init, control, scenarios_list,
   n_rep = 3,
   n_cores = 3,
   output_dir = "data/intermediate/calibration",
@@ -53,7 +55,3 @@ EpiModelHPC::netsim_scenarios(
 
 # Check the files produced
 list.files("data/intermediate/calibration")
-
-# Load one of the simulation files
-sim <- readRDS("data/intermediate/scenario_test/sim__scenario_1__1.rds")
-names(sim)

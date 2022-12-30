@@ -5,18 +5,20 @@
 # Setup ------------------------------------------------------------------------
 library("slurmworkflow")
 library("EpiModelHPC")
-source("R/00-project_settings.R")
+source("R/utils-0_project_settings.R")
 
 hpc_configs <- swf_configs_rsph(
-  partition = "preemptable",
+  partition = "epimodel",
+  r_version = "4.2.1",
+  git_version = "2.35.1",
   mail_user = mail_user
 )
 
-max_cores <- 32
+max_cores <- 30
 
 # Workflow creation ------------------------------------------------------------
 wf <- create_workflow(
-  wf_name = "model_restart_selection",
+  wf_name = "intervention_scenarios",
   default_sbatch_opts = hpc_configs$default_sbatch_opts
 )
 
@@ -31,50 +33,37 @@ wf <- add_workflow_step(
 )
 
 # Run the simulations ----------------------------------------------------------
-library(EpiModelHIV)
+library("EpiModelHIV")
 
-epistats <- readRDS("data/intermediate/estimates/epistats.rds")
-netstats <- readRDS("data/intermediate/estimates/netstats.rds")
-est      <- readRDS("data/intermediate/estimates/netest.rds")
-
-param <- param.net(
-  data.frame.params   = read.csv("data/input/params.csv"),
-  netstats            = netstats,
-  epistats            = epistats,
-  prep.start          = prep_start,
-  riskh.start         = prep_start - 53,
-  .param.updater.list = list(
-    # High PrEP intake for the first year; go back to normal to get to 15%
-    list(at = prep_start, param = list(prep.start.prob = function(x) x * 2)),
-    list(at = prep_start + 52, param = list(prep.start.prob = function(x) x / 2))
-  )
-)
-
-init <- init_msm()
+context <- "hpc"
+source("R/utils-default_inputs.R") # generate `path_to_est`, `param` and `init`
 
 # Controls
 source("R/utils-targets.R")
 control <- control_msm(
-  nsteps              = calib_end,
+  start               = restart_time,
+  nsteps              = intervention_end,
   nsims               = 1,
   ncores              = 1,
+  initialize.FUN      = reinit_msm,
   cumulative.edgelist = TRUE,
   truncate.el.cuml    = 0,
   .tracker.list       = calibration_trackers,
-  verbose             = FALSE,
-  .checkpoint.dir     = "temp/cp_calib",
-  .checkpoint.clear   = TRUE,
-  .checkpoint.steps   = 15 * 52
+  verbose             = FALSE
 )
+
+scenarios_df <- readr::read_csv("./data/input/scenarios.csv")
+scenarios_list <- EpiModel::create_scenario_list(scenarios_df)
 
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_netsim_scenarios(
-    est, param, init, control,
-    scenarios_list = NULL,
-    output_dir = "data/intermediate/calibration",
+    path_to_restart, param, init, control,
+    scenarios_list = scenarios_list,
+    output_dir = "data/intermediate/scenarios",
     libraries = "EpiModelHIV",
-    n_rep = 620,
+    save_pattern = "simple",
+    n_rep = 120,
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
@@ -83,7 +72,7 @@ wf <- add_workflow_step(
     "mail-type" = "FAIL,TIME_LIMIT",
     "cpus-per-task" = max_cores,
     "time" = "04:00:00",
-    "mem" = "0" # special: all mem on node
+    "mem" = 0
   )
 )
 
@@ -92,7 +81,7 @@ wf <- add_workflow_step(
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
-    r_script = "R/wscript-calibration_process.R",
+    r_script = "./R/41-intervention_scenarios_process.R",
     args = list(
       ncores = 15,
       nsteps = 52
@@ -106,3 +95,4 @@ wf <- add_workflow_step(
     "mail-type" = "END"
   )
 )
+
