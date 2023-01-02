@@ -6,7 +6,7 @@ est_dir <- "./data/intermediate/estimates/"
 diag_dir <- "./data/intermediate/diagnostics/"
 
 # Information for the HPC workflows
-current_git_branch <- "HPC"
+current_git_branch <- "alg_calib"
 mail_user <- "aleguil@emory.edu"
 
 # Relevant time steps for the simulation
