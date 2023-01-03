@@ -1,4 +1,4 @@
-##
+m#
 ## Epidemic Model Parameter Calibration, HPC setup
 ##
 
@@ -8,7 +8,7 @@ library("EpiModelHPC")
 source("R/utils-0_project_settings.R")
 
 hpc_configs <- swf_configs_rsph(
-  partition = "preemptable",
+  partition = "epimodel",
   r_version = "4.2.1",
   git_version = "2.35.1",
   mail_user = mail_user
@@ -46,6 +46,7 @@ control <- control_msm(
   ncores              = 1,
   cumulative.edgelist = TRUE,
   truncate.el.cuml    = 0,
+  .tracker.list       = calibration_trackers,
   # .tracker.list       = calibration_trackers,
   # .checkpoint.dir     = "temp/cp_calib",
   # .checkpoint.clear   = TRUE,

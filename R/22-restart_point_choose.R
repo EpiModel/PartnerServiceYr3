@@ -6,7 +6,7 @@
 # Choose the right context: "local" if you are working with smaller networks
 #   estimated locally or "hpc" for the full size networks. For "hpc", this
 #   assumes that you downloaded the "assessments_raw.rds" files from the HPC.
-context <- c("local", "hpc")[1]
+context <- c("local", "hpc")[2]
 source("R/utils-0_project_settings.R")
 
 # Libraries  -------------------------------------------------------------------
@@ -15,8 +15,7 @@ library("dplyr")
 library("tidyr")
 source("R/utils-default_inputs.R")
 
-d <- readRDS("data/intermediate/calibration/assessments_raw.rds") %>%
-  select(-c(i.prev.dx, disease.mr100))
+d <- readRDS("data/intermediate/calibration/assessments_raw.rds")
 
 source("R/utils-targets.R")
 nm_targets <- intersect(names(targets), names(d))
