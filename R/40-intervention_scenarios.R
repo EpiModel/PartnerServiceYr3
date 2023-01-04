@@ -23,14 +23,11 @@ control <- control_msm(
 )
 
 # Using scenarios --------------------------------------------------------------
-
-scenarios_df <- readr::write_csv(scenarios_df, "./data/input/scenarios.csv")
-scenarios_list <- EpiModel::create_scenario_list(scenarios_df)
-
+scenarios_df <- readr::read_csv("./data/input/scenarios.csv")
 glimpse(scenarios_df)
 scenarios_list <- EpiModel::create_scenario_list(scenarios_df)
 
-# Here 2 scenarios will be used "scenario_1" and "scenario_2".
+# Here 2 scenarios will be used "baseline" and "scenario_1".
 # This will generate 4 files (2 per scenarios)
 EpiModelHPC::netsim_scenarios(
   path_to_restart, param, init, control, scenarios_list,
