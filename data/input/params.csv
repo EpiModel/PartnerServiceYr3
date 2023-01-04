@@ -111,7 +111,7 @@ riskh.start,Inf,numeric
 prep.start,Inf,numeric
 prep.start.prob_1,0.615625,numeric
 prep.start.prob_2,0.766,numeric
-prep.start.prob_3,0.765625,numeric
+prep.start.prob_3,0.7775,numeric
 prep.adhr.dist_1,0.089,numeric
 prep.adhr.dist_2,0.127,numeric
 prep.adhr.dist_3,0.784,numeric
