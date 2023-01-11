@@ -87,10 +87,10 @@
       "RemoteUsername": "EpiModel",
       "RemoteRepo": "EpiModelHIV-p",
       "RemoteRef": "PartnerServicesYr3",
-      "RemoteSha": "9ad1198b8e4d40d70b3ad2e7d052294423f28d42",
+      "RemoteSha": "e12f546f2feee42c469e0a3aeb4d96f81db1ae10",
       "RemoteHost": "api.github.com",
       "Remotes": "github::EpiModel/ARTnet@main, github::EpiModel/ARTnetData@main,\n    github::EpiModel/EpiModel@main",
-      "Hash": "0ceb3082c17b96942856b1988a52b5ab",
+      "Hash": "2297f7c3e9bd0008f5e17c8930428e1f",
       "Requirements": [
         "EpiModel",
         "dplyr",
@@ -374,16 +374,16 @@
     },
     "ergm": {
       "Package": "ergm",
-      "Version": "4.3-7130",
+      "Version": "4.4-7157",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "statnet",
       "RemoteRepo": "ergm",
       "RemoteRef": "master",
-      "RemoteSha": "0bca4721f4a1ddbb3c27c3784de89583edf20bb6",
+      "RemoteSha": "6066594cbfe541a8d7fdea870aec110d62aad6b5",
       "RemoteHost": "api.github.com",
       "Remotes": "github::statnet/statnet.common@master,\n    github::statnet/ergm.count@master",
-      "Hash": "d9fe6e6c5761ac402da83b386943e004",
+      "Hash": "f1bd80c2f95c3862e0f1972934b70a04",
       "Requirements": [
         "MASS",
         "Matrix",
@@ -970,15 +970,15 @@
     },
     "statnet.common": {
       "Package": "statnet.common",
-      "Version": "4.7.0-409",
+      "Version": "4.8.0-411",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "statnet",
       "RemoteRepo": "statnet.common",
       "RemoteRef": "master",
-      "RemoteSha": "41d0c702b3e2c1ce1ca737e8e7d689176be35b9b",
+      "RemoteSha": "0ed8161bb84f36659fcf6568a837778dd3adbca5",
       "RemoteHost": "api.github.com",
-      "Hash": "3def61229afa9d3f233debb21c6ae97b",
+      "Hash": "28a6cae094492634d38e1346e17cf1da",
       "Requirements": [
         "coda"
       ]
