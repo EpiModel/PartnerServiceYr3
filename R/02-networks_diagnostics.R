@@ -1,31 +1,28 @@
-##
+#
 ## 02. Network Model Diagnostics
 ##
 
-# Required variables:
-ncores<-10
-nsims<-100
-nsteps<-500
-# if (interactive()) {
-#   ncores <- 2
-#   nsims <- 10
-#   nsteps <- 500
-# }
+# Setup  -----------------------------------------------------------------------
+context <- if (interactive()) "local" else "hpc"
+source("R/utils-0_project_settings.R")
 
-# Setup ------------------------------------------------------------------------
-suppressMessages({
-  library("EpiModelHIV")
-})
+if (context == "hpc") {
+  ncores <- 10
+  nsims  <- 50
+} else if (context == "local") {
+  ncores <- 2
+  nsims  <- 50
+} else {
+  stop("The `context` variable must be set to either 'local' or 'hpc'")
+}
 
-# Load the `NETSIZE` value and the formatted `netsize_string`
-# NETSIZE <- 1e4 # to override (before sourcing the file)
-source("R/utils-netsize.R")
+nsteps <- 500
 
-fn <- paste0("data/input/netest-", netsize_string, ".rds")
-est <- readRDS(fn)
+# Libraries  -------------------------------------------------------------------
+library("EpiModelHIV")
+est <- readRDS(paste0(est_dir, "netest-", context, ".rds"))
 
 # Main -------------------------------------------------------------------------
-
 fit_main <- est[["fit_main"]]
 
 model_main_dx <- ~edges +
@@ -50,7 +47,7 @@ dx_main <- netdx(
   set.control.tergm = control.simulate.formula.tergm(MCMC.burnin.min = 2e5)
 )
 
-dx_main_static <- EpiModel::netdx(
+dx_main_static <- netdx(
   fit_main,
   dynamic = FALSE,
   nsims = 10000,
@@ -60,12 +57,10 @@ dx_main_static <- EpiModel::netdx(
 )
 
 dx <- list(dx_main = dx_main, dx_main_static = dx_main_static)
-fn <- paste0("data/input/netdx-main-", netsize_string, ".rds")
-saveRDS(dx, file = fn)
+saveRDS(dx, paste0(diag_dir, "netdx-main-", context, ".rds"))
 rm(dx, dx_main, dx_main_static)
 
 # Casual -----------------------------------------------------------------------
-
 fit_casl <- est[["fit_casl"]]
 
 model_casl_dx <- ~edges +
@@ -100,12 +95,10 @@ dx_casl_static <- netdx(
 )
 
 dx <- list(dx_casl = dx_casl, dx_casl_static = dx_casl_static)
-fn <- paste0("data/input/netdx-casl-", netsize_string, ".rds")
-saveRDS(dx, file = fn)
+saveRDS(dx, paste0(diag_dir, "netdx-casl-", context, ".rds"))
 rm(dx, dx_casl, dx_casl_static)
 
 # One-Off ----------------------------------------------------------------------
-
 fit_inst <- est[["fit_inst"]]
 
 model_inst_dx <- ~edges +
@@ -127,5 +120,4 @@ dx_inst <- netdx(
 )
 
 dx <- list(dx_inst = dx_inst)
-fn <- paste0("data/input/netdx-inst-", netsize_string, ".rds")
-saveRDS(dx, file = fn)
+saveRDS(dx, paste0(diag_dir, "netdx-inst-", context, ".rds"))
