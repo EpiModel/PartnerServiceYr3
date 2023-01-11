@@ -80,4 +80,4 @@ wf <- add_workflow_step(
 
 
 # to get the data back
-  # scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/input data/input
+  # scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/input data/
