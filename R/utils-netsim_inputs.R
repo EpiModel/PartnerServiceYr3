@@ -15,16 +15,18 @@ suppressMessages({
 epistats <- readRDS("data/input/epistats.rds")
 netstats <- readRDS(paste0("data/input/netstats-", netsize_string, ".rds"))
 est <- readRDS(paste0("data/input/netest-", netsize_string, ".rds"))
+path_to_restart <- paste0(est_dir, "restart-", "hpc", ".rds")
 
 # Relevant times
 calibration_length <- 52 * 60
-prep_start         <- calibration_length + (52 * 5)
-interv_start       <- prep_start + (52 * 5)
+restart_time       <- calibration_length + 1                       #new
+prep_start         <- restart_time + (52 * 5)
+interv_start       <- prep_start + (52 * 10)                       #increased to 10. Impact?
 nsteps             <- interv_start + (52 * 10)
 
 
 # Parameters -------------------------------------------------------------------
-csv_params <- paste0("data/input/params-", netsize_string, ".csv")
+csv_params <- paste0("data/input/params.csv")
 df_params <- readr::read_csv(csv_params)
 
 param <- param.net(
@@ -47,12 +49,28 @@ param <- param.net(
   riskh.start = prep_start - 53,
   prep.start = prep_start,
   
+  
   #interv start times
   part.ident.start    = prep_start,                                                        
   prevpos.retest.start = Inf,
   second.genps.start = Inf,
+  
+  #update param list
+  .param.updater.list = list( # High PrEP intake for the first year only
+    list(at = prep_start, param = list(
+      prep.start.prob = function(x) plogis(qlogis(x) + log(2)))),
+    list(at = prep_start + 52, param = list(
+      prep.start.prob = function(x) plogis(qlogis(x) - log(2))))
+  )
 )
 
 # Initial conditions -----------------------------------------------------------
-init <- init_msm()
+# (default prevalence initialized in epistats)
+# For models without bacterial STIs, these must be initialized here with non-zero values
+init <- init_msm(
+  prev.ugc = 0.1,
+  prev.rct = 0.1,
+  prev.rgc = 0.1,
+  prev.uct = 0.1
+)
 
