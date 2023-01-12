@@ -149,10 +149,11 @@ wf <- add_workflow_step(
   )
 )
 
-# to send the workflows on the HPC
-  # Mine (Run in R terminal)
-  # scp -r workflows/modeltest sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows/modeltest
+# to send restart file to the HPC (Run in R terminal)
+  # scp -r data/intermediate/estimates sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate
 
+# to send workflows to the HPC (Run in R terminal)
+# scp -r workflows/modeltest sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows/modeltest
 
-# to get the data back
+# to get the data back after simulations (Run in R terminal)
 # scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/output/modeltest data/output
