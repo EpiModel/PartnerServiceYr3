@@ -48,7 +48,7 @@ intervds <- future.apply::future_lapply(
   ts = 15*52+1   #gets the time from 5 years prior to intervention start
 )
 
-# # Merge all and combine --------------------------------------------------------
-# intervdata <- bind_rows(intervds)
-# saveRDS(intervdata, paste0(modtst_dir, "/allscenarios.rds"))
+# Merge all and combine --------------------------------------------------------
+intervdata <- bind_rows(intervds)
+saveRDS(intervdata, paste0(modtst_dir, "/allscenarios.rds"))
 
