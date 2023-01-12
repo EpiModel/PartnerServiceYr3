@@ -15,7 +15,7 @@ suppressMessages({
 epistats <- readRDS("data/input/epistats.rds")
 netstats <- readRDS(paste0("data/input/netstats-", netsize_string, ".rds"))
 est <- readRDS(paste0("data/input/netest-", netsize_string, ".rds"))
-path_to_restart <- readRDS(paste0("data/input/restart-hpc.rds"))
+path_to_restart <- readRDS("data/input/restart-hpc.rds")
 
 # Relevant times
 calibration_length <- 52 * 60
