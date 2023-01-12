@@ -18,7 +18,7 @@ hpc_configs <- swf_configs_rsph(
 )
 
 max_cores <- 32
-#cp_dir <- "data/cp_recal"
+cp_dir <- "data/cp_recal"
 
 
 
@@ -89,7 +89,7 @@ scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_netsim_scenarios(
-    path_to_restart, est, param, init, control,
+    path_to_restart, param, init, control,
     scenarios_list = scenarios.list,
     output_dir = "data/output/modeltest",
     libraries = "EpiModelHIV",
