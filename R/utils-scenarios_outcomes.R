@@ -23,7 +23,7 @@ make_last_year_outcomes <- function(d) {
 # make the outcomes cumulative over the intervention period
 make_cumulative_outcomes <- function(d) {
   d %>%
-    filter(time >= intervention_start) %>%
+    filter(time >= interv_start) %>%
     group_by(scenario_name, batch_number, sim) %>%
     summarise(
       cuml_prep_users = sum(prep_users, na.rm = TRUE)
