@@ -95,10 +95,10 @@
       "RemoteUsername": "EpiModel",
       "RemoteRepo": "EpiModelHIV-p",
       "RemoteRef": "PartnerServicesYr3",
-      "RemoteSha": "e12f546f2feee42c469e0a3aeb4d96f81db1ae10",
+      "RemoteSha": "ce7f00eee92a6076c0a69fc9e98919deb162da37",
       "RemoteHost": "api.github.com",
       "Remotes": "github::EpiModel/ARTnet@main, github::EpiModel/ARTnetData@main,\n    github::EpiModel/EpiModel@main",
-      "Hash": "2297f7c3e9bd0008f5e17c8930428e1f",
+      "Hash": "d791c6657494b86e9d1ced4a33dd68af",
       "Requirements": [
         "EpiModel",
         "dplyr",
@@ -393,10 +393,10 @@
     },
     "curl": {
       "Package": "curl",
-      "Version": "4.3.3",
+      "Version": "5.0.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "0eb86baa62f06e8855258fa5a8048667",
+      "Hash": "e4f97056611e8e6b8b852d13b7400cf1",
       "Requirements": []
     },
     "data.table": {
@@ -1058,10 +1058,10 @@
     },
     "parallelly": {
       "Package": "parallelly",
-      "Version": "1.33.0",
+      "Version": "1.34.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "6d5c4a319b25b6df4600af95817ffbd5",
+      "Hash": "2a795ec0ddbfe465ca0d6471039631bf",
       "Requirements": []
     },
     "pillar": {
