@@ -12,10 +12,14 @@ suppressMessages({
   library("EpiModelHPC")
 })
 
-epistats <- readRDS("data/input/epistats.rds")
-netstats <- readRDS(paste0("data/input/netstats-", netsize_string, ".rds"))
-path_to_est <- paste0("data/input/netest-", netsize_string, ".rds")
-path_to_restart <- paste0("data/intermediate/estimates/restart-hpc.rds")
+est_dir <- "./data/intermediate/estimates/"
+#diag_dir <- "./data/intermediate/diagnostics/"
+
+#use post-calib networks estimation products
+epistats <- readRDS(paste0(est_dir, "epistats-", context, ".rds"))
+netstats <- readRDS(paste0(est_dir, "netstats-", context, ".rds"))
+path_to_est <- paste0(est_dir, "netest-", context, ".rds")
+path_to_restart <- paste0(est_dir, "restart-", context, ".rds")
 
 # Relevant times
 calibration_length <- 52 * 60
@@ -44,7 +48,6 @@ param <- param.net(
   part.tx.init.rate      = rep(0.387, 3),
   riskh.start = prep_start - 53,
   prep.start = prep_start,
-  
   
   #interv start times
   part.ident.start    = prep_start,                                                        
