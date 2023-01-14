@@ -1,8 +1,8 @@
 ##
 ## 100-Get intervention data for local analysis
 
-#ncores<-5
- 
+#context<-"local"
+
 # Setup ------------------------------------------------------------------------
 install.packages("future.apply")
 suppressMessages({
@@ -10,45 +10,53 @@ suppressMessages({
   library("future.apply")
   library("tidyverse")
 })
+source("R/utils-scenarios_outcomes.R")
+source("R/utils-netsim_inputs.R")
+source("R/utils-netsize.R")
 
-#if (fs::dir_exists(cp_dir)) fs::dir_delete(cp_dir)
-#future::plan(future::multicore, workers = ncores)
 
-modtst_dir <- "data/output/modeltest"
+modtst_dir <- "data/intermediate/scenarios"
 
-# Process each file in parallel ------------------------------------------------
+
+#get sim batches
 modtst_files <- list.files(
   modtst_dir,
   pattern = "^sim__.*rds$",
   full.names = TRUE
 )
 
+
+
+#Process each batch in parallel 
 process_sim <- function(file_name, ts) {
   # keep only the file name without extension and split around `__`
   name_elts <- fs::path_file(file_name) %>%
-    fs::path_ext_remove() %>%
-    strsplit(split = "__")
+  fs::path_ext_remove() %>%
+  strsplit(split = "__")
   
   scenario_name <- name_elts[[1]][2]
-  batch_num <- as.numeric(name_elts[[1]][3])
+  batch_number <- as.numeric(name_elts[[1]][3])
   
   d <- as_tibble(readRDS(file_name))
   d <- d %>%
-    filter(time >= max(d$time) - ts) %>% 
+    mutate(scenario_name = scenario_name, batch_number = batch_number) %>% 
+    group_by(scenario_name, batch_number, sim) %>% 
+    filter(time >= ts) %>% 
     mutate(time=row_number()) %>% 
-    mutate(scenario = scenario_name, 
-           batch = batch_num)
- 
+    ungroup()
+  
   return(d)
 }
 
 intervds <- future.apply::future_lapply(
   modtst_files,
   process_sim,
-  ts = 15*52+1   #gets the time from 5 years prior to intervention start
+  ts = interv_start - (5*52)+1   #gets data from 5 years prior to intervention start
 )
 
-# Merge all and combine --------------------------------------------------------
+
+
+# Merge all batches  
 intervdata <- bind_rows(intervds)
-saveRDS(intervdata, paste0(modtst_dir, "/allscenarios.rds"))
+saveRDS(intervdata, "data/intermediate/processed/allscenarios.rds")
 
