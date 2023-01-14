@@ -2,7 +2,7 @@
 ## 10. Epidemic Model Parameter Calibration, HPC setup
 ##
 
-
+context<-"hpc"
 
 # Setup 
 #-----------------------------------------------------------------------------------------
@@ -91,10 +91,10 @@ wf <- add_workflow_step(
   step_tmpl = step_tmpl_netsim_scenarios(
     path_to_restart, param, init, control,
     scenarios_list = scenarios.list,
-    output_dir = "data/output/modeltest",
+    output_dir = "data/intermediate/scenarios",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
-    n_rep = 10,                                                                            
+    n_rep = 320,                                                                            
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
@@ -108,8 +108,7 @@ wf <- add_workflow_step(
 )
 
 
-# Process calibrations ---------------------------------------------------------
-# produce a data frame with the calibration targets for each scenario
+# Process simulations --------------------------------------------------------------------
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
@@ -129,7 +128,7 @@ wf <- add_workflow_step(
 )
 
 
-# Get data frame with all scenarios (intervention data only)
+# Get full data frame for plots
 #-----------------------------------------------------------------------------------------
 wf <- add_workflow_step(
   wf_summary = wf,
