@@ -12,15 +12,12 @@
 
 if (context == "hpc") {
   networks_size   <- 100 * 1e3
-  NETSIZE <- 100 *1e3
-  estimation_method <- "MCMLE"
   estimation_ncores <- 10
-} else if (context == "local") {
+  max_cores<-32
+  } else if (context == "local") {
   networks_size   <- 10 * 1e3
-  NETSIZE <- 10 *1e3
-  estimation_method <- "Stochastic-Approximation"
-  estimation_ncores <- 1
-} else {
+  max_cores <- 2
+  } else {
   stop("The `context` variable must be set to either 'local' or 'hpc'")
 }
-netsize_string <- format(NETSIZE, scientific = FALSE)
+netsize_string <- format(networks_size, scientific = FALSE)
