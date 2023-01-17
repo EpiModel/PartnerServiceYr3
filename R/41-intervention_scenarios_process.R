@@ -1,12 +1,13 @@
 ##
 ## 11. Epidemic Model Parameter Calibration, Processing of the simulation files
 ##
-#context<-"local"
+#context<-"hpc"
+
 # Setup ------------------------------------------------------------------------
 #source("R/utils-0_project_settings.R")
-source("R/utils-scenarios_outcomes.R")
 source("R/utils-netsim_inputs.R")
 source("R/utils-netsize.R")
+source("R/utils-scenarios_outcomes.R")
 
 #get batch info
 batches_infos <- EpiModelHPC::get_scenarios_batches_infos(
@@ -26,16 +27,18 @@ outcomes_raw <- lapply(
 #bind all batches (and simulation rows) into 1 data frame 
 #output=all scenarios with 1 row per unique simulation
 outcomes_sims <- bind_rows(outcomes_raw) %>%  
-  group_by(scenario_name) %>%    #re-number sims for each scenario
+  group_by(scenario_name) %>%               #re-number sims for each scenario
+  arrange(batch_number) %>% 
   mutate(sim2 = sim) %>% 
-  mutate(sim = ifelse(batch_number > 1, sim2 + ((batch_number-1) * max_cores), sim2)) %>% 
+  mutate(sim = row_number()) %>% 
   select(-sim2)  %>% 
   #rename scenarios
   mutate(scenario.new = ifelse(scenario_name == "base","Base",
                              ifelse(scenario_name == "interv1","+ PP retests",
                                     ifelse(scenario_name == "interv2","+ Wave 2 PS","+ Both")))) %>% 
   mutate(scenario.new = factor(scenario.new, levels = c("Base","+ PP retests","+ Wave 2 PS","+ Both"))) %>% 
-  arrange(scenario.new)
+  ungroup() %>% 
+  arrange(scenario.new, batch_number, sim)
 saveRDS(outcomes_sims, "data/intermediate/processed/outcomes_sims.rds")
 
 
@@ -55,7 +58,7 @@ outcomes_scenarios <- outcomes_sims %>%
 
 
 # Save the result --------------------------------------------------------------
-saveRDS(outcomes_scenarios_med95si, "data/intermediate/processed/outcomes_scenarios.rds")
-readr::write_csv(outcomes_scenarios_med95si, "data/intermediate/processed/outcomes_scenarios.csv")
+saveRDS(outcomes_scenarios, "data/intermediate/processed/outcomes_scenarios.rds")
+#readr::write_csv(outcomes_scenarios_med95si, "data/intermediate/processed/outcomes_scenarios.csv")
 
 
