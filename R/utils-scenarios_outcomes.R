@@ -34,7 +34,7 @@ get_cumulative_outcomes <- function(d) {
     group_by(scenario_name, batch_number, sim) %>%
     summarise(across(everything(),~ sum(.x, na.rm = TRUE))) %>%
     ungroup() %>% 
-    select(-time)
+    select(-c(time,num, i.num))
 }
 
 
@@ -53,39 +53,40 @@ process_one_scenario_batch <- function(scenario_infos) {
   d_sim <- as_tibble(batch_of_sims) %>% 
     select(sim, time,
                   
-          #HIV incidence measures
-          incid,
-          
-          #PrEP initiation trackers
-          prepStartPart, prepStartAll, prepStartGen, 
-          
-          #ART re-engagement trackers
-          gen.ident, gen.elig.for.reinit, gen.reinit.tx,
-          part.ident, part.elig.for.reinit, part.reinit.tx,
-          pp.reinit.tx, pp.elig.for.reinit, pp.ident, 
-          all.reinit.tx,
-          
-          #HIV screening measures
-          tot.tests, tot.tests.ibt,  
-          tot.tests.ibtNegunk, tot.tests.ibtPrEP, tot.tests.ibtPP,
-          eligPP.for.retest, pp.tests.nic,pp.tests.ic,
-          
-          #pbt
-          tot.part.ident, elig.part, tot.tests.pbt, positive.part,
-          
-          #PS measures - Indexes
-          recent.diagn, elig.indexes.nd, found.indexes.nd,
-          recent.retests, elig.indexes.pp, found.indexes.pp, found.indexes.pp.un,
-          
-          #PS measures - Wave 1 partners
-          elig.partners, found.partners,
-          negunkPart.indexes, posPart.indexes, elig.indexes.posPart, 
-          
-          #PS measures - Wave 2 partners
-          elig.partners.gen2, found.partners.gen2,
-          
-          #all partners
-          found.partners.all)
+           #HIV incidence measures
+           num, incid, i.num,
+           
+           #HIV screening
+           tot.tests, tot.tests.ibt, tot.tests.pbt, 
+           tot.tests.ibtNegunk, tot.tests.ibtPrEP, tot.tests.ibtPP,
+           eligPP.for.retest, pp.tests.nic,pp.tests.ic,
+           tot.part.ident, elig.part, tot.tests.pbt, positive.part,
+           
+           #PS measures - Indexes
+           recent.newdiagn, elig.indexes.nd, found.indexes.nd,
+           recent.ppretested, elig.indexes.pp, found.indexes.pp, found.indexes.pp.un,
+           
+           #PS measures - Wave 1 partners
+           elig.partners, found.partners,
+           negunkPart.indexes, posPart.indexes, elig.indexes.posPart, 
+           
+           #PS measures - Wave 2 partners
+           elig.partners.gen2, found.partners.gen2,
+           
+           #all found partners
+           found.partners.all,
+           
+           #PrEP initiation trackers
+           prepStartPart, prepStartGen, prepStartAll,
+           
+           #ART initiation trackers
+           part.start.tx, gen.start,tx,
+           
+           #ART re-engagement trackers
+           gen.ident, gen.elig.for.reinit, gen.reinit.tx,
+           part.ident, part.elig.for.reinit, part.reinit.tx,
+           pp.ident, pp.elig.for.reinit, pp.reinit.tx, 
+           all.reinit.tx)
   
   #d_sim <- mutate_outcomes(d_sim)
   d_sim <- mutate(
