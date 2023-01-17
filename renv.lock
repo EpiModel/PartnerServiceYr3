@@ -95,10 +95,10 @@
       "RemoteUsername": "EpiModel",
       "RemoteRepo": "EpiModelHIV-p",
       "RemoteRef": "PartnerServicesYr3",
-      "RemoteSha": "ce7f00eee92a6076c0a69fc9e98919deb162da37",
+      "RemoteSha": "f48f1e4ba42dfa02f0a198585ae17639a96b0d6b",
       "RemoteHost": "api.github.com",
       "Remotes": "github::EpiModel/ARTnet@main, github::EpiModel/ARTnetData@main,\n    github::EpiModel/EpiModel@main",
-      "Hash": "d791c6657494b86e9d1ced4a33dd68af",
+      "Hash": "f58b7f4cb205d0c8f35646fd6a4da06a",
       "Requirements": [
         "EpiModel",
         "dplyr",
@@ -409,10 +409,10 @@
     },
     "dbplyr": {
       "Package": "dbplyr",
-      "Version": "2.2.1",
+      "Version": "2.3.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "f6c7eb9617e4d2a86bb7182fff99c805",
+      "Hash": "f03e0e456f1cb7b068772af43772baea",
       "Requirements": [
         "DBI",
         "R6",
