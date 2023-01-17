@@ -155,4 +155,4 @@ wf <- add_workflow_step(
 # scp -r workflows/modeltest sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows/modeltest
 
 # to get the data back after simulations (Run in R terminal)
-# scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/output/modeltest data/output
+# scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/scenarios data/intermediate
