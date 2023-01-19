@@ -12,7 +12,7 @@ source("R/utils-scenarios_outcomes.R")
 
 #get batch info
 batches_infos <- EpiModelHPC::get_scenarios_batches_infos(
-  "data/intermediate/scenarios"
+  paste0("data/intermediate/",context,"/scenarios")
 )
 
 
@@ -40,7 +40,7 @@ outcomes_sims <- bind_rows(outcomes_raw) %>%
   mutate(scenario.new = factor(scenario.new, levels = c("Base","+ PP retests","+ Wave 2 PS","+ Both"))) %>% 
   ungroup() %>% 
   arrange(scenario.new, batch_number, sim)
-saveRDS(outcomes_sims, "data/intermediate/processed/outcomes_sims.rds")
+saveRDS(outcomes_sims, paste0("data/intermediate/",context,"/processed/outcomes_sims.rds"))
 
 
 
@@ -59,7 +59,7 @@ outcomes_scenarios <- outcomes_sims %>%
 
 
 # Save the result --------------------------------------------------------------
-saveRDS(outcomes_scenarios, "data/intermediate/processed/outcomes_scenarios.rds")
+saveRDS(outcomes_scenarios, paste0("data/intermediate/",context,"/processed/outcomes_scenarios.rds"))
 #readr::write_csv(outcomes_scenarios_med95si, "data/intermediate/processed/outcomes_scenarios.csv")
 
 
