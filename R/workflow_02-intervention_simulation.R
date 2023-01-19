@@ -91,7 +91,7 @@ wf <- add_workflow_step(
   step_tmpl = step_tmpl_netsim_scenarios(
     path_to_restart, param, init, control,
     scenarios_list = scenarios.list,
-    output_dir = "data/intermediate/scenarios",
+    output_dir = "data/intermediate/hpc/scenarios",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
     n_rep = 320,                                                                            
