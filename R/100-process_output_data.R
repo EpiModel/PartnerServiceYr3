@@ -55,7 +55,7 @@ process_sim <- function(file_name, ts) {
                                         ifelse(scenario_name == "interv2","+ Wave 2 PS","+ Both")))) %>% 
     mutate(scenario.new = factor(scenario.new, levels = c("Base","+ PP retests","+ Wave 2 PS","+ Both"))) %>% 
     ungroup() %>% 
-    select(scenario_name, batch_number, sim, time,
+    select(scenario_name, scenario.new, batch_number, sim, time,
            
            #HIV incidence measures
            incid, 
@@ -84,7 +84,7 @@ process_sim <- function(file_name, ts) {
            prepStartPart, prepStartGen, prepStartAll,
            
            #ART initiation trackers
-           part.start.tx, gen.start,tx,
+           part.start.tx, gen.start.tx,
            
            #ART re-engagement trackers
            gen.ident, gen.elig.for.reinit, gen.reinit.tx,
