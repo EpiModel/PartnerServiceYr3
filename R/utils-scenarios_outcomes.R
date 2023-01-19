@@ -80,7 +80,7 @@ process_one_scenario_batch <- function(scenario_infos) {
            prepStartPart, prepStartGen, prepStartAll,
            
            #ART initiation trackers
-           part.start.tx, gen.start,tx,
+           part.start.tx, gen.start.tx,
            
            #ART re-engagement trackers
            gen.ident, gen.elig.for.reinit, gen.reinit.tx,
