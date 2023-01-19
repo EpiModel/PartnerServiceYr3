@@ -2,6 +2,7 @@
 ## 100-Get intervention data for local analysis
 
 #context<-"local"
+context <- if (interactive()) "local" else "hpc"
 
 # Setup ------------------------------------------------------------------------
 install.packages("future.apply")
@@ -14,7 +15,8 @@ source("R/utils-netsim_inputs.R")
 source("R/utils-netsize.R")
 source("R/utils-scenarios_outcomes.R")
 
-modtst_dir <- "data/intermediate/scenarios"
+
+modtst_dir <- paste0("data/intermediate/",context,"/scenarios")
 
 
 
@@ -108,5 +110,5 @@ intervds <- future.apply::future_lapply(
 
 # Merge all batches  
 intervdata <- bind_rows(intervds)
-saveRDS(intervdata, "data/intermediate/processed/allscenarios.rds")
+saveRDS(intervdata, paste0("data/intermediate/",context,"/processed/allscenarios.rds"))
 
