@@ -143,7 +143,7 @@ scenarios_list <- EpiModel::create_scenario_list(scenarios_df)
 
 
 
-#Simulate epidemic in scenarios and examine output 
+#Simulate epidemic in scenarios
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #Method 1
   #run scenarios as on the hpc to output sims of intervention scenarios in batches.
@@ -186,7 +186,7 @@ scenarios_list <- EpiModel::create_scenario_list(scenarios_df)
     sc.param <- use_scenario(param, scenario)
     sim <- netsim(est, sc.param, init, control)
     
-    saveRDS(sim, paste0("data/intermediate/",context,"/scenarios/sim__",scenario$id,".rds"))
+    saveRDS(sim, paste0("data/intermediate/",context,"/scenarios/sim__",scenario$id,"__1.rds"))
 
     #convert sim object to a df
     d_sim <- as.data.frame(sim)
@@ -198,3 +198,12 @@ scenarios_list <- EpiModel::create_scenario_list(scenarios_df)
   # undebug(hivtx_msm)
   # undebug(prep_msm)
   
+
+  
+#Check output
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  #get yr10 and cum stats
+  source("R/41-intervention_scenarios_process.R")
+  
+  #get raw data for plots
+  source("R/100-process_output_data.R")
