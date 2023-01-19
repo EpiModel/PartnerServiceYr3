@@ -95,10 +95,10 @@
       "RemoteUsername": "EpiModel",
       "RemoteRepo": "EpiModelHIV-p",
       "RemoteRef": "PartnerServicesYr3",
-      "RemoteSha": "f48f1e4ba42dfa02f0a198585ae17639a96b0d6b",
+      "RemoteSha": "3067f5bb964865ec8618f16e5d670031d6bf4960",
       "RemoteHost": "api.github.com",
       "Remotes": "github::EpiModel/ARTnet@main, github::EpiModel/ARTnetData@main,\n    github::EpiModel/EpiModel@main",
-      "Hash": "f58b7f4cb205d0c8f35646fd6a4da06a",
+      "Hash": "b7455bdef9ee18b060a0d09b5b00a02d",
       "Requirements": [
         "EpiModel",
         "dplyr",
@@ -546,10 +546,10 @@
     },
     "evaluate": {
       "Package": "evaluate",
-      "Version": "0.19",
+      "Version": "0.20",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "5aac3cd0a3ccb1a738941796b28c26fe",
+      "Hash": "4b68aa51edd89a0e044a66e75ae3cc6c",
       "Requirements": []
     },
     "fansi": {
