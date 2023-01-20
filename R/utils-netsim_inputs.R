@@ -2,9 +2,6 @@
 ## utils. Default Inputs for EpiModel::nestim
 ##
 
-# Required variables: (provided by the calling script)
-# - NETSIZE
-# - netsize_string
 
 # Setup ------------------------------------------------------------------------
 suppressMessages({
