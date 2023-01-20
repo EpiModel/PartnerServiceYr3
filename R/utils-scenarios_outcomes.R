@@ -12,8 +12,11 @@ mutate_outcomes <- function(d) {
 }
 
 
-
 #calculate outcomes for year 10
+#get context and networks_size
+context <- if (interactive()) "local" else "hpc"
+source("R/utils-netsize.R")
+
 get_yr10_outcomes <- function(d) {
   d %>%
     filter(time >= max(time) - 52) %>%
