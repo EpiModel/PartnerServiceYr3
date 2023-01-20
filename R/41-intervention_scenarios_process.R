@@ -1,13 +1,11 @@
 ##
 ## 11. Epidemic Model Parameter Calibration, Processing of the simulation files
 ##
-#context<-"hpc"
-context <- if (interactive()) "local" else "hpc"
+
 
 # Setup ------------------------------------------------------------------------
 #source("R/utils-0_project_settings.R")
 source("R/utils-netsim_inputs.R")
-source("R/utils-netsize.R")
 source("R/utils-scenarios_outcomes.R")
 
 #get batch info
