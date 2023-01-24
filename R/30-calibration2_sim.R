@@ -56,3 +56,9 @@ EpiModelHPC::netsim_scenarios(
 
 # Check the files produced
 list.files("data/intermediate/calibration")
+
+
+
+
+
+

@@ -31,7 +31,7 @@ scenarios_list <- EpiModel::create_scenario_list(scenarios_df)
 # This will generate 4 files (2 per scenarios)
 EpiModelHPC::netsim_scenarios(
   path_to_restart, param, init, control, scenarios_list,
-  n_rep = 3,
+  n_rep = 2,
   n_cores = 2,
   output_dir = "data/intermediate/scenarios",
   libraries = "EpiModelHIV",
