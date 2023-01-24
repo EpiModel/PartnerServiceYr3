@@ -7,14 +7,14 @@ library("slurmworkflow")
 library("EpiModelHPC")
 source("R/utils-0_project_settings.R")
 
-hpc_configs <- swf_configs_rsph(
-  partition = "epimodel",
-  r_version = "4.2.1",
-  git_version = "2.35.1",
+hpc_configs <- EpiModelHPC::swf_configs_hyak(
+  hpc = "mox",
+  partition = "ckpt",
+  r_version = "4.1.2",
   mail_user = mail_user
 )
 
-max_cores <- 30
+max_cores <- 20
 
 # Workflow creation ------------------------------------------------------------
 wf <- create_workflow(
@@ -58,12 +58,9 @@ scenarios_df <- tibble(
   .scenario.id = as.character(seq_len(n_scenarios)),
   .at                 = 1,
   part.ident.start    = prep_start,
-  prep.start.prob_1   = rep(0.615625, n_scenarios), # 206
-  prep.start.prob_2   = rep(0.766, n_scenarios), # 237
-  prep.start.prob_3   = seq(0.77, 0.79, length.out = n_scenarios), # 332
-  prep.discont.rate_1 = rep(0.00688, n_scenarios),
-  prep.discont.rate_2 = prep.discont.rate_1,
-  prep.discont.rate_3 = prep.discont.rate_1
+  prep.start.prob_1   = seq(0.3, 0.7, length.out = n_scenarios), # 206
+  prep.start.prob_2   = seq(0.7, 0.3, length.out = n_scenarios), # 237
+  prep.start.prob_3   = seq(0.7, 0.3, length.out = n_scenarios)  # 332
 )
 scenarios_list <- EpiModel::create_scenario_list(scenarios_df)
 
