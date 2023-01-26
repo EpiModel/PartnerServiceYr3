@@ -9,21 +9,34 @@ suppressMessages({
   library("EpiModelHPC")
 })
 
-est_dir <- "./data/intermediate/estimates/"
-#diag_dir <- "./data/intermediate/diagnostics/"
 
-#use post-calib networks estimation products
+
+#define context
+context <- if (interactive()) "local" else "hpc"
+#context<-"hpc" #if running hpc sim processing locally
+
+
+
+
+#define path to estimates files (netest, netstats, epistats, restart.rds)
+est_dir <- paste0("data/intermediate/",context,"/estimates/")
+
 epistats <- readRDS(paste0(est_dir, "epistats-", context, ".rds"))
 netstats <- readRDS(paste0(est_dir, "netstats-", context, ".rds"))
 path_to_est <- paste0(est_dir, "netest-", context, ".rds")
 path_to_restart <- paste0(est_dir, "restart-", context, ".rds")
 
-# Relevant times
+
+
+
+# Define relevant times
 calibration_length <- 52 * 60
 restart_time       <- calibration_length + 1                       
 prep_start         <- restart_time + (52 * 5)
 interv_start       <- prep_start + (52 * 10)                       
 nsteps             <- interv_start + (52 * 10)
+
+
 
 
 # Parameters -------------------------------------------------------------------
@@ -62,6 +75,9 @@ param <- param.net(
       prep.start.prob = function(x) plogis(qlogis(x) - log(2))))
   )
 )
+
+
+
 
 # Initial conditions -----------------------------------------------------------
 # (default prevalence initialized in epistats)
