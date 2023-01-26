@@ -64,9 +64,9 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "EpiModel",
       "RemoteRepo": "EpiModel",
-      "RemoteRef": "main",
-      "RemoteSha": "7aa3a975f9363a653f54fba55cac75316ba3a401",
-      "Hash": "08aa702c85091f11ddbebfcac6b70ee4",
+      "RemoteRef": "traceback",
+      "RemoteSha": "ec28752924a42b7f8ca18e4cb35bf53267463c8b",
+      "Hash": "8222f28915c75fe82e25fda443e2f3f9",
       "Requirements": [
         "RColorBrewer",
         "Rcpp",
