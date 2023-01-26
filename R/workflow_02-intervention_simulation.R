@@ -2,7 +2,7 @@
 ## 10. Epidemic Model Parameter Calibration, HPC setup
 ##
 
-context<-"hpc"
+
 
 # Setup 
 #-----------------------------------------------------------------------------------------
@@ -128,31 +128,13 @@ wf <- add_workflow_step(
 )
 
 
-# Get full data frame for plots
-#-----------------------------------------------------------------------------------------
-wf <- add_workflow_step(
-  wf_summary = wf,
-  step_tmpl = step_tmpl_do_call_script(
-    r_script = "R/100-process_output_data.R",
-    args = list(
-      ncores = 20,
-      cp_dir = cp_dir
-    ),
-    setup_lines = hpc_configs$r_loader
-  ),
-  sbatch_opts = list(
-    "cpus-per-task" = max_cores,
-    "time" = "04:00:00",
-    "mem-per-cpu" = "4G",
-    "mail-type" = "END"
-  )
-)
+
 
 # to send restart file to the HPC (Run in R terminal)
 # scp -r data/intermediate/estimates sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate
 
 # to send workflows to the HPC (Run in R terminal)
-# scp -r workflows/modeltest sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows/modeltest
+# scp -r workflows/modeltest sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows
 
 # to get the data back after simulations (Run in R terminal)
 # scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/scenarios data/intermediate
