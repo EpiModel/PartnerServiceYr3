@@ -18,14 +18,14 @@ batches_infos <- EpiModelHPC::get_scenarios_batches_infos(
 
 
 
-
 #get cumm and yr10 outcomes per sim
 outcomes_raw <- lapply(
   seq_len(nrow(batches_infos)),
-  function(i) process_one_scenario_batch(batches_infos[i, ])
-)
+  function(i) process_one_scenario_batch(batches_infos[i, ]))
 
-#bind all batches (and simulation rows) into 1 data frame 
+
+
+#bind cumm metrics from sim batches in one data frame 
 outcomes_sims <- bind_rows(outcomes_raw) %>%  
   group_by(scenario_name) %>%               #re-number sims for each scenario
   arrange(batch_number) %>% 
@@ -41,7 +41,6 @@ outcomes_sims <- bind_rows(outcomes_raw) %>%
   arrange(scenario.new, batch_number, sim)
 
 saveRDS(outcomes_sims, paste0("data/intermediate/",context,"/processed/outcomes_sims.rds"))
-
 
 
 
