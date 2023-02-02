@@ -128,7 +128,7 @@ wf <- add_workflow_step(
 
 
 # to send restart file to the HPC (Run in R terminal)
-# scp -r data/intermediate/estimates sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate
+# scp -r data/intermediate/hpc/estimates sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc/
 
 # to send workflows to the HPC (Run in R terminal)
 # scp -r workflows/modeltest sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows
