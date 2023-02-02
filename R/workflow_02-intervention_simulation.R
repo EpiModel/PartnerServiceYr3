@@ -91,7 +91,7 @@ wf <- add_workflow_step(
     output_dir = "data/intermediate/hpc/scenarios",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
-    n_rep = 320,                                                                            
+    n_rep = 1000,                                                                            
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
@@ -134,6 +134,7 @@ wf <- add_workflow_step(
 # scp -r workflows/modeltest sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows
 
 # to get the data back after simulations (Run in R terminal)
-# scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/scenarios data/intermediate
+# scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc data/intermediate
 
-# scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows/modeltest/log data/intermediate
+# scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows/modeltest/log data/intermediate/
+
