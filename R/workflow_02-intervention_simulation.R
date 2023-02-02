@@ -47,13 +47,10 @@ wf <- add_workflow_step(
 
 #Set up network simulation inputs
 #-----------------------------------------------------------------------------------------
-#network size
-source("R/utils-netsize.R") 
-
-#netsim iputs (epistats, netstats, netest estimates, param, init and relevant times)
 source("R/utils-netsim_inputs.R")
-
+source("R/utils-netsize.R") 
 source("R/utils-targets.R")
+
 control <- control_msm(
   start = restart_time,
   nsteps = nsteps,
@@ -75,10 +72,10 @@ control <- control_msm(
 
 #if using scenarios described using tibble::tibble
 scenarios.df <- tibble::tibble(
-  .scenario.id = c("base", "interv1", "interv2", "both"),
+  .scenario.id = c("interv1"),#, "base", "interv1", "interv2", "both"),
   .at = 1,
-  prevpos.retest.start	= c(Inf, interv_start, Inf, interv_start),
-  second.genps.start	= c(Inf, Inf, interv_start, interv_start)
+  prevpos.retest.start	= c(interv_start),# Inf, interv_start, Inf, interv_start),
+  second.genps.start	= c(Inf)#, Inf, Inf, interv_start, interv_start)
 )
 scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
 
@@ -138,3 +135,5 @@ wf <- add_workflow_step(
 
 # to get the data back after simulations (Run in R terminal)
 # scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/scenarios data/intermediate
+
+# scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows/modeltest/log data/intermediate
