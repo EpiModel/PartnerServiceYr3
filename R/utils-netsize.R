@@ -11,7 +11,7 @@
 # }
 
 if (context == "hpc") {
-  networks_size   <- 10 * 1e3
+  networks_size   <- 100 * 1e3
   estimation_ncores <- 10
   max_cores<-32
   } else if (context == "local") {
