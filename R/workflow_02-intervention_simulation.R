@@ -60,6 +60,10 @@ control <- control_msm(
   cumulative.edgelist = TRUE,
   truncate.el.cuml = 0,
   verbose = FALSE,
+  
+  .traceback.on.error = TRUE,
+  .dump.frame.on.error = TRUE
+  
   #raw.output = FALSE
 )
 
