@@ -58,7 +58,7 @@ scenarios_df <- tibble(
   .scenario.id = as.character(seq_len(n_scenarios)),
   .at                 = 1,
   part.ident.start    = prep_start,
-  prep.require.lnt    = TRUE,
+  prep.require.lnt    = FALSE,
   prep.start.prob_1   = seq(0.001, 0.1, length.out = n_scenarios), # 206
   prep.start.prob_2   = seq(0.001, 0.1, length.out = n_scenarios), # 237
   prep.start.prob_3   = seq(0.001, 0.1, length.out = n_scenarios)  # 332
