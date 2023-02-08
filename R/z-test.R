@@ -59,5 +59,21 @@ sim <- netsim(est, param, init, control)
 #   save_pattern = "simple"
 # )
 
-# load("./dump_20230203_131522_1.rda")
-# debugger()
+load("./dump_20230203_102912_6.rda")
+ debugger()
+
+  found.uid.nd <- hivpos.uid[runif(length(hivpos.uid)) < part.index.prob]
+  hivpos_pel <- hivpos_pel[hivpos_pel[["index"]] %in% found.uid.nd, ]
+
+  found.uid.pp <- retests.uid[runif(length(retests.uid)) < 1]
+  retests_pel <- retests_pel[retests_pel[["index"]] %in% found.uid.pp, ]
+
+  dat <- set_epi(dat, "found.indexes.nd", at, length(found.uid.nd))
+  dat <- set_epi(dat, "found.indexes.pp", at, length(found.uid.pp))
+
+      #update found pp indexes (for tx check and restart)
+      if (length(found.uid.pp)>0) {
+        found.uid.pp <- EpiModel::get_posit_ids(dat, unique(found.uid.pp))
+        dat <- set_attr(dat, "foundPrevPos.ident", at, posit_ids = found.uid.pp)
+        dat <- set_epi(dat, "found.indexes.pp.un", at, length(found.uid.pp))
+      }

@@ -58,9 +58,10 @@ scenarios_df <- tibble(
   .scenario.id = as.character(seq_len(n_scenarios)),
   .at                 = 1,
   part.ident.start    = prep_start,
-  prep.start.prob_1   = rep(0.0058, n_scenarios), # 206 (before: 00585)
+  prep.start.prob_1   = rep(0.00583, n_scenarios), # 206 (before: 00585)
   prep.start.prob_2   = rep(0.00445, n_scenarios), # 237
-  prep.start.prob_3   = seq(0.006, 0.08, length.out = n_scenarios)  # 332
+  prep.start.prob_3   = rep(0.007, n_scenarios)  # 332
+  #prep.start.prob_3   = seq(0.0065, 0.0075, length.out = n_scenarios)  # 332
 )
 scenarios_list <- EpiModel::create_scenario_list(scenarios_df)
 
