@@ -29,7 +29,7 @@ control <- control_msm(
 EpiModelHPC::netsim_scenarios(
   path_to_est, param, init, control,
   scenarios_list = NULL,
-  n_rep = 3,
+  n_rep = 6,
   n_cores = 3,
   output_dir = "data/intermediate/calibration",
   libraries = NULL,

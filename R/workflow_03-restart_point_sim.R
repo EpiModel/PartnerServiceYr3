@@ -1,4 +1,4 @@
-m#
+##
 ## Epidemic Model Parameter Calibration, HPC setup
 ##
 
@@ -90,8 +90,25 @@ wf <- add_workflow_step(
   sbatch_opts = list(
     "cpus-per-task" = max_cores,
     "time" = "04:00:00",
+    "mem-per-cpu" = "4G"
+  )
+)
+
+# Calibration Plots ------------------------------------------------------------
+wf <- add_workflow_step(
+  wf_summary = wf,
+  step_tmpl = step_tmpl_do_call_script(
+    r_script = "./R/23-restart_point_process_plots.R",
+    args = list(
+      context = "hpc",
+      ncores = 10
+    ),
+    setup_lines = hpc_configs$r_loader
+  ),
+  sbatch_opts = list(
+    "cpus-per-task" = max_cores,
+    "time" = "04:00:00",
     "mem-per-cpu" = "4G",
     "mail-type" = "END"
   )
 )
-
