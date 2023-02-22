@@ -1269,6 +1269,26 @@
         "Matrix"
       ]
     },
+    "swfcalib": {
+      "Package": "swfcalib",
+      "Version": "0.0.0.9000",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "EpiModel",
+      "RemoteRepo": "swfcalib",
+      "RemoteRef": "main",
+      "RemoteSha": "eb8a63431d378aca51833cd2f9a72afcbe4c7598",
+      "Remotes": "github::EpiModel/slurmworkflow",
+      "Hash": "d5b743d8f091ed60093c783a07ec748c",
+      "Requirements": [
+        "dplyr",
+        "fs",
+        "future",
+        "future.apply",
+        "slurmworkflow"
+      ]
+    },
     "tergm": {
       "Package": "tergm",
       "Version": "4.1-2489",
