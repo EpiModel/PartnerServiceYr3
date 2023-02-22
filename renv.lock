@@ -119,13 +119,13 @@
       "Version": "2.2.0",
       "Source": "GitHub",
       "RemoteType": "github",
-      "RemoteUsername": "EpiModel",
-      "RemoteRepo": "EpiModelHPC",
-      "RemoteRef": "main",
-      "RemoteSha": "e9a08f1d8ed7c7ecb1abee5eaafca4726e506183",
+      "RemoteUsername": "epimodel",
+      "RemoteRepo": "epimodelhpc",
+      "RemoteRef": "autocalib",
+      "RemoteSha": "d3625ac952c66b208a868801ad1ce005bcf7a1c5",
       "RemoteHost": "api.github.com",
-      "Remotes": "github::EpiModel/slurmworkflow",
-      "Hash": "c39e41e14df703cdbaefb04d19083cfd",
+      "Remotes": "github::EpiModel/slurmworkflow, github::EpiModel/swfcalib",
+      "Hash": "2ce12814e746fcb5e52d063c5e263f3a",
       "Requirements": [
         "EpiModel",
         "callr",
@@ -136,6 +136,7 @@
         "fs",
         "slurmworkflow",
         "stringr",
+        "swfcalib",
         "tergm",
         "tidyr"
       ]
