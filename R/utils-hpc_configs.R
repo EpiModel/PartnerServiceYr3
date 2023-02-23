@@ -15,7 +15,7 @@
 # )
 
 hpc_configs <- swf_configs_rsph(
-  partition = "epimodel",
+  partition = "preemptable",
   r_version = "4.2.1",
   git_version = "2.35.1",
   mail_user = mail_user
