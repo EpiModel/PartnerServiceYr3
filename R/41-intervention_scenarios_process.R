@@ -1,7 +1,7 @@
 ##
 ## 11. Epidemic Model Parameter Calibration, Processing of the simulation files
 ##
-
+context<-"hpc"
 
 # Setup ------------------------------------------------------------------------
 #get context and scenarios functions
@@ -18,20 +18,23 @@ batches_infos <- EpiModelHPC::get_scenarios_batches_infos(
 
 
 
-#get cumm and yr10 outcomes per sim
+#get cumm, yrmean and yr10 outcome metrics per sim
 outcomes_raw <- lapply(
   seq_len(nrow(batches_infos)),
   function(i) process_one_scenario_batch(batches_infos[i, ]))
 
 
 
-#bind cumm metrics from sim batches in one data frame 
+#bind outcome metrics from sim batches in one data frame 
 outcomes_sims <- bind_rows(outcomes_raw) %>%  
-  group_by(scenario_name) %>%               #re-number sims for each scenario
+  
+  #re-number sims for each scenario
+  group_by(scenario_name) %>%               
   arrange(batch_number) %>% 
   mutate(sim2 = sim) %>% 
   mutate(sim = row_number()) %>% 
   select(-sim2)  %>% 
+  
   #rename scenarios
   mutate(scenario.new = ifelse(scenario_name == "base","Base",
                              ifelse(scenario_name == "interv1","+ PP retests",
@@ -44,7 +47,7 @@ saveRDS(outcomes_sims, paste0("data/intermediate/",context,"/processed/outcomes_
 
 
 
-# get cumm and yr10 outcomes per scenario with median, 50% SI summaries
+# get outcome metrics per scenario with median, 50% SI summaries
 outcomes_scenarios <- outcomes_sims %>%
   select(- c(sim, batch_number)) %>%
   group_by(scenario_name, scenario.new) %>%
@@ -95,5 +98,7 @@ intervds <- future.apply::future_lapply(
 # Merge all batches  
 intervdata <- bind_rows(intervds)
 saveRDS(intervdata, paste0("data/intermediate/",context,"/processed/allscenarios.rds"))
+
+
 
 
