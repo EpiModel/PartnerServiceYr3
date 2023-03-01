@@ -1,18 +1,5 @@
 library(dplyr)
 
-# create the elements of the outcomes step by step
-mutate_outcomes <- function(d) {
-  d %>%
-    mutate(
-    cc.prep.B  = s_prep__B / s_prep_elig__B,
-    cc.prep.H  = s_prep__H / s_prep_elig__H,
-    cc.prep.W  = s_prep__W / s_prep_elig__W,
-    prep_users = s_prep__B + s_prep__H + s_prep__W
-    )
-}
-
-
-
 
 #Function 1: Get yr10 outcomes  -------------------------------------------------------
 get_yr10_outcomes <- function(d) {
@@ -42,8 +29,22 @@ get_cumulative_outcomes <- function(d) {
 
 
 
+#Function 3: Get mean outcomes (summed and averaged) over intervention period ------------------------
+get_yrmean_outcomes <- function(d) {
+  #d<-d_sim
+  d %>%
+    #filter(time >= interv_start) %>%
+    group_by(scenario_name, batch_number, sim) %>%
+    #summarise(across(everything(),~ sum(.x, na.rm = TRUE))) %>%
+    summarise(across(everything(),~ .x/10)) %>% #average per intervention year
+    ungroup() #%>% 
+    #select(-c(time,num, i.num))
+}
 
-#Function 3: Process cumm and yr10 outcomes ----------------------------------------------
+
+
+
+#Function 4: Process cumm and yr10 outcomes ----------------------------------------------
 #Process each batch of simulations: the output is a data frame with one row per simulation in the batch
 #each simulation can be uniquely identified with `scenario_name`,`batch_number` and `sim` 
 process_one_scenario_batch <- function(scenario_infos) {
@@ -96,15 +97,16 @@ process_one_scenario_batch <- function(scenario_infos) {
 
   d_last <- get_yr10_outcomes(d_sim)
   d_cum <- get_cumulative_outcomes(d_sim)
+  d_yrmean<-get_yrmean_outcomes(d_cum)
 
-  left_join(d_last, d_cum, by = c("scenario_name", "batch_number", "sim"))
+  #left_join(d_last, d_cum, by = c("scenario_name", "batch_number", "sim"))
+  left_join(d_last, d_yrmean, by = c("scenario_name", "batch_number", "sim"))
 }
 
 
 
 
-
-#Function 4: Process plot data -----------------------------------------------------------
+#Function 5: Process plot data -----------------------------------------------------------
 process_plotdat <- function(file_name, ts) {
   # keep only the file name without extension and split around `__`
   name_elts <- fs::path_file(file_name) %>%
@@ -171,3 +173,6 @@ process_plotdat <- function(file_name, ts) {
     
     return(d)
 }
+
+
+
