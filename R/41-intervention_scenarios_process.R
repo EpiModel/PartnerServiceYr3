@@ -18,54 +18,8 @@ batches_infos <- EpiModelHPC::get_scenarios_batches_infos(
 
 
 
-#get cumm, yrmean and yr10 outcome metrics per sim
-outcomes_raw <- lapply(
-  seq_len(nrow(batches_infos)),
-  function(i) process_one_scenario_batch(batches_infos[i, ]))
 
-
-
-#bind outcome metrics from sim batches in one data frame 
-outcomes_sims <- bind_rows(outcomes_raw) %>%  
-  
-  #re-number sims for each scenario
-  group_by(scenario_name) %>%               
-  arrange(batch_number) %>% 
-  mutate(sim2 = sim) %>% 
-  mutate(sim = row_number()) %>% 
-  select(-sim2)  %>% 
-  
-  #rename scenarios
-  mutate(scenario.new = ifelse(scenario_name == "base","Base",
-                             ifelse(scenario_name == "interv1","+ PP retests",
-                                    ifelse(scenario_name == "interv2","+ Wave 2 PS","+ Both")))) %>% 
-  mutate(scenario.new = factor(scenario.new, levels = c("Base","+ PP retests","+ Wave 2 PS","+ Both"))) %>% 
-  ungroup() %>% 
-  arrange(scenario.new, batch_number, sim)
-
-saveRDS(outcomes_sims, paste0("data/intermediate/",context,"/processed/outcomes_sims.rds"))
-
-
-
-# get outcome metrics per scenario with median, 50% SI summaries
-outcomes_scenarios <- outcomes_sims %>%
-  select(- c(sim, batch_number)) %>%
-  group_by(scenario_name, scenario.new) %>%
-  summarise(across(everything(),list(
-      low = ~ quantile(.x, 0.025, na.rm = TRUE),
-      med = ~ quantile(.x, 0.50, na.rm = TRUE),
-      high = ~ quantile(.x, 0.975, na.rm = TRUE)
-    ),
-    .names = "{.col}__{.fn}"
-  )) %>% ungroup()%>% arrange(scenario.new)
-
-saveRDS(outcomes_scenarios, paste0("data/intermediate/",context,"/processed/outcomes_scenarios.rds"))
-#readr::write_csv(outcomes_scenarios_med95si, "data/intermediate/processed/outcomes_scenarios.csv")
-
-
-
-
-# Process plot data ------------------------------------------------------------------------
+#A. Process intervdata ------------------------------------------------------------------------
 install.packages("future.apply")
 suppressMessages({
   library("EpiModelHIV")
@@ -76,14 +30,12 @@ suppressMessages({
 sims_dir <- paste0("data/intermediate/",context,"/scenarios")
 
 
-
 #get sim files
 sim_files <- list.files(
   sims_dir,
   pattern = "^sim__.*rds$",
   full.names = TRUE
 )
-
 
 
 #Process each batch in parallel 
@@ -94,9 +46,35 @@ intervds <- future.apply::future_lapply(
 )
 
 
-
-# Merge all batches  
+#Merge all batches  
 intervdata <- bind_rows(intervds)
+
+
+
+
+#B. Process outcome_sims and outcome_scenario data----------------------------------------
+outcomes_sims <- get_outcome_sims(intervdata)
+outcomes_scenarios <- outcomes_sims %>%
+  select(- c(sim)) %>%
+  group_by(scenario_name, scenario.new) %>%
+  summarise(across(everything(),list(
+    low = ~ quantile(.x, 0.025, na.rm = TRUE),
+    med = ~ quantile(.x, 0.50, na.rm = TRUE),
+    high = ~ quantile(.x, 0.975, na.rm = TRUE)
+  ),
+  .names = "{.col}__{.fn}"
+  )) %>% 
+  mutate(across(where(is.numeric), ~round (., 2))) %>% ungroup()%>% arrange(scenario.new)
+
+
+
+
+
+
+#Save the processed data
+saveRDS(outcomes_sims, paste0("data/intermediate/",context,"/processed/outcomes_sims.rds"))
+saveRDS(outcomes_scenarios, paste0("data/intermediate/",context,"/processed/outcomes_scenarios.rds"))
+#readr::write_csv(outcomes_scenarios_med95si, "data/intermediate/processed/outcomes_scenarios.csv")
 saveRDS(intervdata, paste0("data/intermediate/",context,"/processed/allscenarios.rds"))
 
 
