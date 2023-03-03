@@ -122,10 +122,10 @@
       "RemoteUsername": "epimodel",
       "RemoteRepo": "epimodelhpc",
       "RemoteRef": "autocalib",
-      "RemoteSha": "d3625ac952c66b208a868801ad1ce005bcf7a1c5",
+      "RemoteSha": "c9f6eeddab361eb47e829ae44391f1e3145aacb3",
       "RemoteHost": "api.github.com",
       "Remotes": "github::EpiModel/slurmworkflow, github::EpiModel/swfcalib",
-      "Hash": "2ce12814e746fcb5e52d063c5e263f3a",
+      "Hash": "428fe8190e0079213f47965e9877fe53",
       "Requirements": [
         "EpiModel",
         "callr",
@@ -1178,12 +1178,12 @@
       "Version": "0.0.0.9000",
       "Source": "GitHub",
       "RemoteType": "github",
-      "RemoteHost": "api.github.com",
       "RemoteUsername": "EpiModel",
       "RemoteRepo": "slurmworkflow",
       "RemoteRef": "main",
-      "RemoteSha": "96da618fc4c1713f76c2e42664b7e2a16c9f0718",
-      "Hash": "de2cf07f62d9922e6d9f28ef98d63d19",
+      "RemoteSha": "ccb3b19dd9a762a8ec88d933273e99bde457e757",
+      "RemoteHost": "api.github.com",
+      "Hash": "4d66992d8fe2f295ff933a84bd12cda3",
       "Requirements": [
         "fs",
         "yaml"
@@ -1208,15 +1208,15 @@
     },
     "statnet.common": {
       "Package": "statnet.common",
-      "Version": "4.8.0-411",
+      "Version": "4.8.0-418",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "statnet",
       "RemoteRepo": "statnet.common",
       "RemoteRef": "master",
-      "RemoteSha": "4ccdddcdd7f7588d87116d2d5e3bfb54b2d7e256",
+      "RemoteSha": "516597e1d4f753a3bb5dee8e7155d6f93de29616",
       "RemoteHost": "api.github.com",
-      "Hash": "e1ab856892ce996141571b2290e59be1",
+      "Hash": "169c9557e6c24e7d4ed184d3260b6be0",
       "Requirements": [
         "coda"
       ]
