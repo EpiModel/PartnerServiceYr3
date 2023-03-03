@@ -9,7 +9,7 @@ calib_object <- list(
         targets_val = 0.206,
         params = c("prep.start.prob_1"),
         initial_proposals = dplyr::tibble(
-          hiv.test.rate_1 = seq(0.001, 0.01, length.out = n_sims),
+          prep.start.prob_1 = seq(0.001, 0.01, length.out = n_sims),
         ),
         make_next_proposals = make_shrink_proposer(n_sims),
         get_result = determ_poly_end(0.001, poly_n = 5)
@@ -19,7 +19,7 @@ calib_object <- list(
         targets_val = 0.237,
         params = c("prep.start.prob_2"),
         initial_proposals = dplyr::tibble(
-          hiv.test.rate_1 = seq(0.001, 0.01, length.out = n_sims),
+          prep.start.prob_2 = seq(0.001, 0.01, length.out = n_sims),
         ),
         make_next_proposals = make_shrink_proposer(n_sims),
         get_result = determ_poly_end(0.001, poly_n = 5)
@@ -29,7 +29,7 @@ calib_object <- list(
         targets_val = 0.332,
         params = c("prep.start.prob_3"),
         initial_proposals = dplyr::tibble(
-          hiv.test.rate_1 = seq(0.001, 0.01, length.out = n_sims),
+          prep.start.prob_3 = seq(0.001, 0.01, length.out = n_sims),
         ),
         make_next_proposals = make_shrink_proposer(n_sims),
         get_result = determ_poly_end(0.001, poly_n = 5)
