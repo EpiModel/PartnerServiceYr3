@@ -108,8 +108,8 @@ calib_object <- list(
         params = paste0("hiv.trans.scale_", 1:3),
         initial_proposals = dplyr::tibble(
           hiv.trans.scale_1 = sample(seq(1, 4, length.out = n_sims)),
-          hiv.trans.scale_2 = sample(seq(0.2, 6, length.out = n_sims)),
-          hiv.trans.scale_3 = sample(seq(0.2, 6, length.out = n_sims))
+          hiv.trans.scale_2 = sample(seq(0.2, 0.6, length.out = n_sims)),
+          hiv.trans.scale_3 = sample(seq(0.2, 0.6, length.out = n_sims))
         ),
         make_next_proposals = make_range_proposer(n_sims),
         get_result = determ_trans_end(

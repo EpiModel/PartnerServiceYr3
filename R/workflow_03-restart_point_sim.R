@@ -59,7 +59,7 @@ wf <- add_workflow_step(
   step_tmpl = step_tmpl_netsim_scenarios(
     path_to_est, param, init, control,
     scenarios_list = NULL,
-    n_rep = 120,
+    n_rep = 600,
     n_cores = max_cores,
     libraries = "EpiModelHIV",
     output_dir = "data/intermediate/calibration",
