@@ -99,9 +99,11 @@ max_cores <- 20
 # Controls
 source("./R/utils-targets.R")
 control <- control_msm(
-  nsteps              = calibration_end,
+  start               = restart_time,
+  nsteps              = intervention_end,
   nsims               = 1,
   ncores              = 1,
+  initialize.FUN      = reinit_msm,
   cumulative.edgelist = TRUE,
   truncate.el.cuml    = 0,
   .tracker.list       = calibration_trackers,
@@ -111,7 +113,7 @@ control <- control_msm(
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_netsim_swfcalib_output(
-    path_to_est, param, init, control,
+    path_to_restart, param, init, control,
     calib_object = calib_object,
     output_dir = calib_dir,
     libraries = "EpiModelHIV",
