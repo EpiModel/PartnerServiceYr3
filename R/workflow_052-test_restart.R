@@ -38,6 +38,14 @@ library("EpiModelHIV")
 context <- "hpc"
 source("R/utils-default_inputs.R") # generate `path_to_est`, `param` and `init`
 
+param <- param.net(
+  data.frame.params   = read.csv("data/input/params.csv"),
+  netstats            = netstats,
+  epistats            = epistats,
+  prep.start          = prep_start,
+  riskh.start         = prep_start - 53
+)
+
 # Controls
 source("R/utils-targets.R")
 control <- control_msm(
@@ -57,7 +65,7 @@ wf <- add_workflow_step(
   step_tmpl = step_tmpl_netsim_scenarios(
     path_to_restart, param, init, control,
     scenarios_list = NULL,
-    output_dir = "data/intermediate/scenarios",
+    output_dir = "data/intermediate/calibration",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
     n_rep = 30,
