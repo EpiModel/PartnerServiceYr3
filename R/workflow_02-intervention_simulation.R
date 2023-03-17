@@ -25,7 +25,7 @@ cp_dir <- "data/cp_recal"
 #Create workflow
 #-----------------------------------------------------------------------------------------
 wf <- create_workflow(
-  wf_name = "modeltest",
+  wf_name = "psy3sim",
   default_sbatch_opts = hpc_configs$default_sbatch_opts
 )
 
