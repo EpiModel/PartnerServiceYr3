@@ -56,10 +56,14 @@ process_plotdat <- function(file_name, ts) {
            found.partners.all,
            
            #PrEP initiation trackers
-           prepStartPart, prepStartGen, prepStartAll,
+           prepElig, prepElig.stat, 
+           elig.prepStartPart, prepStartPart, 
+           elig.prepStartGen, prepStartGen, 
+           prepStartAll,
            
            #ART initiation trackers
-           part.start.tx, gen.start.tx,
+           elig.part.start.tx, part.start.tx, 
+           elig.gen.start.tx, gen.start.tx,
            
            #ART re-engagement trackers
            gen.ident, gen.elig.for.reinit, gen.reinit.tx,
