@@ -51,7 +51,6 @@ intervdata <- bind_rows(intervds)
 
 
 
-
 #B. Process outcome_sims and outcome_scenario data----------------------------------------
 outcomes_sims <- get_outcome_sims(intervdata)
 outcomes_scenarios <- outcomes_sims %>%
