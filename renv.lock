@@ -69,11 +69,11 @@
       "Version": "2.4.0",
       "Source": "GitHub",
       "RemoteType": "github",
-      "RemoteUsername": "EpiModel",
-      "RemoteRepo": "EpiModel",
-      "RemoteRef": "main",
-      "RemoteSha": "a04f84843f0437fb34f7c20c960b52eeb612e1dd",
       "RemoteHost": "api.github.com",
+      "RemoteRepo": "EpiModel",
+      "RemoteUsername": "EpiModel",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "a04f84843f0437fb34f7c20c960b52eeb612e1dd",
       "Requirements": [
         "R",
         "RColorBrewer",
@@ -102,7 +102,7 @@
         "tibble",
         "utils"
       ],
-      "Hash": "68787aed5ccd098c8004c9081b4e5f82"
+      "Hash": "00298e468041aa3c27e160c2d7af8384"
     },
     "EpiModelHIV": {
       "Package": "EpiModelHIV",
