@@ -44,5 +44,8 @@ vignettes/*.pdf
 #ignore workflow files
 workflows/
 
+#ignore renv/ files
+renv/
+
 
 
