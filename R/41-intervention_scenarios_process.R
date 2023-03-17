@@ -68,8 +68,6 @@ outcomes_scenarios <- outcomes_sims %>%
 
 
 
-
-
 #Save the processed data
 saveRDS(outcomes_sims, paste0("data/intermediate/",context,"/processed/outcomes_sims.rds"))
 saveRDS(outcomes_scenarios, paste0("data/intermediate/",context,"/processed/outcomes_scenarios.rds"))
