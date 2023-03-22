@@ -17,7 +17,7 @@ source("R/utils-netsim_inputs.R")
 source("R/utils-netsize.R")
 
 
-#Set up files 
+#Set up inputs 
 #~~~~~~~~~~~~
 epistats <- readRDS("data/intermediate/estimates/epistats-local.rds")
 netstats <- readRDS("data/intermediate/estimates/netstats-local.rds")
@@ -41,32 +41,38 @@ est      <- readRDS("data/intermediate/estimates/netest-local.rds")
     prev.rgc = 0.1,
     prev.uct = 0.1)
 
+
+  
+#Simulate epidemic over estimated networks and examine output 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#run 1 sim only
+  
   #control
   control <- control_msm(
     nsteps = 250,
     nsims = 1,
     ncores = 1)
-  #print(control)
-
-#Simulate epidemic and examine output 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  #run 1 sim*********************
+  
+  #run netsim
   sim <- netsim(est, param, init, control)
 
-  print(sim)
+  #check output
+    print(sim)
+    
+    par(mar = c(3, 3, 2, 2), mgp = c(2, 1, 0))
+    plot(sim, y = "i.num", main = "Prevalence")
+    plot(sim, y = "ir100", main = "Incidence")
+  
+    # df <- as.data.frame(sim)
+    # head(df)
+    # tail(df)
 
-  par(mar = c(3, 3, 2, 2), mgp = c(2, 1, 0))
-  plot(sim, y = "i.num", main = "Prevalence")
-  plot(sim, y = "ir100", main = "Incidence")
-
-  # df <- as.data.frame(sim)
-  # head(df)
-  # tail(df)
-
-  #run >1 sim *****************
+  
+#run >1 sim 
+  #control
   control <- control_msm(
     nsteps = 250,
-    nsims = 2,
+    nsims = 2,   #change to desired number of sims
     ncores = 2)
   
   sim <- netsim(est, param, init, control)
@@ -92,7 +98,7 @@ est      <- readRDS("data/intermediate/estimates/netest-local.rds")
 
 
 
-# NetSim on local: Testing Scenarios -----------------------------------------------------
+# Testing Scenarios on local -------------------------------------------------------------
 # ----------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------
 #source("R/utils-0_project_settings.R")
