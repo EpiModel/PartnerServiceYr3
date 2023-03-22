@@ -11,7 +11,7 @@ library("EpiModelHPC")
 library("EpiModelHIV")
 library("tidyr")
 library("dplyr")
-library("ggplot")
+library("ggplot2")
 
 hpc_configs <- swf_configs_rsph(
   partition = "epimodel",
