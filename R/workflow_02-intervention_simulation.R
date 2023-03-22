@@ -9,6 +9,9 @@
 library("slurmworkflow")
 library("EpiModelHPC")
 library("EpiModelHIV")
+library("tidyr")
+library("dplyr")
+library("ggplot")
 
 hpc_configs <- swf_configs_rsph(
   partition = "epimodel",
@@ -32,7 +35,7 @@ wf <- create_workflow(
 
 
 
-#Update renv (from GitHub project)
+#Step 1: Update renv (from GitHub project repo)
 #-----------------------------------------------------------------------------------------
 wf <- add_workflow_step(
   wf_summary = wf,
@@ -45,7 +48,7 @@ wf <- add_workflow_step(
 
 
 
-#Set up network simulation inputs
+#Set up simulation inputs
 #-----------------------------------------------------------------------------------------
 source("R/utils-netsim_inputs.R")
 source("R/utils-netsize.R") 
@@ -85,7 +88,7 @@ scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
 
 
 
-#Run netsim
+#Step 2: Simulate HIV epidemic over estimated networks
 #-----------------------------------------------------------------------------------------
 wf <- add_workflow_step(
   wf_summary = wf,
@@ -95,7 +98,7 @@ wf <- add_workflow_step(
     output_dir = "data/intermediate/hpc/scenarios",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
-    n_rep = 500,                                                                            
+    n_rep = 1,                                                                            
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
@@ -109,7 +112,9 @@ wf <- add_workflow_step(
 )
 
 
-# Process simulations --------------------------------------------------------------------
+
+#Step 3: Process data from model scenarios output
+#-----------------------------------------------------------------------------------------
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
