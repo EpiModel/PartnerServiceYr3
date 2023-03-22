@@ -26,7 +26,7 @@ suppressMessages({
   library("future.apply")
   library("tidyr")
   library("dplyr")
-  library("ggplot")
+  library("ggplot2")
 })
 
 sims_dir <- paste0("data/intermediate/",context,"/scenarios")
