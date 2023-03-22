@@ -24,7 +24,9 @@ install.packages("future.apply")
 suppressMessages({
   library("EpiModelHIV")
   library("future.apply")
+  library("tidyr")
   library("dplyr")
+  library("ggplot")
 })
 
 sims_dir <- paste0("data/intermediate/",context,"/scenarios")
