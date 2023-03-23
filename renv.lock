@@ -66,14 +66,9 @@
     },
     "EpiModel": {
       "Package": "EpiModel",
-      "Version": "2.4.0",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteUsername": "EpiModel",
-      "RemoteRepo": "EpiModel",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "10096af513c494cd1388cd371fd51d499ade8a48",
-      "RemoteHost": "api.github.com",
+      "Version": "2.3.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
         "RColorBrewer",
@@ -102,7 +97,7 @@
         "tibble",
         "utils"
       ],
-      "Hash": "889017e394d6c573f6c29cb4d67cc9fb"
+      "Hash": "dfd8d752775e4d81ac7a3f500e4fe129"
     },
     "EpiModelHIV": {
       "Package": "EpiModelHIV",
@@ -469,7 +464,7 @@
     },
     "dplyr": {
       "Package": "dplyr",
-      "Version": "1.1.0",
+      "Version": "1.1.1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -488,7 +483,7 @@
         "utils",
         "vctrs"
       ],
-      "Hash": "d3c34618017e7ae252d46d79a1b9ec32"
+      "Hash": "eb5742d256a0d9306d85ea68756d8187"
     },
     "egor": {
       "Package": "egor",
@@ -1080,7 +1075,7 @@
     },
     "pillar": {
       "Package": "pillar",
-      "Version": "1.8.1",
+      "Version": "1.9.0",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1093,7 +1088,7 @@
         "utils",
         "vctrs"
       ],
-      "Hash": "f2316df30902c81729ae9de95ad5a608"
+      "Hash": "15da5a8412f317beeee6175fbc76f4bb"
     },
     "pkgconfig": {
       "Package": "pkgconfig",
@@ -1653,7 +1648,7 @@
     },
     "vctrs": {
       "Package": "vctrs",
-      "Version": "0.6.0",
+      "Version": "0.6.1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1663,7 +1658,7 @@
         "lifecycle",
         "rlang"
       ],
-      "Hash": "7e877404388794361277be95d8445de8"
+      "Hash": "06eceb3a5d716fd0654cc23ca3d71a99"
     },
     "viridisLite": {
       "Package": "viridisLite",
