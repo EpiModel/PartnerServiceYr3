@@ -30,7 +30,7 @@ scenarios_df <- tibble::tibble(
   .scenario.id = c("base", "interv1"),#, "interv2", "both"),
   .at = 1,
   prevpos.retest.start	= c(Inf, interv_start),#, Inf, interv_start),
-  second.genps.start	= c(Inf, Inf, interv_start)#, interv_start)
+  second.genps.start	= c(Inf, Inf)#, interv_start, interv_start)
 )
 
 scenarios_list <- EpiModel::create_scenario_list(scenarios_df)
