@@ -6,6 +6,9 @@
 
 # Setup 
 #-----------------------------------------------------------------------------------------
+#renv::install("EpiModel", rebuild = TRUE)
+#renv::snapshot()
+
 library("slurmworkflow")
 library("EpiModelHPC")
 library("EpiModelHIV")
@@ -98,7 +101,7 @@ wf <- add_workflow_step(
     output_dir = "data/intermediate/hpc/scenarios",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
-    n_rep = 1,                                                                            
+    n_rep = 500,                                                                            
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
@@ -149,6 +152,7 @@ wf <- add_workflow_step(
 
 # to get only the processed files back
 # scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc/processed data/intermediate/hpc/
+# scp -r sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc/processed data/intermediate/hpc/
 
 # scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows/modeltest/log data/intermediate/
 
