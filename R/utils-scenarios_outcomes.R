@@ -1,8 +1,6 @@
 library(dplyr)
 
 
-
-
 #Function 1: Process plot data -----------------------------------------------------------
 process_plotdat <- function(file_name, ts) {
   # keep only the file name without extension and split around `__`
@@ -34,23 +32,29 @@ process_plotdat <- function(file_name, ts) {
            
            #Distal impacts: HIV incidence measures
              incid, incid.B, incid.H, incid.W,
+             num.B, num.H, num.W,
            
            #Intermediate impacts: PrEP & ART coverage
-             #PrEP use trackers
-             prepElig, prepElig.stat, 
+             #PrEP
+             prepElig, 
+             prepStat.init, 
              elig.prepStartPart, prepStartPart, 
              elig.prepStartGen, prepStartGen, 
              prepStartAll,
+             prepStop,
+             prepStat.final,
              
-             #ART initiation trackers
+             #ART
+             txElig.status, txElig.diag, 
+             txtStat.init,
              elig.part.start.tx, part.start.tx, 
              elig.gen.start.tx, gen.start.tx,
-             
-             #ART re-engagement trackers
-             gen.ident, gen.elig.for.reinit, gen.reinit.tx,
-             part.ident, part.elig.for.reinit, part.reinit.tx,
-             pp.ident, pp.elig.for.reinit, pp.reinit.tx, 
+             txStop,
+             gen.elig.for.reinit, gen.reinit.tx,
+             part.elig.for.reinit, part.reinit.tx,
+             pp.elig.for.reinit, pp.reinit.tx, 
              all.reinit.tx,
+             txStat.final,
            
            #Proximal impacts: HIV screening and PS participation
              #HIV screening
@@ -87,27 +91,44 @@ process_plotdat <- function(file_name, ts) {
 get_yr10_outcomes <- function(d) {
   d %>%
     filter(time >= max(time) - 52) %>% 
+    select(scenario_name, scenario.new, sim, 
+           incid, incid.B, incid.H, incid.W, 
+           num.B, num.H, num.W) %>% 
     group_by(scenario_name, scenario.new, sim) %>%
-    summarise(across(c(incid), sum, .names = "{.col}_yr10")) %>%
-    mutate(ir.yr10=incid_yr10/networks_size*100) %>% 
-    select(-incid_yr10)
+    summarise(
+      across(c(incid, incid.B, incid.H, incid.W), ~sum (.x, na.rm = T)),
+      across(c(num.B, num.H, num.W), mean(.x, na.rm = T))) %>% # .names = "{.col}_yr10")) %>%
+    mutate(ir.yr10 = incid / networks_size * 100,
+           ir.yr10b = incid / (num.B + num.H + num.W) * 100,
+           ir.yr10.B = incid.B / num.B *100,
+           ir.yr10.H = incid.H / num.H *100,
+           ir.yr10.W = incid.W / num.W *100) %>% 
+    select(scenario_name, scenario.new, sim,
+           ir.yr10, ir.yr10b,
+           ir.yr10.B, ir.yr10.H, ir.yr10.W)
 }
 
 
 
-#Function 2b: Get cumulative outcomes over intervention period ------------------------
+#Function 2b: Get cumulative incidence over entire intervention period -------------------
 get_cumulative_outcomes <- function(d) {
   d %>% filter(time>5*52) %>% group_by(scenario_name, scenario.new, sim) %>%
-    summarise(across(incid,~ sum(.x, na.rm = TRUE)))
+    summarise(across(c(incid, incid.B, incid.H, incid.W),~ sum(.x, na.rm = TRUE)))
 }
 
 
 
-#Function 2c: Get mean outcomes (summed and averaged) over intervention period ------------------------
+#Function 2c: Get mean outcomes (summed and averaged) over intervention period -----------
 get_yrmean_outcomes <- function(d) {
   d %>% filter(time>5*52) %>% group_by(scenario_name, scenario.new, sim) %>%
     summarise(across(everything(),~ sum(.x, na.rm = TRUE)/10)) %>% 
-    select(-c(incid, time, batch_number)) 
+    mutate(prepCovGen = prepStartGen / elig.prepStartGen,
+           prepCovPart = prepStartPart / elig.prepStartPart,
+           prepCovAll = prepStartAll / prepElig)
+    
+    select(-c(incid, incid.B, incid.H, incid.W, 
+              num.B, num.H, num.W, 
+              time, batch_number)) 
 } 
 
 
