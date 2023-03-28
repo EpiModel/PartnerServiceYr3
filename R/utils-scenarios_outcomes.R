@@ -80,7 +80,7 @@ process_plotdat <- function(file_name, ts) {
              found.partners.all,
 
           ) %>%
-    arrange(scenario.new, batch_number, sim) %>% 
+    arrange(scenario.new, batch_number, sim) %>%
     
     return(d)
 }
@@ -97,7 +97,7 @@ get_yr10_outcomes <- function(d) {
     group_by(scenario_name, scenario.new, sim) %>%
     summarise(
       across(c(incid, incid.B, incid.H, incid.W), ~sum (.x, na.rm = T)),
-      across(c(num.B, num.H, num.W), ~mean(.x, na.rm = T))) %>% # .names = "{.col}_yr10")) %>%
+      across(c(num, num.B, num.H, num.W), ~mean(.x, na.rm = T))) %>% # .names = "{.col}_yr10")) %>%
     mutate(ir.yr10 = incid / networks_size * 100,
            ir.yr10b = incid / num * 100,
            ir.yr10.B = incid.B / num.B *100,
