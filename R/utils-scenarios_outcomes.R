@@ -40,7 +40,7 @@ process_plotdat <- function(file_name, ts) {
              elig.prepStartPart, prepStartPart,
              elig.prepStartGen, prepStartGen,
              prepStartAll,
-             prepStop,
+             prep.all.stop,
              prepCurr, prepCurr.B, prepCurr.H, prepCurr.W,
              prepCov, prepCov.B, prepCov.H, prepCov.W,
 
