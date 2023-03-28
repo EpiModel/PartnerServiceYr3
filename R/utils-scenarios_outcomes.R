@@ -29,57 +29,57 @@ process_plotdat <- function(file_name, ts) {
     mutate(scenario.new = factor(scenario.new, levels = c("Base","+ PP retests","+ Wave 2 partn.","+ Both"))) %>% 
     ungroup() %>% 
     select(scenario_name, scenario.new, batch_number, sim, time,
-           
+
            #Distal impacts: HIV incidence measures
              incid, incid.B, incid.H, incid.W,
              num, num.B, num.H, num.W,
-           
+
            #Intermediate impacts: PrEP & ART coverage
              #PrEP
              prepElig, prepElig.B, prepElig.H, prepElig.W,
-             elig.prepStartPart, prepStartPart, 
-             elig.prepStartGen, prepStartGen, 
+             elig.prepStartPart, prepStartPart,
+             elig.prepStartGen, prepStartGen,
              prepStartAll,
              prepStop,
              prepCurr, prepCurr.B, prepCurr.H, prepCurr.W,
              prepCov, prepCov.B, prepCov.H, prepCov.W,
-             
+
              #ART
-             i.num, i.num.B, i.num.H, i.num.W, 
+             i.num, i.num.B, i.num.H, i.num.W,
              diag, diag.B, diag.H, diag.W,
-             elig.part.start.tx, part.start.tx, 
+             elig.part.start.tx, part.start.tx,
              elig.gen.start.tx, gen.start.tx,
              txStop,
              gen.elig.for.reinit, gen.reinit.tx,
              part.elig.for.reinit, part.reinit.tx,
-             pp.elig.for.reinit, pp.reinit.tx, 
+             pp.elig.for.reinit, pp.reinit.tx,
              all.reinit.tx,
              artCurr, artCurr.B, artCurr.H, artCurr.W,
              artCov, artCov.B, artCov.H, artCov.W,
-           
+
            #Proximal impacts: HIV screening and PS participation
              #HIV screening
              tot.tests, tot.tests.B, tot.tests.H, tot.tests.W,
-             tot.tests.ibt, tot.tests.pbt, 
+             tot.tests.ibt, tot.tests.pbt,
              tot.tests.ibtNegunk, tot.tests.ibtPrEP, tot.tests.ibtPP,
              eligPP.for.retest, pp.tests.nic,pp.tests.ic,
              tot.part.ident, elig.part, tot.tests.pbt, positive.part,
-           
+
              #PS measures - Indexes
              recent.newdiagn, elig.indexes.nd, found.indexes.nd,
              recent.ppretested, elig.indexes.pp, found.indexes.pp, found.indexes.pp.un,
-             
+
              #PS measures - Wave 1 partners
              elig.partners, found.partners,
-             negunkPart.indexes, posPart.indexes, elig.indexes.posPart, 
-             
+             negunkPart.indexes, posPart.indexes, elig.indexes.posPart,
+
              #PS measures - Wave 2 partners
              elig.partners.gen2, found.partners.gen2,
-             
+
              #all found partners
              found.partners.all,
-             
-          ) %>% 
+
+          ) %>%
     arrange(scenario.new, batch_number, sim) %>% 
     
     return(d)
