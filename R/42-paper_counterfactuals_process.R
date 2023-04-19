@@ -55,7 +55,7 @@ full_intervdata <- bind_rows(intervds)
 
 #B. Process outcome_sims and outcome_scenario data----------------------------------------
 outcomes_sims <- get_outcome_sims(full_intervdata) %>% 
-  select(scenario_name, scenario.new, sim,
+  select(tbl, scenario.num, scenario.new, scenario_name,
          ir.yr10, incid.cum, nia, pia,
          prepCov.yr10, diagCov.yr10, artCov.yr10, vSuppCov.yr10,
          prepStartAll,
@@ -64,6 +64,7 @@ outcomes_sims <- get_outcome_sims(full_intervdata) %>%
          partners.per.index, 
          tot.tests.pbt, positive.part, negative.part,
          prepStartPart, part.start.tx, part.reinit.tx, pp.reinit.tx)
+
 
 outcomes_scenarios <- outcomes_sims %>%
   select(- c(sim)) %>%
