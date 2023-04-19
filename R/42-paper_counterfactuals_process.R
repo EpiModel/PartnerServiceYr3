@@ -64,6 +64,7 @@ outcomes_sims <- get_outcome_sims(full_intervdata) %>%
          partners.per.index, 
          tot.tests.pbt, positive.part, negative.part,
          prepStartPart, part.start.tx, part.reinit.tx, pp.reinit.tx)
+
 outcomes_scenarios <- outcomes_sims %>%
   select(- c(sim)) %>%
   group_by(scenario_name, scenario.new) %>%
