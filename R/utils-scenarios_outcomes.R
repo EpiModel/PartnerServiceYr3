@@ -1,3 +1,5 @@
+#Functions for model output processing
+
 library(dplyr)
 
 
@@ -93,19 +95,24 @@ get_yr10_outcomes <- function(d) {
     filter(time >= max(time) - 52) %>% 
     select(scenario_name, scenario.new, sim, 
            incid, incid.B, incid.H, incid.W, 
-           num, num.B, num.H, num.W) %>% 
+           num, num.B, num.H, num.W,
+           prepCov, prepCov.B, prepCov.H, prepCov.W,
+           artCov, artCov.B, artCov.H, artCov.W) %>% 
     group_by(scenario_name, scenario.new, sim) %>%
     summarise(
       across(c(incid, incid.B, incid.H, incid.W), ~sum (.x, na.rm = T)),
-      across(c(num, num.B, num.H, num.W), ~mean(.x, na.rm = T))) %>% # .names = "{.col}_yr10")) %>%
+      across(c(num, num.B, num.H, num.W,
+               prepCov, prepCov.B, prepCov.H, prepCov.W,
+               artCov, artCov.B, artCov.H, artCov.W), ~mean(.x, na.rm = T))) %>% # .names = "{.col}_yr10")) %>%
     mutate(ir.yr10 = incid / networks_size * 100,
-           ir.yr10b = incid / num * 100,
            ir.yr10.B = incid.B / num.B *100,
            ir.yr10.H = incid.H / num.H *100,
            ir.yr10.W = incid.W / num.W *100) %>% 
     select(scenario_name, scenario.new, sim,
            ir.yr10, ir.yr10b,
-           ir.yr10.B, ir.yr10.H, ir.yr10.W)
+           ir.yr10.B, ir.yr10.H, ir.yr10.W,
+           prepCov, prepCov.B, prepCov.H, prepCov.W,
+           artCov, artCov.B, artCov.H, artCov.W)
 }
 
 
@@ -119,25 +126,49 @@ get_cumulative_outcomes <- function(d) {
 
 
 
-#Function 2c: Get mean outcomes (summed and averaged) over intervention period -----------
+#Function 2c1: Get mean outcomes in year before intervention impl ------------------------
+get_mean_outcomes1 <- function(d) {
+  d %>% filter(time < 5 * 52 & time > 4*52) %>% 
+    group_by(scenario_name, scenario.new, sim) %>%
+    summarise(across(c(prepCov, prepCov.B, prepCov.H, prepCov.W,
+                       artCov, artCov.B, artCov.H, artCov.W), ~ mean(.x, na.rm = T)))  
+} 
+
+
+
+#Function 2c2: Get mean outcomes over intervention ---------------------------------------
+get_mean_outcomes2 <- function(d) {
+  d %>% filter(time > 5 * 52) %>% 
+    group_by(scenario_name, scenario.new, sim) %>%
+    summarise(across(c(prepCov, prepCov.B, prepCov.H, prepCov.W,
+                       artCov, artCov.B, artCov.H, artCov.W), ~ mean(.x, na.rm = T)))  
+} 
+
+#Function 2d: Get mean outcomes (summed and averaged) over intervention period -----------
 get_yrmean_outcomes <- function(d) {
   d %>% filter(time > 5 * 52) %>% 
     group_by(scenario_name, scenario.new, sim) %>%
     summarise(across(everything(), ~ sum(.x, na.rm = T) / 10)) %>% 
     select(-c(incid, incid.B, incid.H, incid.W, 
               num, num.B, num.H, num.W, 
+              prepCov, prepCov.B, prepCov.H, prepCov.W,
+              artCov, artCov.B, artCov.H, artCov.W,
               time, batch_number)) 
 } 
 
 
 
-#Function 2d: Get outcome sims data ------------------------------------------------------
+#Function 2e: Get outcome sims data ------------------------------------------------------
 get_outcome_sims<-function(d){
   d_yr10<-get_yr10_outcomes(d)
+  d_mean1<-get_mean_outcomes1(d)
+  d_mean2<-get_mean_outcomes2(d)
   d_cum<-get_cumulative_outcomes(d)
   d_yrmean<-get_yrmean_outcomes(d)
   
   #join all
-  d_join<-left_join(d_yr10, d_cum, by = c("scenario_name", "scenario.new", "sim"))
-  left_join(d_join, d_yrmean, by = c("scenario_name", "scenario.new", "sim"))
+  d_join0<-left_join(d_yr10, d_cum, by = c("scenario_name", "scenario.new", "sim"))
+  d_join1<-left_join(d_join0, d_mean1, by = c("scenario_name", "scenario.new", "sim"), suffix=c("",".yr0"))
+  d_join2<-left_join(d_join1, d_mean2, by = c("scenario_name", "scenario.new", "sim"), suffix=c("",".yrall"))
+  left_join(d_join2, d_yrmean, by = c("scenario_name", "scenario.new", "sim"))
 }
