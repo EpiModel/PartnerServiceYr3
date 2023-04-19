@@ -5,6 +5,10 @@ library(dplyr)
 
 #Function 1: Process plot data -----------------------------------------------------------
 process_fulldata <- function(file_name, ts) {
+  
+  # file_name <-sim_files[1]
+  # ts <- interv_start - (5 * 52) + 1
+  
   # keep only the file name without extension and split around `__`
   name_elts <- fs::path_file(file_name) %>%
     fs::path_ext_remove() %>%
@@ -32,20 +36,16 @@ process_fulldata <- function(file_name, ts) {
       elig.indexes.all   = elig.indexes.nd + elig.indexes.pp,
       found.indexes.all  = found.indexes.nd + found.indexes.pp,
       
+      elig.partners.all  = elig.partners + elig.partners.gen2,
+      negative.part = tot.tests.pbt - positive.part) %>% 
+    mutate(
       prp.indexes.found.nd = found.indexes.nd / elig.indexes.nd,
       prp.indexes.found.pp = found.indexes.pp / elig.indexes.pp,
       prp.indexes.found.all = found.indexes.all / elig.indexes.all,
-      
-      elig.partners.all  = elig.partners + elig.partners.gen2,
-      
       prp.partners.found.gen1 = found.partners / elig.partners,
       prp.partners.found.gen2 = found.partners.gen2 / elig.partners.gen2,
       prp.partners.found.all = found.partners.all / elig.partners.all,
-      
-      partners.per.index  = found.partners.all / found.indexes.all,
-      
-      negative.part = tot.tests.pbt - positive.part
-    )
+      partners.per.index  = found.partners.all / found.indexes.all) %>% 
     select(scenario_name, scenario.new, batch_number, sim, time,
 
            #Distal impacts: HIV incidence measures
@@ -142,40 +142,51 @@ get_yr10_outcomes <- function(d) {
            vSuppCov) %>% 
     group_by(scenario_name, scenario.new, sim) %>%
     summarise(
-      across(c(incid), ~sum (.x, na.rm = T), .names = "{.col}_yr10"),
-      across(c(prepCov, diagCov, artCov, vSuppCov), ~ mean(.x, na.rm = T), .names = "{.col}_yr10")) %>% 
-    mutate(ir.yr10 = incid_yr10 / networks_size * 100) %>% 
-    select(scenario_name, scenario.new, sim,
-           ir.yr10, prepCov_yr10, diagCov_yr10, artCov_yr10, vSuppCov_yr10)
+      across(c(incid), ~sum (.x, na.rm = T), .names = "{.col}.yr10"),
+      across(c(prepCov, diagCov, artCov, vSuppCov), ~ mean(.x, na.rm = T), .names = "{.col}.yr10")) %>% 
+    mutate(ir.yr10 = incid.yr10 / networks_size * 100) %>% 
+    select(scenario_name, scenario.new, sim, ends_with(".yr10"))
 }
 
 
 
-# #Function 2c: Get mean outcomes over intervention period ---------------------------------
-# get_yrMu_outcomes <- function(d) {
-#   d %>% filter(time > 5 * 52) %>% 
-#     select(scenario_name, scenario.new, sim, 
-#            incid,  
-#            prepCov, 
-#            diagCov,
-#            artCov,
-#            vSuppCov) %>% 
-#     group_by(scenario_name, scenario.new, sim) %>%
-#     summarise(
-#       across(c(incid), ~sum (.x, na.rm = T), .names = "{.col}_yrMu"),
-#       across(c(prepCov, diagCov, artCov, vSuppCov), ~ mean(.x, na.rm = T), .names = "{.col}_yrMu")) %>% 
-#     mutate(ir.yrMu = incid_yrMu / networks_size * 100) %>% 
-#     select(scenario_name, scenario.new, sim,
-#            ir.yrMu, prepCov_yrMu, diagCov_yrMu, artCov_yrMu, vSuppCov_yrMu)
-# } 
+#Function 2c: Get mean outcomes over intervention period ---------------------------------
+get_yrMu_outcomes <- function(d) {
+  d %>% filter(time > 5 * 52) %>%
+    select(scenario_name, scenario.new, sim,
+           prp.indexes.found.nd, 
+           prp.indexes.found.pp,
+           prp.indexes.found.all,
+           prp.partners.found.gen1,
+           prp.partners.found.gen2,
+           prp.partners.found.all,
+           partners.per.index) %>% 
+    group_by(scenario_name, scenario.new, sim) %>%
+    summarise(across(everything(), ~ mean(.x, na.rm = T))) 
+}
 
 
 
 #Function 2d: Get cumulative HIV incidence over intervention period ----------------------
 get_cumulative_outcomes <- function(d) {
   d %>% filter(time > 5 * 52) %>% 
+    select(scenario_name, scenario.new, sim, time, incid) %>% 
     group_by(scenario_name, scenario.new, sim) %>%
-    summarise(across(c(incid),~ sum(.x, na.rm = TRUE), .names = "{.col}_yrAll"))
+    summarise(across(c(incid),~ sum(.x, na.rm = TRUE), .names = "{.col}.cum")) 
+}
+
+
+get_niapia <- function(d) {
+  d %>% filter(time > 5 * 52) %>% 
+    select(scenario_name, scenario.new, sim, time, incid) %>% 
+    group_by(scenario_name, scenario.new, sim) %>%
+    summarise(across(c(incid),~ sum(.x, na.rm = TRUE))) %>%  
+    group_by(sim) %>% 
+    arrange(scenario_name) %>% 
+    mutate(nia = (.[[4]][1] - .[[4]]),
+           pia = (.[[4]][1] - .[[4]]) / .[[4]][1]) %>% 
+    ungroup() %>% 
+   select(scenario_name, scenario.new, sim, nia, pia)
 }
 
 
@@ -185,18 +196,15 @@ get_sumave_outcomes <- function(d) {
   d %>% filter(time > 5 * 52) %>% 
     select(scenario_name, scenario.new, sim, 
            prepStartAll, 
-           elig.indexes.all, found.indexes.all, prp.indexes.found.all,
-           elig.partners.all, found.partners.all, prp.partners.found.all,
-           partners.per.index,
+           elig.indexes.all, found.indexes.all,
+           elig.partners.all, found.partners.all,
            tot.tests.pbt, positive.part, negative.part,
            prepStartPart,
            part.start.tx,
            part.reinit.tx,
            pp.reinit.tx) %>% 
     group_by(scenario_name, scenario.new, sim) %>%
-    summarise(across(everything(), ~ sum(.x, na.rm = T) / 10)) %>% 
-    select(-c(incid, num, prepCov, diagCov, artCov, vSuppCov,
-              time, batch_number)) 
+    summarise(across(everything(), ~ sum(.x, na.rm = T) / 10)) 
 } 
 
 
@@ -204,9 +212,11 @@ get_sumave_outcomes <- function(d) {
 #Function 2f: Get outcome sims data ------------------------------------------------------
 get_outcome_sims<-function(d){
   #d_yr0<-get_yr0_outcomes(d)
+
   d_yr10<-get_yr10_outcomes(d)
-  #d_yrMu<-get_yrMu_outcomes(d)
   d_cum<-get_cumulative_outcomes(d)
+  d_niapia<- get_niapia(d)
+  d_yrMu<-get_yrMu_outcomes(d)
   d_yrmean<-get_sumave_outcomes(d)
   
   # #join all
@@ -215,6 +225,8 @@ get_outcome_sims<-function(d){
   # d_join2<-left_join(d_join1, d_cum, by = c("scenario_name", "scenario.new", "sim"))
   # left_join(d_join2, d_yrmean, by = c("scenario_name", "scenario.new", "sim"))
   
-  d_join0<-left_join(d_cum, d_yr10, by = c("scenario_name", "scenario.new", "sim"))
-  left_join(d_join0, d_yrmean, by = c("scenario_name", "scenario.new", "sim"))
+  d_join0<-left_join(d_yr10, d_cum, by = c("scenario_name", "scenario.new", "sim"))
+  d_join1<-left_join(d_join0, d_niapia, by = c("scenario_name", "scenario.new", "sim"))
+  d_join2<-left_join(d_join1, d_yrMu, by = c("scenario_name", "scenario.new", "sim"))
+  left_join(d_join2, d_yrmean, by = c("scenario_name", "scenario.new", "sim"))
 }
