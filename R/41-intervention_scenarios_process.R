@@ -65,7 +65,7 @@ outcomes_scenarios <- outcomes_sims %>%
   ),
   .names = "{.col}__{.fn}"
   )) %>% 
-  mutate(across(where(is.numeric), ~round (., 4))) %>% ungroup()%>% arrange(scenario.new)
+  mutate(across(where(is.numeric), ~round (., 5))) %>% ungroup()%>% arrange(scenario.new)
 
 
 
