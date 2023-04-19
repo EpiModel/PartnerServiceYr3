@@ -180,11 +180,12 @@ get_niapia <- function(d) {
   d %>% filter(time > 5 * 52) %>% 
     select(scenario_name, scenario.new, sim, time, incid) %>% 
     group_by(scenario_name, scenario.new, sim) %>%
-    summarise(across(c(incid),~ sum(.x, na.rm = TRUE))) %>%  
+    summarise(across(c(incid),~ sum(.x, na.rm = TRUE)))  %>% 
+    arrange(sim, scenario_name, scenario.new) %>% 
     group_by(sim) %>% 
-    arrange(scenario_name) %>% 
-    mutate(nia = (.[[4]][1] - .[[4]]),
-           pia = (.[[4]][1] - .[[4]]) / .[[4]][1]) %>% 
+    mutate(base_incid = incid[1]) %>% 
+    mutate(nia = base_incid - incid,
+           pia = (base_incid - incid) / base_incid) %>% 
     ungroup() %>% 
    select(scenario_name, scenario.new, sim, nia, pia)
 }
