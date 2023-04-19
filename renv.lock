@@ -56,13 +56,13 @@
     },
     "DEoptimR": {
       "Package": "DEoptimR",
-      "Version": "1.0-11",
+      "Version": "1.0-12",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "stats"
       ],
-      "Hash": "b18b34cfbf932e17803c2e3e4b1a2d2a"
+      "Hash": "50c37a30c2c3f3b1e75741631cdae0c7"
     },
     "EpiModel": {
       "Package": "EpiModel",
@@ -107,7 +107,7 @@
       "RemoteUsername": "EpiModel",
       "RemoteRepo": "EpiModelHIV-p",
       "RemoteRef": "PartnerServicesYr3",
-      "RemoteSha": "d552004773a55c0e375d59dc20b221b35bac0604",
+      "RemoteSha": "f017f28476316dbe9b87f7fab9d931c1ca7a02e8",
       "RemoteHost": "api.github.com",
       "Remotes": "github::EpiModel/ARTnet@main, github::EpiModel/ARTnetData@main",
       "Requirements": [
@@ -122,7 +122,7 @@
         "statnet.common",
         "tergm"
       ],
-      "Hash": "c876caf05175460239ff275e6e42facf"
+      "Hash": "8cc466856797017b9aa449de946ed3aa"
     },
     "EpiModelHPC": {
       "Package": "EpiModelHPC",
@@ -168,7 +168,7 @@
     },
     "Matrix": {
       "Package": "Matrix",
-      "Version": "1.5-3",
+      "Version": "1.5-4",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -180,7 +180,7 @@
         "stats",
         "utils"
       ],
-      "Hash": "4006dffe49958d2dd591c17e61e60591"
+      "Hash": "e779c7d9f35cc364438578f334cffee2"
     },
     "R6": {
       "Package": "R6",
@@ -229,13 +229,13 @@
     },
     "Rglpk": {
       "Package": "Rglpk",
-      "Version": "0.6-4",
+      "Version": "0.6-5",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "slam"
       ],
-      "Hash": "94a9ae53d323c330f2bc5bda54ea9f31"
+      "Hash": "5190f2200c77e13f66b26b6db549ba08"
     },
     "ape": {
       "Package": "ape",
@@ -605,7 +605,7 @@
     },
     "fontawesome": {
       "Package": "fontawesome",
-      "Version": "0.5.0",
+      "Version": "0.5.1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -613,7 +613,7 @@
         "htmltools",
         "rlang"
       ],
-      "Hash": "e80750aec5717dedc019ad7ee40e4a7c"
+      "Hash": "1e22b8cabbad1eae951a75e9f8b52378"
     },
     "foreach": {
       "Package": "foreach",
@@ -681,7 +681,7 @@
     },
     "ggplot2": {
       "Package": "ggplot2",
-      "Version": "3.4.1",
+      "Version": "3.4.2",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -702,7 +702,7 @@
         "vctrs",
         "withr"
       ],
-      "Hash": "d494daf77c4aa7f084dbbe6ca5dcaca7"
+      "Hash": "3a147ee02e85a8941aad9909f1b43b7b"
     },
     "globals": {
       "Package": "globals",
@@ -785,11 +785,13 @@
     },
     "igraph": {
       "Package": "igraph",
-      "Version": "1.4.1",
+      "Version": "1.4.2",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "Matrix",
+        "R",
+        "cpp11",
         "grDevices",
         "graphics",
         "magrittr",
@@ -799,7 +801,7 @@
         "stats",
         "utils"
       ],
-      "Hash": "a7ef0d811cb66d8be9da0d7b5ab80ded"
+      "Hash": "3e476b375c746d899fd53a7281d78191"
     },
     "isoband": {
       "Package": "isoband",
@@ -872,7 +874,7 @@
     },
     "lattice": {
       "Package": "lattice",
-      "Version": "0.20-45",
+      "Version": "0.21-8",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -883,7 +885,7 @@
         "stats",
         "utils"
       ],
-      "Hash": "b64cdbb2b340437c4ee047a1f4c4377b"
+      "Hash": "0b8a6d63c8770f02a8b5635f3c431e6b"
     },
     "lazyeval": {
       "Package": "lazyeval",
@@ -1141,7 +1143,7 @@
     },
     "processx": {
       "Package": "processx",
-      "Version": "3.8.0",
+      "Version": "3.8.1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1150,7 +1152,7 @@
         "ps",
         "utils"
       ],
-      "Hash": "a33ee2d9bf07564efb888ad98410da84"
+      "Hash": "d75b4059d781336efba24021915902b4"
     },
     "progress": {
       "Package": "progress",
@@ -1179,14 +1181,14 @@
     },
     "ps": {
       "Package": "ps",
-      "Version": "1.7.3",
+      "Version": "1.7.5",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "utils"
       ],
-      "Hash": "ebaacc87f539b1100e285e9e5d6496ad"
+      "Hash": "709d852d33178db54b17c722e5b1e594"
     },
     "purrr": {
       "Package": "purrr",
@@ -1264,13 +1266,13 @@
     },
     "renv": {
       "Package": "renv",
-      "Version": "0.17.2",
+      "Version": "0.17.3",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "utils"
       ],
-      "Hash": "aaf3c7f769695266a2113db67a25148b"
+      "Hash": "4543b8cd233ae25c6aba8548be9e747e"
     },
     "rlang": {
       "Package": "rlang",
@@ -1320,7 +1322,7 @@
     },
     "robustbase": {
       "Package": "robustbase",
-      "Version": "0.95-0",
+      "Version": "0.95-1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1331,7 +1333,7 @@
         "stats",
         "utils"
       ],
-      "Hash": "c918476150dd483a23f1d1cab6d17e76"
+      "Hash": "50e6b6ad7801416766716d9fa853e23d"
     },
     "rprojroot": {
       "Package": "rprojroot",
@@ -1401,20 +1403,20 @@
     },
     "slurmworkflow": {
       "Package": "slurmworkflow",
-      "Version": "0.0.0.9000",
+      "Version": "0.1.0",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "EpiModel",
       "RemoteRepo": "slurmworkflow",
       "RemoteRef": "main",
-      "RemoteSha": "fd1a5d358f3b000bed695fdddb7edf2a9dd52ae0",
+      "RemoteSha": "69aae22df17ec93973eed9c19fe53ab3da96a50a",
       "RemoteHost": "api.github.com",
       "Requirements": [
         "R",
         "fs",
         "yaml"
       ],
-      "Hash": "4dd5a8b8c8e1a111fc793f31b5c42890"
+      "Hash": "78a43b004dec2d7de24be062ea2f2c8a"
     },
     "srvyr": {
       "Package": "srvyr",
@@ -1619,13 +1621,13 @@
     },
     "tinytex": {
       "Package": "tinytex",
-      "Version": "0.44",
+      "Version": "0.45",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "xfun"
       ],
-      "Hash": "c0f007e2eeed7722ce13d42b84a22e07"
+      "Hash": "e4e357f28c2edff493936b6cb30c3d65"
     },
     "trust": {
       "Package": "trust",
