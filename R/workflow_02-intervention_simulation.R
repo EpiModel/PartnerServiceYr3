@@ -101,7 +101,7 @@ wf <- add_workflow_step(
     output_dir = "data/intermediate/hpc/scenarios",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
-    n_rep = 500,                                                                            
+    n_rep = 1,                                                                            
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
@@ -116,12 +116,34 @@ wf <- add_workflow_step(
 
 
 
-#Step 3: Process data from model scenarios output
+# #Step 3: Process data from model scenarios output
+# #-----------------------------------------------------------------------------------------
+# wf <- add_workflow_step(
+#   wf_summary = wf,
+#   step_tmpl = step_tmpl_do_call_script(
+#     r_script = "R/41-intervention_scenarios_process.R",
+#     args = list(
+#       ncores = 15,
+#       nsteps = 52
+#     ),
+#     setup_lines = hpc_configs$r_loader
+#   ),
+#   sbatch_opts = list(
+#     "cpus-per-task" = max_cores,
+#     "time" = "04:00:00",
+#     "mem-per-cpu" = "4G",
+#     "mail-type" = "END"
+#   )
+# )
+
+
+
+#Step 3: Process output data for paper
 #-----------------------------------------------------------------------------------------
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
-    r_script = "R/41-intervention_scenarios_process.R",
+    r_script = "R/42-paper_counterfactuals_process.R",
     args = list(
       ncores = 15,
       nsteps = 52
