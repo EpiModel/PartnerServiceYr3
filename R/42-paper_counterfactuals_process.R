@@ -55,7 +55,7 @@ full_intervdata <- bind_rows(intervds)
 
 #B. Process outcome_sims and outcome_scenario data----------------------------------------
 outcomes_sims <- get_outcome_sims(full_intervdata) %>% 
-  select(tbl, scenario.num, scenario.new, scenario_name,
+  select(tbl, scenario.num, scenario.new, scenario_name,sim,
          ir.yr10, incid.cum, nia, pia,
          prepCov.yr10, diagCov.yr10, artCov.yr10, vSuppCov.yr10,
          prepStartAll,
@@ -68,7 +68,7 @@ outcomes_sims <- get_outcome_sims(full_intervdata) %>%
 
 outcomes_scenarios <- outcomes_sims %>%
   select(- c(sim)) %>%
-  group_by(scenario_name, scenario.new) %>%
+  group_by(tbl, scenario.num, scenario.new, scenario_name) %>%
   summarise(across(everything(),list(
     low = ~ quantile(.x, 0.025, na.rm = TRUE),
     med = ~ quantile(.x, 0.50, na.rm = TRUE),
@@ -76,7 +76,9 @@ outcomes_scenarios <- outcomes_sims %>%
   ),
   .names = "{.col}__{.fn}"
   )) %>% 
-  mutate(across(where(is.numeric), ~round (., 5))) %>% ungroup()%>% arrange(scenario.new)
+  mutate(across(where(is.numeric), ~round (., 5))) %>% ungroup()%>% 
+  arrange(tbl, scenario.num, scenario.new, scenario_name)
+
 
 
 
