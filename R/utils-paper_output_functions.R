@@ -37,7 +37,6 @@ process_fulldata <- function(file_name, ts) {
       recent.indexes.all = recent.newdiagn + recent.ppretested,
       elig.indexes.all   = elig.indexes.nd + elig.indexes.pp,
       found.indexes.all  = found.indexes.nd + found.indexes.pp,
-      
       elig.partners.all  = elig.partners + elig.partners.gen2,
       negative.part = tot.tests.pbt - positive.part) %>% 
     mutate(
@@ -112,44 +111,45 @@ process_fulldata <- function(file_name, ts) {
 
 
 
-# #Function 2a: Get mean outcomes in year preceding intervention ---------------------------
-# get_yr0_outcomes <- function(d) {
-#   d %>% filter(time < 5 * 52 & time > 4*52) %>% 
-#     select(tbl, scenario.num, scenario.new, scenario_name, sim, 
-#            incid,  
-#            prepCov, 
-#            diagCov,
-#            artCov,
-#            vSuppCov) %>% 
-#     group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
-#     summarise(
-#       across(c(incid), ~sum (.x, na.rm = T), .names = "{.col}_yr0"),
-#       across(c(prepCov, diagCov, artCov, vSuppCov), ~ mean(.x, na.rm = T), .names = "{.col}_yr0")) %>% 
-#     mutate(ir.yr0 = incid_yr0 / networks_size * 100) %>% 
-#     select(tbl, scenario.num, scenario.new, scenario_name, sim,
-#            ir.yr0, prepCov_yr0, diagCov_yr0, artCov_yr0, vSuppCov_yr0)  
-# } 
-
-
-
 #Function 2b: Get mean outcomes in intervention year 10 ----------------------------------
 get_yr10_outcomes <- function(d) {
   d %>%
     filter(time >= max(time) - 52) %>% 
     select(tbl, scenario.num, scenario.new, scenario_name, sim, 
-           incid,  
-           prepCov, 
-           diagCov,
-           artCov,
-           vSuppCov) %>% 
+           incid, prepCov, diagCov, artCov, vSuppCov) %>% 
     group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
-    summarise(
-      across(c(incid), ~sum (.x, na.rm = T), .names = "{.col}.yr10"),
-      across(c(prepCov, diagCov, artCov, vSuppCov), ~ mean(.x, na.rm = T), .names = "{.col}.yr10")) %>% 
-    mutate(ir.yr10 = incid.yr10 / networks_size * 100) %>% 
+    summarise(across(c(incid), ~sum (.x, na.rm = T)),
+              across(c(prepCov, diagCov, artCov, vSuppCov), ~ mean(.x, na.rm = T), .names = "{.col}.yr10")) %>% 
+    mutate(ir.yr10 = incid / networks_size * 100) %>% 
     select(tbl, scenario.num, scenario.new, scenario_name, sim, ends_with(".yr10"))
 }
 
+
+
+#Function 2c: Get cumulative HIV incidence over intervention period ----------------------
+get_cumulative_outcomes <- function(d) {
+  d %>% filter(time > 5 * 52) %>% 
+    select(tbl, scenario.num, scenario.new, scenario_name, sim, time, incid) %>% 
+    group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
+    summarise(across(c(incid),~ sum(.x, na.rm = TRUE), .names = "{.col}.cum")) 
+}
+
+
+#Function 2d: Get nia and pia  -----------------------------------------------------------
+get_niapia <- function(d) {
+  d %>% filter(time > 5 * 52) %>% 
+    select(tbl, scenario.num, scenario.new, scenario_name, sim, time, incid) %>% 
+    group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
+    summarise(across(c(incid),~ sum(.x, na.rm = TRUE)))  %>% 
+    arrange(tbl, sim, scenario.num) %>% 
+    
+    group_by(tbl, sim) %>% 
+    mutate(base_incid = incid[1]) %>% 
+    mutate(nia = base_incid - incid,
+           pia = (base_incid - incid) / base_incid) %>% 
+    ungroup() %>% 
+   select(tbl, scenario.num, scenario.new, scenario_name, sim, nia, pia)
+}
 
 
 #Function 2c: Get mean outcomes over intervention period ---------------------------------
@@ -166,33 +166,6 @@ get_yrMu_outcomes <- function(d) {
     group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
     summarise(across(everything(), ~ mean(.x, na.rm = T))) 
 }
-
-
-
-#Function 2d: Get cumulative HIV incidence over intervention period ----------------------
-get_cumulative_outcomes <- function(d) {
-  d %>% filter(time > 5 * 52) %>% 
-    select(tbl, scenario.num, scenario.new, scenario_name, sim, time, incid) %>% 
-    group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
-    summarise(across(c(incid),~ sum(.x, na.rm = TRUE), .names = "{.col}.cum")) 
-}
-
-
-
-get_niapia <- function(d) {
-  d %>% filter(time > 5 * 52) %>% 
-    select(tbl, scenario.num, scenario.new, scenario_name, sim, time, incid) %>% 
-    group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
-    summarise(across(c(incid),~ sum(.x, na.rm = TRUE)))  %>% 
-    arrange(tbl, sim, scenario_num, scenario.new, scenario_name) %>% 
-    group_by(sim) %>% 
-    mutate(base_incid = incid[1]) %>% 
-    mutate(nia = base_incid - incid,
-           pia = (base_incid - incid) / base_incid) %>% 
-    ungroup() %>% 
-   select(tbl, scenario.num, scenario.new, scenario_name, sim, nia, pia)
-}
-
 
 
 #Function 2e: Get summed and average outcomes over intervention period -------------------
@@ -228,3 +201,23 @@ get_outcome_sims<-function(d){
   d_join2<-left_join(d_join1, d_yrMu, by = c("tbl","scenario.num", "scenario.new","scenario_name", "sim"))
   left_join(d_join2, d_yrmean, by = c("tbl","scenario.num", "scenario.new","scenario_name", "sim"))
 }
+
+
+
+# #Function 2a: Get mean outcomes in year preceding intervention ---------------------------
+# get_yr0_outcomes <- function(d) {
+#   d %>% filter(time < 5 * 52 & time > 4*52) %>% 
+#     select(tbl, scenario.num, scenario.new, scenario_name, sim, 
+#            incid,  
+#            prepCov, 
+#            diagCov,
+#            artCov,
+#            vSuppCov) %>% 
+#     group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
+#     summarise(
+#       across(c(incid), ~sum (.x, na.rm = T), .names = "{.col}_yr0"),
+#       across(c(prepCov, diagCov, artCov, vSuppCov), ~ mean(.x, na.rm = T), .names = "{.col}_yr0")) %>% 
+#     mutate(ir.yr0 = incid_yr0 / networks_size * 100) %>% 
+#     select(tbl, scenario.num, scenario.new, scenario_name, sim,
+#            ir.yr0, prepCov_yr0, diagCov_yr0, artCov_yr0, vSuppCov_yr0)  
+# } 
