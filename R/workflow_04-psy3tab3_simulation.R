@@ -15,7 +15,7 @@ library("dplyr")
 library("ggplot2")
 
 hpc_configs <- swf_configs_rsph(
-  partition = "preemptable",
+  partition = "epimodel",
   r_version = "4.2.1",
   git_version = "2.35.1",
   mail_user = "uonwubi@emory.edu"
@@ -144,7 +144,7 @@ wf <- add_workflow_step(
 # scp -r data/intermediate/hpc/estimates sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc/
   
 # to send workflows to the HPC (Run in R terminal)
-# scp -r workflows/psy3sim sph:projects/epimodel/uonwubi/PartnerServiceYr3/workflows
+# scp -r workflows/psy3sim_tbl3 sph:projects/epimodel/uonwubi/PartnerServiceYr3/workflows
 
 # to get the data back after simulations (Run in R terminal)
 # scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc data/intermediate
