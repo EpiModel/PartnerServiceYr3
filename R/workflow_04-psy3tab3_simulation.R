@@ -121,7 +121,7 @@ wf <- add_workflow_step(
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
-    r_script = "R/42-tbl3_counterfactuals_process.R",
+    r_script = "R/43-tbl3_counterfactuals_process.R",
     args = list(
       ncores = 15,
       nsteps = 52
