@@ -137,22 +137,37 @@ get_cumulative_outcomes <- function(d) {
 
 
 #Function 2d: Get nia, pia, nnt ----------------------------------------------------------
-get_niapiannt <- function(d) {
+get_niapiannt_tbl2 <- function(d) {
   d %>% filter(time > 5 * 52) %>% 
-    select(tbl, scenario.num, scenario.new, scenario_name, sim, time, incid, found_indexes_all) %>% 
+    select(tbl, scenario.num, scenario.new, scenario_name, sim, time, incid, found.indexes.all) %>% 
     group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
-    summarise(across(c(incid, found_indexes_all),~ sum(.x, na.rm = TRUE)))  %>% 
+    summarise(across(c(incid, found.indexes.all),~ sum(.x, na.rm = TRUE)))  %>% 
     arrange(tbl, sim, scenario.num) %>% 
     
     group_by(tbl, sim) %>% 
     mutate(base_incid = incid[1]) %>% 
     mutate(nia = base_incid - incid,
            pia = (base_incid - incid) / base_incid) %>% 
-    mutate(nnt = found_indexes_all / nia) %>% 
+    mutate(nnt = found.indexes.all / nia) %>% 
     ungroup() %>% 
    select(tbl, scenario.num, scenario.new, scenario_name, sim, nia, pia, nnt)
 }
-
+get_niapiannt_tbl3 <- function(d) {
+  d %>% filter(time > 5 * 52) %>% 
+    select(tbl, scenario.num, scenario.new, scenario_name, sim, time, incid, found.indexes.all) %>% 
+    group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
+    summarise(across(c(incid, found.indexes.all),~ sum(.x, na.rm = TRUE)))  %>% 
+    arrange(sim, tbl, scenario.num) %>% 
+    
+    group_by(sim) %>% 
+    mutate(base_incid = incid[1]) %>% 
+    mutate(nia = base_incid - incid,
+           pia = (base_incid - incid) / base_incid) %>% 
+    mutate(nnt = found.indexes.all / nia) %>% 
+    ungroup() %>% 
+    arrange(tbl, scenario.num, scenario.new, scenario_name, sim) %>% 
+    select(tbl, scenario.num, scenario.new, scenario_name, sim, nia, pia, nnt)
+}
 
 
 #Function 2c: Get mean outcomes over intervention period ---------------------------------
@@ -191,12 +206,13 @@ get_sumave_outcomes <- function(d) {
 
 
 #Function 2f: Get outcome sims data ------------------------------------------------------
-get_outcome_sims<-function(d){
+#for tbl 2
+get_outcome_sims_tbl2<-function(d){
   #d_yr0<-get_yr0_outcomes(d)
 
   d_yr10<-get_yr10_outcomes(d)
   d_cum<-get_cumulative_outcomes(d)
-  d_niapiannt<- get_niapia(d)
+  d_niapiannt<- get_niapiannt_tbl2(d)
   d_yrMu<-get_yrMu_outcomes(d)
   d_yrmean<-get_sumave_outcomes(d)
   
@@ -206,7 +222,21 @@ get_outcome_sims<-function(d){
   left_join(d_join2, d_yrmean, by = c("tbl","scenario.num", "scenario.new","scenario_name", "sim"))
 }
 
-
+#for tbl 3
+get_outcome_sims_tbl3<-function(d){
+  #d_yr0<-get_yr0_outcomes(d)
+  
+  d_yr10<-get_yr10_outcomes(d)
+  d_cum<-get_cumulative_outcomes(d)
+  d_niapiannt<- get_niapiannt_tbl3(d)
+  d_yrMu<-get_yrMu_outcomes(d)
+  d_yrmean<-get_sumave_outcomes(d)
+  
+  d_join0<-left_join(d_yr10, d_cum, by = c("tbl","scenario.num", "scenario.new","scenario_name", "sim"))
+  d_join1<-left_join(d_join0, d_niapiannt, by = c("tbl","scenario.num", "scenario.new","scenario_name", "sim"))
+  d_join2<-left_join(d_join1, d_yrMu, by = c("tbl","scenario.num", "scenario.new","scenario_name", "sim"))
+  left_join(d_join2, d_yrmean, by = c("tbl","scenario.num", "scenario.new","scenario_name", "sim"))
+}
 
 # #Function 2a: Get mean outcomes in year preceding intervention ---------------------------
 # get_yr0_outcomes <- function(d) {
