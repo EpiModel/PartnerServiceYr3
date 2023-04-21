@@ -100,7 +100,7 @@ wf <- add_workflow_step(
     output_dir = "data/intermediate/hpc/scenarios_tbl2",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
-    n_rep = 2,                                                                            
+    n_rep = 5 * max_cores,                                                                            
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
