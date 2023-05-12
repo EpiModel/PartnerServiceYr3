@@ -31,7 +31,7 @@ cp_dir <- "data/cp_recal"
 #Create workflow
 #-----------------------------------------------------------------------------------------
 wf <- create_workflow(
-  wf_name = "psy3interv",
+  wf_name = "psy3interv_test",
   default_sbatch_opts = hpc_configs$default_sbatch_opts
 )
 
@@ -142,10 +142,9 @@ wf <- add_workflow_step(
 # to send restart file to the HPC (Run in R terminal)
 # scp -r data/intermediate/hpc/estimates sph: /projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc/
 # scp -r data/intermediate/hpc/estimates sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc/
-  
+
 # to send workflows to the HPC (Run in R terminal)
-# scp -r workflows/modeltest sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows
-# scp -r workflows/psy3sim sph:projects/epimodel/uonwubi/PartnerServiceYr3/workflows
+# scp -r workflows/psy3sim_tbl2 sph:projects/epimodel/uonwubi/PartnerServiceYr3/workflows
 
 # to get the data back after simulations (Run in R terminal)
 # scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc data/intermediate
@@ -153,7 +152,7 @@ wf <- add_workflow_step(
 # to get only the processed files back
 # scp -r sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc/processed data/intermediate/hpc/
 
-# scp -r sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc/scenarios data/intermediate/hpc/
-  
+# scp -r sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc/scenarios_tbl2 data/intermediate/hpc/
+
 # scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows/modeltest/log data/intermediate/
 
