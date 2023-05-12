@@ -17,7 +17,7 @@ library("dplyr")
 library("ggplot2")
 
 hpc_configs <- swf_configs_rsph(
-  partition = "epimodel",
+  partition = "preemptable",
   r_version = "4.2.1",
   git_version = "2.35.1",
   mail_user = "uonwubi@emory.edu"
@@ -31,7 +31,7 @@ cp_dir <- "data/cp_recal"
 #Create workflow
 #-----------------------------------------------------------------------------------------
 wf <- create_workflow(
-  wf_name = "psy3sim",
+  wf_name = "psy3interv",
   default_sbatch_opts = hpc_configs$default_sbatch_opts
 )
 
@@ -98,7 +98,7 @@ wf <- add_workflow_step(
   step_tmpl = step_tmpl_netsim_scenarios(
     path_to_restart, param, init, control,
     scenarios_list = scenarios.list,
-    output_dir = "data/intermediate/hpc/scenarios",
+    output_dir = "data/intermediate/hpc/scenarios_test",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
     n_rep = 10,                                                                            
@@ -116,34 +116,12 @@ wf <- add_workflow_step(
 
 
 
-# #Step 3: Process data from model scenarios output
-# #-----------------------------------------------------------------------------------------
-# wf <- add_workflow_step(
-#   wf_summary = wf,
-#   step_tmpl = step_tmpl_do_call_script(
-#     r_script = "R/41-intervention_scenarios_process.R",
-#     args = list(
-#       ncores = 15,
-#       nsteps = 52
-#     ),
-#     setup_lines = hpc_configs$r_loader
-#   ),
-#   sbatch_opts = list(
-#     "cpus-per-task" = max_cores,
-#     "time" = "04:00:00",
-#     "mem-per-cpu" = "4G",
-#     "mail-type" = "END"
-#   )
-# )
-
-
-
-#Step 3: Process output data for paper
+#Step 3: Process output data 
 #-----------------------------------------------------------------------------------------
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
-    r_script = "R/42-paper_counterfactuals_process.R",
+    r_script = "R/41-tbl_counterfactuals_process.R",
     args = list(
       ncores = 15,
       nsteps = 52
