@@ -49,12 +49,12 @@ intervds <- future.apply::future_lapply(
 
 
 #Merge all batches  
-full_intervdata_tbl2 <- bind_rows(intervds)
+full_intervdata <- bind_rows(intervds)
 
 
 
 #B. Process outcome_sims and outcome_scenario data----------------------------------------
-outcomes_sims_tbl2 <- get_outcome_sims_tbl2(full_intervdata_tbl2) %>% 
+outcomes_sims <- get_outcome_sims_tbl2(full_intervdata) %>% 
   select(tbl, scenario.num, scenario.new, scenario_name,sim,
          ir.yr10, incid.cum, nia, pia, nnt,
          prepCov.yr10, diagCov.yr10, artCov.yr10, vSuppCov.yr10,
@@ -66,7 +66,7 @@ outcomes_sims_tbl2 <- get_outcome_sims_tbl2(full_intervdata_tbl2) %>%
          elig.prepStartPart, prepStartPart, part.start.tx, part.reinit.tx, pp.reinit.tx)
 
 
-outcomes_scenarios_tbl2 <- outcomes_sims_tbl2 %>%
+outcomes_scenarios <- outcomes_sims %>%
   select(- c(sim)) %>%
   group_by(tbl, scenario.num, scenario.new, scenario_name) %>%
   summarise(across(everything(),list(
@@ -84,6 +84,6 @@ outcomes_scenarios_tbl2 <- outcomes_sims_tbl2 %>%
 
 
 #Save the processed data
-saveRDS(outcomes_sims_tbl2, paste0("data/intermediate/",context,"/processed_test/tbl2_outcomes_sims.rds"))
-saveRDS(outcomes_scenarios_tbl2, paste0("data/intermediate/",context,"/processed_test/tbl2_outcomes_scenarios.rds"))
-saveRDS(full_intervdata_tbl2, paste0("data/intermediate/",context,"/processed_test/tbl2_fulldata.rds"))
+saveRDS(outcomes_sims, paste0("data/intermediate/",context,"/processed_test/outcomes_sims.rds"))
+saveRDS(outcomes_scenarios, paste0("data/intermediate/",context,"/processed_test/outcomes_scenarios.rds"))
+saveRDS(full_intervdata, paste0("data/intermediate/",context,"/processed_test/fulldata.rds"))
