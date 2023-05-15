@@ -17,16 +17,16 @@
       "RemoteUsername": "EpiModel",
       "RemoteRepo": "ARTnet",
       "RemoteRef": "HEAD",
-      "RemoteSha": "0e67b01433447d1f9dba33d3f8f5398f4345c5f7",
+      "RemoteSha": "99a5318766a3fc6eb8253755a0d378de6376b974",
       "RemoteHost": "api.github.com",
-      "Remotes": "github::EpiModel/ARTnetData@main, github::EpiModel/EpiModelHIV-p@main",
+      "Remotes": "github::EpiModel/ARTnetData@main,\r github::EpiModel/EpiModelHIV-p@main",
       "Requirements": [
         "ARTnetData",
         "EpiModel",
         "R",
         "dplyr"
       ],
-      "Hash": "831ebf6358cced7ba428c9a04ce5edd3"
+      "Hash": "44d3b42aad95b3acfb1da119d160e26b"
     },
     "ARTnetData": {
       "Package": "ARTnetData",
@@ -56,13 +56,13 @@
     },
     "DEoptimR": {
       "Package": "DEoptimR",
-      "Version": "1.0-12",
+      "Version": "1.0-13",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "stats"
       ],
-      "Hash": "50c37a30c2c3f3b1e75741631cdae0c7"
+      "Hash": "8f5c81679eea074e7152f16b78d7de81"
     },
     "EpiModel": {
       "Package": "EpiModel",
@@ -107,7 +107,7 @@
       "RemoteUsername": "EpiModel",
       "RemoteRepo": "EpiModelHIV-p",
       "RemoteRef": "PartnerServicesYr3",
-      "RemoteSha": "f017f28476316dbe9b87f7fab9d931c1ca7a02e8",
+      "RemoteSha": "96c3fedec8021a27cc0946b54a93e91eba394d07",
       "RemoteHost": "api.github.com",
       "Remotes": "github::EpiModel/ARTnet@main, github::EpiModel/ARTnetData@main",
       "Requirements": [
@@ -122,7 +122,7 @@
         "statnet.common",
         "tergm"
       ],
-      "Hash": "8cc466856797017b9aa449de946ed3aa"
+      "Hash": "647404fcc9cd1f60a8f1c21eee71271a"
     },
     "EpiModelHPC": {
       "Package": "EpiModelHPC",
@@ -132,7 +132,7 @@
       "RemoteUsername": "EpiModel",
       "RemoteRepo": "EpiModelHPC",
       "RemoteRef": "HEAD",
-      "RemoteSha": "e9a08f1d8ed7c7ecb1abee5eaafca4726e506183",
+      "RemoteSha": "6c16b69bf182af37e8adb82c219af8b481569b34",
       "RemoteHost": "api.github.com",
       "Remotes": "github::EpiModel/slurmworkflow",
       "Requirements": [
@@ -149,11 +149,11 @@
         "tergm",
         "tidyr"
       ],
-      "Hash": "9aa9e624ebf65fc808b483d61fbc1637"
+      "Hash": "98a2a37c172c79a77233ba011425209e"
     },
     "MASS": {
       "Package": "MASS",
-      "Version": "7.3-58.3",
+      "Version": "7.3-60",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -164,7 +164,7 @@
         "stats",
         "utils"
       ],
-      "Hash": "9586b552d57f5516fe4d25398c1bacd6"
+      "Hash": "a56a6365b3fa73293ea8d084be0d9bb0"
     },
     "Matrix": {
       "Package": "Matrix",
@@ -312,14 +312,14 @@
     },
     "cachem": {
       "Package": "cachem",
-      "Version": "1.0.7",
+      "Version": "1.0.8",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "fastmap",
         "rlang"
       ],
-      "Hash": "cda74447c42f529de601fe4d4050daef"
+      "Hash": "c35768291560ce302c0a6589f92e837d"
     },
     "callr": {
       "Package": "callr",
@@ -568,14 +568,14 @@
     },
     "evaluate": {
       "Package": "evaluate",
-      "Version": "0.20",
+      "Version": "0.21",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "methods"
       ],
-      "Hash": "4b68aa51edd89a0e044a66e75ae3cc6c"
+      "Hash": "d59f3b464e8da1aef82dc04b588b8dfb"
     },
     "fansi": {
       "Package": "fansi",
@@ -630,14 +630,14 @@
     },
     "fs": {
       "Package": "fs",
-      "Version": "1.6.1",
+      "Version": "1.6.2",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "methods"
       ],
-      "Hash": "f4dcd23b67e33d851d2079f703e8b985"
+      "Hash": "94af08e0aa9675a16fadbb3aaaa90d2a"
     },
     "future": {
       "Package": "future",
@@ -1276,14 +1276,14 @@
     },
     "rlang": {
       "Package": "rlang",
-      "Version": "1.1.0",
+      "Version": "1.1.1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "utils"
       ],
-      "Hash": "dc079ccd156cde8647360f473c1fa718"
+      "Hash": "a85c767b55f0bf9b7ad16c6d7baee5bb"
     },
     "rle": {
       "Package": "rle",
@@ -1347,7 +1347,7 @@
     },
     "sass": {
       "Package": "sass",
-      "Version": "0.4.5",
+      "Version": "0.4.6",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1357,7 +1357,7 @@
         "rappdirs",
         "rlang"
       ],
-      "Hash": "2bb4371a4c80115518261866eab6ab11"
+      "Hash": "cc3ec7dd33982ef56570229b62d6388e"
     },
     "scales": {
       "Package": "scales",
@@ -1484,7 +1484,7 @@
     },
     "survey": {
       "Package": "survey",
-      "Version": "4.1-1",
+      "Version": "4.2-1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1501,7 +1501,7 @@
         "stats",
         "survival"
       ],
-      "Hash": "8aec2bc6533a6d1e6ef43bbf0c20205a"
+      "Hash": "03195177db81a992f22361f8f54852f4"
     },
     "survival": {
       "Package": "survival",
@@ -1642,14 +1642,14 @@
     },
     "tzdb": {
       "Package": "tzdb",
-      "Version": "0.3.0",
+      "Version": "0.4.0",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "cpp11"
       ],
-      "Hash": "b2e1cbce7c903eaf23ec05c58e59fb5e"
+      "Hash": "f561504ec2897f4d46f0c7657e488ae1"
     },
     "utf8": {
       "Package": "utf8",
@@ -1677,17 +1677,17 @@
     },
     "viridisLite": {
       "Package": "viridisLite",
-      "Version": "0.4.1",
+      "Version": "0.4.2",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R"
       ],
-      "Hash": "62f4b5da3e08d8e5bcba6cac15603f70"
+      "Hash": "c826c7c4241b6fc89ff55aaea3fa7491"
     },
     "vroom": {
       "Package": "vroom",
-      "Version": "1.6.1",
+      "Version": "1.6.3",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1709,7 +1709,7 @@
         "vctrs",
         "withr"
       ],
-      "Hash": "7015a74373b83ffaef64023f4a0f5033"
+      "Hash": "8318e64ffb3a70e652494017ec455561"
     },
     "withr": {
       "Package": "withr",
