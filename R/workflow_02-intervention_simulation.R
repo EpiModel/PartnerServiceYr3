@@ -156,7 +156,7 @@ wf <- add_workflow_step(
 # to get only the processed files back
 # scp -r sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc/processed_test data/intermediate/hpc/
 
-# scp -r sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc/scenarios_tbl2 data/intermediate/hpc/
+# scp -r sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc/scenarios_test data/intermediate/hpc/
 
 # scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows/modeltest/log data/intermediate/
 
