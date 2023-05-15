@@ -62,7 +62,8 @@ outcomes_sims <- get_outcome_sims_tbl2(full_intervdata) %>%
          elig.indexes.all, found.indexes.all, prp.indexes.found.all,
          elig.partners.all, found.partners.all, prp.partners.found.all,
          partners.per.index, 
-         tot.tests.pbt, positive.part, negative.part, part.scrnd, scrnd.noprep,
+         tot.tests.pbt, positive.part, negative.part, 
+         part.scrnd, scrnd.noprep, scrnd.prepon, scrnd.noprepnorisk,
          elig.prepStartPart, prepStartPart, part.start.tx, part.reinit.tx, pp.reinit.tx)
 
 
