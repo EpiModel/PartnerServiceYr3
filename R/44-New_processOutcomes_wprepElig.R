@@ -66,6 +66,7 @@ getSims_tbl3 <- function(dat){
            elig.partners.all, found.partners.all, prp.partners.found.all,
            partners.per.index, 
            tot.tests.pbt, positive.part, negative.part,
+           part.scrnd, scrnd.noprep, scrnd.prepon, scrnd.noprepnorisk,
            elig.prepStartPart, prepStartPart, part.start.tx, part.reinit.tx, pp.reinit.tx)
 }
 
