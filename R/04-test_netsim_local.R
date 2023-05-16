@@ -19,12 +19,12 @@ source("R/utils-netsize.R")
 
 #Set up inputs 
 #~~~~~~~~~~~~
-epistats <- readRDS("data/intermediate/estimates/epistats-local.rds")
-netstats <- readRDS("data/intermediate/estimates/netstats-local.rds")
-est      <- readRDS("data/intermediate/estimates/netest-local.rds")
+epistats <- readRDS("data/intermediate/local/estimates/epistats-local.rds")
+netstats <- readRDS("data/intermediate/local/estimates/netstats-local.rds")
+est      <- readRDS("data/intermediate/local/estimates/netest-local.rds")
 
   #param
-  prep_start <- 52 * 2
+  prep_start <- 52 * 1
   param <- param.net(
     data.frame.params = readr::read_csv("data/input/params.csv"),
     netstats          = netstats,
@@ -49,7 +49,7 @@ est      <- readRDS("data/intermediate/estimates/netest-local.rds")
   
   #control
   control <- control_msm(
-    nsteps = 250,
+    nsteps = 120,
     nsims = 1,
     ncores = 1)
   
@@ -92,7 +92,7 @@ est      <- readRDS("data/intermediate/estimates/netest-local.rds")
     ncores = 1,
   )
 
-  debug(partident_msm) #replace module name
+  debug(prep_msm) #replace with module name
   sim <- netsim(est, param, init, control)
   undebug(partident_msm)
 
