@@ -62,8 +62,8 @@ outcomes_sims_tbl2 <- get_outcome_sims_tbl2(full_intervdata_tbl2) %>%
          elig.indexes.all, found.indexes.all, prp.indexes.found.all,
          elig.partners.all, found.partners.all, prp.partners.found.all,
          partners.per.index, 
-         tot.tests.pbt, positive.part, negative.part,
-         part.scrnd, scrnd.noprep, scrnd.prepon, scrnd.noprepnorisk,
+         tot.tests.pbt, positive.part, negative.part,negative.part2,
+         part.scrnd.tst, part.scrnd.prep, scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
          elig.prepStartPart, prepStartPart, part.start.tx, part.reinit.tx, pp.reinit.tx)
 
 
@@ -87,7 +87,6 @@ outcomes_scenarios_tbl2 <- outcomes_sims_tbl2 %>%
 #Save the processed data
 saveRDS(outcomes_sims_tbl2, paste0("data/intermediate/",context,"/processed/tbl2_outcomes_sims.rds"))
 saveRDS(outcomes_scenarios_tbl2, paste0("data/intermediate/",context,"/processed/tbl2_outcomes_scenarios.rds"))
-#readr::write_csv(outcomes_scenarios_med95si, "data/intermediate/processed/outcomes_scenarios.csv")
 saveRDS(full_intervdata_tbl2, paste0("data/intermediate/",context,"/processed/tbl2_fulldata.rds"))
 
 
