@@ -13,7 +13,7 @@ suppressMessages({
 
 #define context
 #context <- if (interactive()) "local" else "hpc"
-#context<-"hpc" #if running hpc sim processing locally
+context<-"hpc" #if running hpc sim processing locally
 
 
 
