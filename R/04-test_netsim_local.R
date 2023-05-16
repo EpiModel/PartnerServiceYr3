@@ -24,13 +24,17 @@ netstats <- readRDS("data/intermediate/local/estimates/netstats-local.rds")
 est      <- readRDS("data/intermediate/local/estimates/netest-local.rds")
 
   #param
-  prep_start <- 52 * 1
+  prep_start <- 1 #52 * 1
   param <- param.net(
     data.frame.params = readr::read_csv("data/input/params.csv"),
     netstats          = netstats,
     epistats          = epistats,
+    
+    part.ident.start       = prep_start,                                                        
+    prevpos.retest.start   = prep_start + 10,
+    second.genps.start     = prep_start + 15,
     prep.start        = prep_start,
-    riskh.start       = prep_start - 53)
+    riskh.start       = prep_start) #prep_start - 53)
   #print(param)
   
   #init
@@ -71,7 +75,7 @@ est      <- readRDS("data/intermediate/local/estimates/netest-local.rds")
 #run >1 sim 
   #control
   control <- control_msm(
-    nsteps = 250,
+    nsteps = 120,
     nsims = 2,   #change to desired number of sims
     ncores = 2)
   
@@ -87,12 +91,14 @@ est      <- readRDS("data/intermediate/local/estimates/netest-local.rds")
   pkgload::load_all("C:/Users/Uonwubi/OneDrive - Emory University/Desktop/Personal/RSPH EPI Docs/RA2/GitRepos/EpiModelHIV-p")
 
   control <- control_msm(
-    nsteps = 250,
+    nsteps = 120,
     nsims = 1,
     ncores = 1,
   )
 
-  debug(prep_msm) #replace with module name
+  debug(partident_msm) 
+  debug(hivtest_msm) 
+  debug(prep_msm)
   sim <- netsim(est, param, init, control)
   undebug(partident_msm)
 
