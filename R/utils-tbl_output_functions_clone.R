@@ -38,7 +38,7 @@ process_fulldata <- function(file_name, ts) {
       elig.indexes.all   = elig.indexes.nd + elig.indexes.pp,
       found.indexes.all  = found.indexes.nd + found.indexes.pp,
       elig.partners.all  = elig.partners + elig.partners.gen2,
-      negative.part = tot.tests.pbt - positive.part) %>% 
+      negative.part2 = tot.tests.pbt - positive.part) %>% 
     mutate(
       prp.indexes.found.nd = found.indexes.nd / elig.indexes.nd,
       prp.indexes.found.pp = found.indexes.pp / elig.indexes.pp,
@@ -56,7 +56,7 @@ process_fulldata <- function(file_name, ts) {
            #Intermediate impacts: PrEP & ART coverage
              #PrEP
              prepElig, 
-             part.scrnd, scrnd.noprep, scrnd.prepon, scrnd.noprepnorisk,
+             part.scrnd.tst, part.scrnd.prep, scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
              elig.prepStartPart, prepStartPart,
              elig.prepStartGen, prepStartGen,
              prepStartAll,
@@ -102,8 +102,7 @@ process_fulldata <- function(file_name, ts) {
              tot.tests.ibt, tot.tests.pbt,
              tot.tests.ibtNegunk, tot.tests.ibtPrEP, tot.tests.ibtPP,
              eligPP.for.retest, pp.tests.nic,pp.tests.ic,
-             tot.part.ident, elig.part, tot.tests.pbt, positive.part, negative.part
-
+             tot.part.ident, elig.part, tot.tests.pbt, positive.part, negative.part, negative.part2
           ) %>%
     arrange(tbl, scenario.num, scenario.new, scenario_name, batch_number, sim) %>%
     
@@ -195,8 +194,8 @@ get_sumave_outcomes <- function(d) {
            prepStartAll, 
            elig.indexes.all, found.indexes.all,
            elig.partners.all, found.partners.all,
-           tot.tests.pbt, positive.part, negative.part,
-           part.scrnd, scrnd.noprep, scrnd.prepon, scrnd.noprepnorisk,
+           tot.tests.pbt, positive.part, negative.part, negative.part2,
+           part.scrnd.tst, part.scrnd.prep, scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
            elig.prepStartPart, prepStartPart,
            part.start.tx,
            part.reinit.tx,
