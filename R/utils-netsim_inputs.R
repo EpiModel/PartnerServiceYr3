@@ -59,8 +59,8 @@ param <- param.net(
   part.ppindex.prob      = 0.64,                                                         
   part.hiv.test.rate     = rep(0.394, 3),                                                  
   part.tx.init.rate      = rep(0.387, 3),
-  part.tx.reinit.rate    = rep(0.5, 3),
-  part.prep.start.prob   = rep(0.5, 3),
+  # part.tx.reinit.rate    = rep(0.5, 3),
+  # part.prep.start.prob   = rep(0.5, 3),
   riskh.start            = prep_start - 53,
   prep.start             = prep_start,
   
