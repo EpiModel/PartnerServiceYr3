@@ -66,7 +66,7 @@ control <- control_msm(
   verbose = FALSE,
   
   .traceback.on.error = TRUE,
-  .dump.frame.on.error = TRUE
+  .dump.frame.on.error = FALSE
   
   #raw.output = FALSE
 )
@@ -92,7 +92,7 @@ wf <- add_workflow_step(
     output_dir = "data/intermediate/hpc/figdata",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
-    n_rep = 2,#6 * max_cores,                                                                            
+    n_rep = 6,# * max_cores,                                                                            
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
