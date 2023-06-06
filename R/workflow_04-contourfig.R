@@ -148,3 +148,6 @@ wf <- add_workflow_step(
   
 # scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows/modeltest/log data/intermediate/
 
+# to execute jobs
+  # chmod +x workflows/put_wf_name_here/start_workflow.sh    
+  # ./workflows/put_wf_name_here/start_workflow.sh 
