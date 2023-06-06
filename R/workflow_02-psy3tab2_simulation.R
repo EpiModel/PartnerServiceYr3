@@ -66,7 +66,7 @@ control <- control_msm(
   verbose = FALSE,
   
   .traceback.on.error = TRUE,
-  .dump.frame.on.error = TRUE
+  .dump.frame.on.error = FALSE
   
   #raw.output = FALSE
 )
@@ -92,7 +92,7 @@ wf <- add_workflow_step(
     output_dir = "data/intermediate/hpc/scenarios_tbl2",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
-    n_rep = 2,#6 * max_cores,                                                                            
+    n_rep = 6 * max_cores,                                                                            
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
@@ -113,7 +113,7 @@ wf <- add_workflow_step(
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
-    r_script = "R/42-tbl2_counterfactuals_process_clone.R",
+    r_script = "R/42-tbl2_dataprocessing.R",
     args = list(
       ncores = 15,
       nsteps = 52
