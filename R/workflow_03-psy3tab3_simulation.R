@@ -66,7 +66,7 @@ control <- control_msm(
   verbose = FALSE,
   
   .traceback.on.error = TRUE,
-  .dump.frame.on.error = TRUE
+  .dump.frame.on.error = FALSE
   
   #raw.output = FALSE
 )
