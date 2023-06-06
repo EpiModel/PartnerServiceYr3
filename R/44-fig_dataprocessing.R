@@ -56,33 +56,46 @@ full_intervdata <- bind_rows(intervds)
 #B. Process outcome_sims and outcome_scenario data----------------------------------------
 outcomes_sims <- get_outcome_sims_tbl3(full_intervdata) %>% 
   select(tbl, scenario.num, scenario.new, scenario_name, sim,
-         incid.cum, 
-         found.indexes.all, 
          pia)
+saveRDS(outcomes_sims, paste0("data/intermediate/",context,"/processed/figdata_outcomes_sims.rds"))
 
 
 outcomes_scenarios<- outcomes_sims%>%
   select(- c(sim)) %>%
   group_by(tbl, scenario.num, scenario.new, scenario_name) %>%
   summarise(across(everything(),list(
-    low = ~ quantile(.x, 0.025, na.rm = TRUE),
+    #low = ~ quantile(.x, 0.025, na.rm = TRUE),
     med = ~ quantile(.x, 0.50, na.rm = TRUE),
-    high = ~ quantile(.x, 0.975, na.rm = TRUE)
+    #high = ~ quantile(.x, 0.975, na.rm = TRUE)
   ),
-  .names = "{.col}__{.fn}"
+  .names = "{.col}"
   )) %>% 
-  mutate(across(where(is.numeric), ~round (., 5))) %>% ungroup()%>% 
+  mutate(across(where(is.numeric), ~round (., 6))) %>% ungroup()%>% 
   arrange(tbl, scenario.num, scenario.new, scenario_name)
+saveRDS(outcomes_scenarios, paste0("data/intermediate/",context,"/processed/figdata_outcomes_scenarios.rds"))
 
+
+
+
+
+# #C. Get contour plot data  ---------------------------------------------------------------
+# #recreate grid
+# xgrid <- seq(0.65, 1, by=0.05)
+# ygrid <- seq(0.65, 1, by=0.05)
+# sim.grid <-expand.grid(part.index.prob = xgrid, 
+#                        part.ppindex.prob = ygrid) %>% 
+#   mutate(num = as.character(row_number())) %>% 
+#   mutate(zers = sprintf("%03d",as.numeric(num)) ) %>% 
+#   mutate(scenario.id.base = paste0("b",zers, sep=""), .before = "index.nd") %>% 
+#   mutate(scenario.id.max = paste0("e",zers, sep=""), .before = "index.nd") %>% 
+#   select(-c(num, zers))
 
 
 
 
 
 #Save the processed data
-saveRDS(outcomes_sims, paste0("data/intermediate/",context,"/processed/figdata_outcomes_sims.rds"))
-saveRDS(outcomes_scenarios, paste0("data/intermediate/",context,"/processed/figdata_outcomes_scenarios.rds"))
-saveRDS(full_intervdata, paste0("data/intermediate/",context,"/processed/figdata_fulldata.rds"))
+#saveRDS(full_intervdata, paste0("data/intermediate/",context,"/processed/figdata_fulldata.rds"))
 
 
 
