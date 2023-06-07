@@ -55,7 +55,7 @@ full_intervdata <- bind_rows(intervds)
 
 #B. Process outcome_sims and outcome_scenario data----------------------------------------
 outcomes_sims <- get_outcome_sims_tbl3(full_intervdata) %>% 
-  select(tbl, scenario.num, scenario.new, scenario_name, sim,
+  select(tbl, scenario.num, scenario_name, sim,
          pia) %>% 
   mutate(scenario.new = stringr::str_split_i(scenario_name, "_", 1),
          part.index.prob = as.numeric(stringr::str_split_i(scenario_name, "_", 2)),
