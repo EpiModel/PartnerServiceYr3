@@ -95,7 +95,7 @@ saveRDS(outcomes_scenarios, paste0("data/intermediate/",context,"/processed/figd
 
 
 #Save the processed data
-#saveRDS(full_intervdata, paste0("data/intermediate/",context,"/processed/figdata_fulldata.rds"))
+saveRDS(full_intervdata, paste0("data/intermediate/",context,"/processed/figdata_fulldata.rds"))
 
 
 
