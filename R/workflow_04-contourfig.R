@@ -76,7 +76,7 @@ control <- control_msm(
 #Set up scenarios
 #-----------------------------------------------------------------------------------------
 # if using scenarios described in a csv doc
-scenarios.df <- readr::read_csv("./data/input/contour_parms.csv")
+scenarios.df <- readr::read_csv("./data/input/contourparms_base.csv")
 
 scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
 
@@ -92,7 +92,7 @@ wf <- add_workflow_step(
     output_dir = "data/intermediate/hpc/figdata",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
-    n_rep = 1 * max_cores,                                                                            
+    n_rep = 3,# * max_cores,                                                                            
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
@@ -108,7 +108,7 @@ wf <- add_workflow_step(
 
 
 
-#Step 3: Process output data
+#Step 3: Process output data for base table
 #-----------------------------------------------------------------------------------------
 wf <- add_workflow_step(
   wf_summary = wf,
@@ -127,6 +127,106 @@ wf <- add_workflow_step(
     "mail-type" = "END"
   )
 )
+
+
+
+#Step 4: remove sims for base table (after processing)
+#-----------------------------------------------------------------------------------------
+wf <- add_workflow_step(
+  wf_summary = wf,
+  step_tmpl = step_tmpl_do_call_script(
+    r_script = "R/44.2-fig_simsremove.R",
+    args = list(
+      ncores = 15),
+    setup_lines = hpc_configs$r_loader
+  ),
+  sbatch_opts = list(
+    "cpus-per-task" = max_cores,
+    "time" = "04:00:00",
+    "mem-per-cpu" = "4G",
+    "mail-type" = "END"
+  )
+)
+
+
+
+
+#Set up scenarios for max scenarios
+#-----------------------------------------------------------------------------------------
+# if using scenarios described in a csv doc
+scenarios.df2 <- readr::read_csv("./data/input/contourparms_max.csv")
+scenarios.list2 <- EpiModel::create_scenario_list(scenarios.df2)
+
+
+
+#Step 5: Simulate HIV epidemic scenarios over estimated networks
+#-----------------------------------------------------------------------------------------
+wf <- add_workflow_step(
+  wf_summary = wf,
+  step_tmpl = step_tmpl_netsim_scenarios(
+    path_to_restart, param, init, control,
+    scenarios_list = scenarios.list2,
+    output_dir = "data/intermediate/hpc/figdata",
+    libraries = "EpiModelHIV",
+    save_pattern = "simple",
+    n_rep = 3,# * max_cores,                                                                            
+    n_cores = max_cores,
+    max_array_size = 999,
+    setup_lines = hpc_configs$r_loader
+  ),
+  sbatch_opts = list(
+    "mail-type" = "FAIL,TIME_LIMIT",
+    "cpus-per-task" = max_cores,
+    "time" = "04:00:00",
+    "mem" = "0" # special: all mem on node
+  )
+)
+
+
+
+
+#Step 6: Process output data for max scenarios
+#-----------------------------------------------------------------------------------------
+wf <- add_workflow_step(
+  wf_summary = wf,
+  step_tmpl = step_tmpl_do_call_script(
+    r_script = "R/44-fig_dataprocessing.R",
+    args = list(
+      ncores = 15,
+      nsteps = 52
+    ),
+    setup_lines = hpc_configs$r_loader
+  ),
+  sbatch_opts = list(
+    "cpus-per-task" = max_cores,
+    "time" = "04:00:00",
+    "mem-per-cpu" = "4G",
+    "mail-type" = "END"
+  )
+)
+
+
+
+#Step 7: remove sims for max table (after processing)
+#-----------------------------------------------------------------------------------------
+wf <- add_workflow_step(
+  wf_summary = wf,
+  step_tmpl = step_tmpl_do_call_script(
+    r_script = "R/44.2-fig_simsremove.R",
+    args = list(
+      ncores = 15),
+    setup_lines = hpc_configs$r_loader
+  ),
+  sbatch_opts = list(
+    "cpus-per-task" = max_cores,
+    "time" = "04:00:00",
+    "mem-per-cpu" = "4G",
+    "mail-type" = "END"
+  )
+)
+
+
+
 
 
 
