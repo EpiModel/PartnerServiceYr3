@@ -56,8 +56,24 @@ full_intervdata <- bind_rows(intervds)
 #B. Process outcome_sims and outcome_scenario data----------------------------------------
 outcomes_sims <- get_outcome_sims_tbl3(full_intervdata) %>% 
   select(tbl, scenario.num, scenario.new, scenario_name, sim,
-         pia)
-saveRDS(outcomes_sims, paste0("data/intermediate/",context,"/processed/figdata_outcomes_sims.rds"))
+         pia) %>% 
+  mutate(scenario.new = stringr::str_split_i(scenario_name, "_", 1),
+         part.index.prob = as.numeric(stringr::str_split_i(scenario_name, "_", 2)),
+         part.ppindex.prob = as.numeric(stringr::str_split_i(scenario_name, "_", 3)))
+
+  #get unique name for sims and scenario files
+  if(outcomes_sims$tbl[1] == "B"){
+    tblname = "base"
+    
+    if(outcomes_sims$tbl[1] == "M"){
+    tblname = "max"
+    }
+    
+    } else{
+      tblname = outcomes_sims$tbl[40]
+      }
+
+saveRDS(outcomes_sims, paste0("data/intermediate/",context,"/processed/figdata_outcomes_sims_",tblname,".rds"))
 
 
 outcomes_scenarios<- outcomes_sims%>%
@@ -65,38 +81,30 @@ outcomes_scenarios<- outcomes_sims%>%
   group_by(tbl, scenario.num, scenario.new, scenario_name) %>%
   summarise(across(everything(),list(
     #low = ~ quantile(.x, 0.025, na.rm = TRUE),
-    med = ~ quantile(.x, 0.50, na.rm = TRUE),
+    med = ~ quantile(.x, 0.50, na.rm = TRUE)
     #high = ~ quantile(.x, 0.975, na.rm = TRUE)
-  ),
-  .names = "{.col}"
-  )) %>% 
+    ),
+  .names = "{.col}")) %>% 
   mutate(across(where(is.numeric), ~round (., 6))) %>% ungroup()%>% 
+  mutate(part.index.prob = as.numeric(stringr::str_split_i(scenario_name, "_", 2)),
+         part.ppindex.prob = as.numeric(stringr::str_split_i(scenario_name, "_", 3))) %>% 
   arrange(tbl, scenario.num, scenario.new, scenario_name)
-saveRDS(outcomes_scenarios, paste0("data/intermediate/",context,"/processed/figdata_outcomes_scenarios.rds"))
+
+saveRDS(outcomes_scenarios, paste0("data/intermediate/",context,"/processed/figdata_outcomes_scenarios_", tblname,".rds"))
 
 
 
 
 
-# #C. Get contour plot data  ---------------------------------------------------------------
-# #recreate grid
-# xgrid <- seq(0.65, 1, by=0.05)
-# ygrid <- seq(0.65, 1, by=0.05)
-# sim.grid <-expand.grid(part.index.prob = xgrid, 
-#                        part.ppindex.prob = ygrid) %>% 
-#   mutate(num = as.character(row_number())) %>% 
-#   mutate(zers = sprintf("%03d",as.numeric(num)) ) %>% 
-#   mutate(scenario.id.base = paste0("b",zers, sep=""), .before = "index.nd") %>% 
-#   mutate(scenario.id.max = paste0("e",zers, sep=""), .before = "index.nd") %>% 
-#   select(-c(num, zers))
+#C. Get contour plot data  ---------------------------------------------------------------
 
+#run loess models on scenarios data and predict on wider grid
+loe.fit <- loess(pia ~ part.index.prob * part.ppindex.prob, outcomes_scenarios)
+xgrid <- seq(min(outcomes_scenarios$part.index.prob), max(outcomes_scenarios$part.index.prob), length.out = 100)
+ygrid <- seq(min(outcomes_scenarios$part.ppindex.prob), max(outcomes_scenarios$part.ppindex.prob), length.out = 100)
+loepreddat <- expand.grid(part.index.prob = xgrid, part.ppindex.prob = ygrid)
+loepreddat$pia <- as.numeric(predict(loe.fit, newdata = loepreddat))
+loepreddat$tbl <- tblname
 
-
-
-
-#Save the processed data
-saveRDS(full_intervdata, paste0("data/intermediate/",context,"/processed/figdata_fulldata.rds"))
-
-
-
+saveRDS(loepreddat, paste0("data/intermediate/",context,"/processed/figdata_loepreddat_", tblname,".rds"))
 
