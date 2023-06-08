@@ -56,24 +56,26 @@ full_intervdata <- bind_rows(intervds)
 #B. Process outcome_sims and outcome_scenario data----------------------------------------
 outcomes_sims <- get_outcome_sims_tbl3(full_intervdata) %>% 
   select(tbl, scenario.num, scenario_name, sim,
-         pia) %>% 
+         incid.cum, pia) %>% 
   mutate(scenario.new = stringr::str_split_i(scenario_name, "_", 1),
          part.index.prob = as.numeric(stringr::str_split_i(scenario_name, "_", 2)),
          part.ppindex.prob = as.numeric(stringr::str_split_i(scenario_name, "_", 3)))
 
-  #get unique name for sims and scenario files
-  if(outcomes_sims$tbl[1] == "B"){
-    tblname = "base"
-    
-    if(outcomes_sims$tbl[1] == "M"){
-    tblname = "max"
+#get unique name for sims and scenario files
+if(outcomes_sims$tbl[1] == "B"){
+  tblname = "base"
+  
+  if(outcomes_sims$tbl[1] == "M"){
+  tblname = "max"
+  }
+  
+  } else{
+    tblname = outcomes_sims$tbl[40]
     }
-    
-    } else{
-      tblname = outcomes_sims$tbl[40]
-      }
 
 saveRDS(outcomes_sims, paste0("data/intermediate/",context,"/processed/figdata_outcomes_sims_",tblname,".rds"))
+
+
 
 
 outcomes_scenarios<- outcomes_sims%>%
