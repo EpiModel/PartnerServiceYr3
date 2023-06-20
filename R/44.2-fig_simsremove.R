@@ -16,6 +16,6 @@ file.remove(file.path(sims_dir, files_to_delete_1))
 #remove log files
 log_dir <- paste0("workflows/psy3fitdat/log")
 
-files_to_delete_2 <- dir(path = log_dir, pattern = "^psy3figdat_step.*out$")
+files_to_delete_2 <- dir(path = log_dir, pattern = "^psy3figdat_step*")
 
 file.remove(file.path(log_dir, files_to_delete_2))
