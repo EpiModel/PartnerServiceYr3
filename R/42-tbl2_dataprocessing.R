@@ -50,21 +50,38 @@ intervds <- future.apply::future_lapply(
 
 #Merge all batches  
 full_intervdata_tbl2 <- bind_rows(intervds)
+saveRDS(outcomes_sims_tbl2, paste0("data/intermediate/",context,"/processed/tbl2_outcomes_sims.rds"))
 
 
 
 #B. Process outcome_sims and outcome_scenario data----------------------------------------
 outcomes_sims_tbl2 <- get_outcome_sims_tbl2(full_intervdata_tbl2) %>% 
   select(tbl, scenario.num, scenario.new, scenario_name,sim,
-         ir.yr10, incid.cum, nia, pia, nnt,
+         ir.yr10, incid.cum, nia, pia, 
          prepCov.yr10, diagCov.yr10, artCov.yr10, vSuppCov.yr10,
          prepStartAll,
+         
+         elig.indexes.nd, found.indexes.nd, prp.indexes.found.nd,
+         elig.indexes.pp, found.indexes.pp, prp.indexes.found.pp,
          elig.indexes.all, found.indexes.all, prp.indexes.found.all,
+         
+         elig.partners, found.partners, prp.partners.found.gen1, negunkPart.indexes, posPart.indexes,
+         elig.partners.gen2, found.partners.gen2, prp.partners.found.gen2,
          elig.partners.all, found.partners.all, prp.partners.found.all,
-         partners.per.index, 
-         tot.tests.pbt, positive.part, negative.part,negative.part2,
-         part.scrnd.tst, part.scrnd.prep, scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
-         elig.prepStartPart, prepStartPart, part.start.tx, part.reinit.tx, pp.reinit.tx)
+         
+         partners.per.index,
+         
+         tot.part.ident, elig.part,
+         tot.tests.pbt, part.scrnd.tst, positive.part, negative.part, 
+         
+         part.scrnd.prep, scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
+         elig.prepStartPart, prepStartPart,
+         
+         part.start.tx,
+         part.reinit.tx,
+         gen.start.tx,
+         pp.reinit.tx)
+saveRDS(outcomes_scenarios_tbl2, paste0("data/intermediate/",context,"/processed/tbl2_outcomes_scenarios.rds"))
 
 
 outcomes_scenarios_tbl2 <- outcomes_sims_tbl2 %>%
@@ -79,15 +96,13 @@ outcomes_scenarios_tbl2 <- outcomes_sims_tbl2 %>%
   )) %>% 
   mutate(across(where(is.numeric), ~round (., 5))) %>% ungroup()%>% 
   arrange(tbl, scenario.num, scenario.new, scenario_name)
-
-
-
-
-
-#Save the processed data
-saveRDS(outcomes_sims_tbl2, paste0("data/intermediate/",context,"/processed/tbl2_outcomes_sims.rds"))
-saveRDS(outcomes_scenarios_tbl2, paste0("data/intermediate/",context,"/processed/tbl2_outcomes_scenarios.rds"))
 saveRDS(full_intervdata_tbl2, paste0("data/intermediate/",context,"/processed/tbl2_fulldata.rds"))
+
+
+
+
+
+
 
 
 
