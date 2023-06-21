@@ -37,7 +37,8 @@ process_fulldata <- function(file_name, ts) {
       recent.indexes.all = recent.newdiagn + recent.ppretested,
       elig.indexes.all   = elig.indexes.nd + elig.indexes.pp,
       found.indexes.all  = found.indexes.nd + found.indexes.pp,
-      elig.partners.all  = elig.partners + elig.partners.gen2) %>% 
+      elig.partners.all  = elig.partners + elig.partners.gen2,
+      negative.part2 = tot.tests.pbt - positive.part) %>% 
     mutate(
       prp.indexes.found.nd = found.indexes.nd / elig.indexes.nd,
       prp.indexes.found.pp = found.indexes.pp / elig.indexes.pp,
@@ -98,7 +99,7 @@ process_fulldata <- function(file_name, ts) {
            
            #HIV screening
              tot.tests, 
-             tot.tests.ibt, tot.tests.pbt,part.scrnd.tst,
+             tot.tests.ibt, tot.tests.pbt,
              tot.tests.ibtNegunk, tot.tests.ibtPrEP, tot.tests.ibtPP,
              eligPP.for.retest, pp.tests.nic,pp.tests.ic,
              tot.part.ident, elig.part, tot.tests.pbt, positive.part, negative.part, negative.part2
@@ -191,23 +192,13 @@ get_sumave_outcomes <- function(d) {
   d %>% filter(time > 5 * 52) %>% 
     select(tbl, scenario.num, scenario.new, scenario_name, sim, 
            prepStartAll, 
-           elig.indexes.nd, found.indexes.nd, 
-           elig.indexes.pp, found.indexes.pp, 
            elig.indexes.all, found.indexes.all,
-           
-           elig.partners, found.partners, negunkPart.indexes, posPart.indexes,
-           elig.partners.gen2, found.partners.gen2, 
-           elig.partners.all, found.partners.all, 
-           
-           tot.part.ident, elig.part,
-           tot.tests.pbt, positive.part, negative.part, 
-           
+           elig.partners.all, found.partners.all,
+           tot.tests.pbt, positive.part, negative.part, negative.part2,
            part.scrnd.prep, scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
            elig.prepStartPart, prepStartPart,
-           
            part.start.tx,
            part.reinit.tx,
-           gen.start.tx,
            pp.reinit.tx) %>% 
     group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
     summarise(across(everything(), ~ sum(.x, na.rm = T) / 10)) 
