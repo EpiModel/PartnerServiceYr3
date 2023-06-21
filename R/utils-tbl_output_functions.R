@@ -38,8 +38,7 @@ process_fulldata <- function(file_name, ts) {
       elig.indexes.all   = elig.indexes.nd + elig.indexes.pp,
       found.indexes.all  = found.indexes.nd + found.indexes.pp,
       elig.partners.all  = elig.partners + elig.partners.gen2,
-      negunkPart.indexes.all = negunkPart.indexes + negunkPart.indexes.gen2,
-      posPart.indexes.all = posPart.indexes + posPart.indexes.gen2) %>% 
+      negative.part2 = tot.tests.pbt - positive.part) %>% 
     mutate(
       prp.indexes.found.nd = found.indexes.nd / elig.indexes.nd,
       prp.indexes.found.pp = found.indexes.pp / elig.indexes.pp,
@@ -57,9 +56,7 @@ process_fulldata <- function(file_name, ts) {
            #Intermediate impacts: PrEP & ART coverage
              #PrEP
              prepElig, 
-             part.scrnd.prep, 
-             scrnd.pos, scrnd.pos,
-             scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
+             part.scrnd.prep, scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
              elig.prepStartPart, prepStartPart,
              elig.prepStartGen, prepStartGen,
              prepStartAll,
@@ -95,23 +92,17 @@ process_fulldata <- function(file_name, ts) {
 
              #PS measures - Wave 2 partners
              elig.partners.gen2, found.partners.gen2, prp.partners.found.gen2,
-             negunkPart.indexes.gen2, posPart.indexes.gen2,
-           
+
              #all partners
              elig.partners.all, found.partners.all, prp.partners.found.all,
-             negunkPart.indexes.all, posPart.indexes.all,
              partners.per.index,
            
            #HIV screening
-             tot.part.ident, 
-             elig.part, 
-             elig.part.check,
-             part.scrnd.tst, tot.tests.pbt,
-             positive.part, negative.part, 
+             tot.tests, 
+             tot.tests.ibt, tot.tests.pbt,
              tot.tests.ibtNegunk, tot.tests.ibtPrEP, tot.tests.ibtPP,
-             tot.tests.ibt,
-             eligPP.for.retest, pp.tests.nic, pp.tests.ictot.tests
-           
+             eligPP.for.retest, pp.tests.nic,pp.tests.ic,
+             tot.part.ident, elig.part, tot.tests.pbt, positive.part, negative.part, negative.part2
           ) %>%
     arrange(tbl, scenario.num, scenario.new, scenario_name, batch_number, sim) %>%
     
@@ -201,24 +192,13 @@ get_sumave_outcomes <- function(d) {
   d %>% filter(time > 5 * 52) %>% 
     select(tbl, scenario.num, scenario.new, scenario_name, sim, 
            prepStartAll, 
-           
-           elig.indexes.nd, found.indexes.nd, 
-           elig.indexes.pp, found.indexes.pp, 
            elig.indexes.all, found.indexes.all,
-           
-           elig.partners, found.partners, negunkPart.indexes, posPart.indexes,
-           elig.partners.gen2, found.partners.gen2, negunkPart.indexes.gen2, posPart.indexes.gen2, 
-           elig.partners.all, found.partners.all, negunkPart.indexes.all, posPart.indexes.all,
-           
-           tot.part.ident, elig.part, elig.part.check,
-           part.scrnd.tst, tot.tests.pbt, positive.part, negative.part, 
-           
-           part.scrnd.prep, scrnd.pos, scrnd.neg, scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
+           elig.partners.all, found.partners.all,
+           tot.tests.pbt, positive.part, negative.part, negative.part2,
+           part.scrnd.prep, scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
            elig.prepStartPart, prepStartPart,
-           
            part.start.tx,
            part.reinit.tx,
-           gen.start.tx,
            pp.reinit.tx) %>% 
     group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
     summarise(across(everything(), ~ sum(.x, na.rm = T) / 10)) 
