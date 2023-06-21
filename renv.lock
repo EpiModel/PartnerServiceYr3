@@ -56,17 +56,17 @@
     },
     "DEoptimR": {
       "Package": "DEoptimR",
-      "Version": "1.0-14",
+      "Version": "1.0-13",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "stats"
       ],
-      "Hash": "3c6cc7c182d60d2802b5e88235c3a054"
+      "Hash": "8f5c81679eea074e7152f16b78d7de81"
     },
     "EpiModel": {
       "Package": "EpiModel",
-      "Version": "2.4.0",
+      "Version": "2.3.2",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -97,7 +97,7 @@
         "tibble",
         "utils"
       ],
-      "Hash": "e47ac0ce91cdd676db6a8aa860260604"
+      "Hash": "dfd8d752775e4d81ac7a3f500e4fe129"
     },
     "EpiModelHIV": {
       "Package": "EpiModelHIV",
@@ -107,7 +107,7 @@
       "RemoteUsername": "EpiModel",
       "RemoteRepo": "EpiModelHIV-p",
       "RemoteRef": "PartnerServicesYr3",
-      "RemoteSha": "399c5e894f55b1d1aceb835533a92110bd05147e",
+      "RemoteSha": "501f601f6a75838752182af1c28395a63718394d",
       "RemoteHost": "api.github.com",
       "Remotes": "github::EpiModel/ARTnet@main, github::EpiModel/ARTnetData@main",
       "Requirements": [
@@ -122,7 +122,7 @@
         "statnet.common",
         "tergm"
       ],
-      "Hash": "06c373bd3a7ef4de647021e8219be889"
+      "Hash": "419395b59980b72c7b4e404e03730b09"
     },
     "EpiModelHPC": {
       "Package": "EpiModelHPC",
@@ -292,7 +292,7 @@
     },
     "bslib": {
       "Package": "bslib",
-      "Version": "0.5.0",
+      "Version": "0.4.2",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -308,7 +308,7 @@
         "rlang",
         "sass"
       ],
-      "Hash": "1b117970533deb6d4e992c1b34e9d905"
+      "Hash": "a7fbf03946ad741129dc81098722fca1"
     },
     "cachem": {
       "Package": "cachem",
@@ -807,13 +807,12 @@
     },
     "igraph": {
       "Package": "igraph",
-      "Version": "1.5.0",
+      "Version": "1.4.3",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "Matrix",
         "R",
-        "cli",
         "cpp11",
         "grDevices",
         "graphics",
@@ -824,7 +823,7 @@
         "stats",
         "utils"
       ],
-      "Hash": "84818361421d5fc3ff0bf4e669524217"
+      "Hash": "f7f74f5fbff27d52b1283ac512bc5430"
     },
     "isoband": {
       "Package": "isoband",
@@ -1345,7 +1344,7 @@
     },
     "robustbase": {
       "Package": "robustbase",
-      "Version": "0.99-0",
+      "Version": "0.95-1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1356,7 +1355,7 @@
         "stats",
         "utils"
       ],
-      "Hash": "2af254ab59081fbde822b89d4110f24c"
+      "Hash": "50e6b6ad7801416766716d9fa853e23d"
     },
     "rprojroot": {
       "Package": "rprojroot",
@@ -1687,7 +1686,7 @@
     },
     "vctrs": {
       "Package": "vctrs",
-      "Version": "0.6.3",
+      "Version": "0.6.2",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1697,7 +1696,7 @@
         "lifecycle",
         "rlang"
       ],
-      "Hash": "d0ef2856b83dc33ea6e255caf6229ee2"
+      "Hash": "a745bda7aff4734c17294bb41d4e4607"
     },
     "viridisLite": {
       "Package": "viridisLite",
