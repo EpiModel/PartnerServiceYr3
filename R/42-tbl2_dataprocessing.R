@@ -56,7 +56,7 @@ full_intervdata_tbl2 <- bind_rows(intervds)
 #B. Process outcome_sims and outcome_scenario data----------------------------------------
 outcomes_sims_tbl2 <- get_outcome_sims_tbl2(full_intervdata_tbl2) %>% 
   select(tbl, scenario.num, scenario.new, scenario_name,sim,
-         ir.yr10, incid.cum, nia, pia,
+         ir.yr10, incid.cum, nia, pia, nnt,
          prepCov.yr10, diagCov.yr10, artCov.yr10, vSuppCov.yr10,
          prepStartAll,
          elig.indexes.all, found.indexes.all, prp.indexes.found.all,
