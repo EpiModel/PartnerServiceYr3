@@ -138,6 +138,10 @@ wf <- add_workflow_step(
 # to send workflows to the HPC (Run in R terminal)
 # scp -r workflows/psy3sim_tbl2 sph:projects/epimodel/uonwubi/PartnerServiceYr3/workflows
 
+# # to execute jobs
+# chmod +x workflows/put_wf_name_here/start_workflow.sh    
+# ./workflows/put_wf_name_here/start_workflow.sh 
+
 # to get the data back after simulations (Run in R terminal)
 # scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc data/intermediate
 
