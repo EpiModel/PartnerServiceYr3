@@ -101,7 +101,7 @@ process_fulldata <- function(file_name, ts) {
              tot.tests.ibt, 
              tot.tests.ibtNegunk, tot.tests.ibtPrEP, tot.tests.ibtPP,
              eligPP.for.retest, pp.tests.nic,pp.tests.ic,
-             tot.part.ident, elig.part, tot.tests.pbt, part.scrnd.tst, positive.part, negative.part
+             tot.part.ident, elig.part.ident, tot.tests.pbt, part.scrnd.tst, positive.part, negative.part
           ) %>%
     arrange(tbl, scenario.num, scenario.new, scenario_name, batch_number, sim) %>%
     
@@ -199,7 +199,7 @@ get_sumave_outcomes <- function(d) {
            elig.partners.gen2, found.partners.gen2, 
            elig.partners.all, found.partners.all, 
            
-           tot.part.ident, elig.part,
+           tot.part.ident, elig.part.ident,
            tot.tests.pbt, part.scrnd.tst, positive.part, negative.part, 
            
            part.scrnd.prep, scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
