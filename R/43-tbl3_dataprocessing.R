@@ -71,9 +71,9 @@ outcomes_sims_tbl3 <- get_outcome_sims_tbl3(full_intervdata_tbl3) %>%
          partners.per.index,
          
          tot.part.ident, elig.for.scrn,
-         tot.tests.pbt, part.scrnd.tst, positive.part, negative.part, 
+         part.scrnd.tst, positive.part, negative.part, 
          
-         part.scrnd.prep, scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
+         part.scrnd.prep, scrnd.neg, scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
          elig.prepStartPart, prepStartPart,
          
          part.start.tx,
