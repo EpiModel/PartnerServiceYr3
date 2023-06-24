@@ -96,12 +96,13 @@ est      <- readRDS("data/intermediate/local/estimates/netest-local.rds")
     ncores = 1,
   )
 
-  debug(partident_msm) 
-  debug(hivtest_msm) 
-  debug(prep_msm)
+  # debug(partident_msm) 
+  # debug(hivtest_msm)
+  # debug(prep_msm)
   sim <- netsim(est, param, init, control)
-  undebug(partident_msm)
-
+  # undebug(partident_msm)
+  # undebug(hivtest_msm)
+  # undebug(prep_msm)
 
 
 # Testing Scenarios on local -------------------------------------------------------------
