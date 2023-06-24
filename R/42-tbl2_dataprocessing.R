@@ -66,8 +66,8 @@ outcomes_sims_tbl2 <- get_outcome_sims_tbl2(full_intervdata_tbl2) %>%
          elig.indexes.all, found.indexes.all, prp.indexes.found.all,
          
          elig.partners, found.partners, prp.partners.found.gen1, posPart.indexes, negunkPart.indexes, 
-         elig.partners.gen2, found.partners.gen2, prp.partners.found.gen2,
-         elig.partners.all, found.partners.all, prp.partners.found.all,
+         elig.partners.gen2, found.partners.gen2, prp.partners.found.gen2, posPart.gen2, negunkPart.gen2, 
+         elig.partners.all, found.partners.all, prp.partners.found.all, posPart.indexes.all, negunkPart.indexes.all,
          
          partners.per.index,
          
