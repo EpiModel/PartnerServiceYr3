@@ -108,25 +108,25 @@ wf <- add_workflow_step(
 
 
 
-# #Step 3: Process output data
-# #-----------------------------------------------------------------------------------------
-# wf <- add_workflow_step(
-#   wf_summary = wf,
-#   step_tmpl = step_tmpl_do_call_script(
-#     r_script = "R/42-tbl2_dataprocessing.R",
-#     args = list(
-#       ncores = 15,
-#       nsteps = 52
-#     ),
-#     setup_lines = hpc_configs$r_loader
-#   ),
-#   sbatch_opts = list(
-#     "cpus-per-task" = max_cores,
-#     "time" = "04:00:00",
-#     "mem-per-cpu" = "4G",
-#     "mail-type" = "END"
-#   )
-# )
+#Step 3: Process output data
+#-----------------------------------------------------------------------------------------
+wf <- add_workflow_step(
+  wf_summary = wf,
+  step_tmpl = step_tmpl_do_call_script(
+    r_script = "R/42-tbl2_dataprocessing.R",
+    args = list(
+      ncores = 15,
+      nsteps = 52
+    ),
+    setup_lines = hpc_configs$r_loader
+  ),
+  sbatch_opts = list(
+    "cpus-per-task" = max_cores,
+    "time" = "04:00:00",
+    "mem-per-cpu" = "4G",
+    "mail-type" = "END"
+  )
+)
 
 
 
