@@ -50,6 +50,7 @@ intervds <- future.apply::future_lapply(
 
 #Merge all batches  
 full_intervdata_tbl3 <- bind_rows(intervds)
+saveRDS(full_intervdata_tbl3, paste0("data/intermediate/",context,"/processed/tbl3_fulldata.rds"))
 
 
 
@@ -65,8 +66,8 @@ outcomes_sims_tbl3 <- get_outcome_sims_tbl3(full_intervdata_tbl3) %>%
          elig.indexes.all, found.indexes.all, prp.indexes.found.all,
          
          elig.partners, found.partners, prp.partners.found.gen1, posPart.indexes, negunkPart.indexes, 
-         elig.partners.gen2, found.partners.gen2, prp.partners.found.gen2,
-         elig.partners.all, found.partners.all, prp.partners.found.all,
+         elig.partners.gen2, found.partners.gen2, prp.partners.found.gen2, posPart.gen2, negunkPart.gen2, 
+         elig.partners.all, found.partners.all, prp.partners.found.all, posPart.indexes.all, negunkPart.indexes.all,
          
          partners.per.index,
          
@@ -80,6 +81,7 @@ outcomes_sims_tbl3 <- get_outcome_sims_tbl3(full_intervdata_tbl3) %>%
          part.reinit.tx,
          gen.start.tx,
          pp.reinit.tx)
+saveRDS(outcomes_sims_tbl3, paste0("data/intermediate/",context,"/processed/tbl3_outcomes_sims.rds"))
 
 
 
@@ -95,15 +97,11 @@ outcomes_scenarios_tbl3 <- outcomes_sims_tbl3 %>%
   )) %>% 
   mutate(across(where(is.numeric), ~round (., 5))) %>% ungroup()%>% 
   arrange(tbl, scenario.num, scenario.new, scenario_name)
-
-
-
-
-
-#Save the processed data
-saveRDS(outcomes_sims_tbl3, paste0("data/intermediate/",context,"/processed/tbl3_outcomes_sims.rds"))
 saveRDS(outcomes_scenarios_tbl3, paste0("data/intermediate/",context,"/processed/tbl3_outcomes_scenarios.rds"))
-saveRDS(full_intervdata_tbl3, paste0("data/intermediate/",context,"/processed/tbl3_fulldata.rds"))
+
+
+
+
 
 
 
