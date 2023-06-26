@@ -50,8 +50,9 @@ intervds <- future.apply::future_lapply(
 
 #Merge all batches  
 full_intervdata_tbl2 <- bind_rows(intervds)
-saveRDS(full_intervdata_tbl2, paste0("data/intermediate/",context,"/processed/tbl2_fulldata.rds"))
+tblnam <- full_intervdata_tbl2$tbl[2]
 
+saveRDS(full_intervdata_tbl2, paste0("data/intermediate/",context,"/processed/tbl2", tblnam, "_fulldata.rds"))
 
 
 #B. Process outcome_sims and outcome_scenario data----------------------------------------
@@ -81,7 +82,7 @@ outcomes_sims_tbl2 <- get_outcome_sims_tbl2(full_intervdata_tbl2) %>%
          part.reinit.tx,
          gen.start.tx,
          pp.reinit.tx)
-saveRDS(outcomes_sims_tbl2, paste0("data/intermediate/",context,"/processed/tbl2_outcomes_sims.rds"))
+saveRDS(outcomes_sims_tbl2, paste0("data/intermediate/",context,"/processed/tbl2", tblnam, "_outcomes_sims.rds"))
 
 
 outcomes_scenarios_tbl2 <- outcomes_sims_tbl2 %>%
@@ -96,7 +97,7 @@ outcomes_scenarios_tbl2 <- outcomes_sims_tbl2 %>%
   )) %>% 
   mutate(across(where(is.numeric), ~round (., 5))) %>% ungroup()%>% 
   arrange(tbl, scenario.num, scenario.new, scenario_name)
-saveRDS(outcomes_scenarios_tbl2, paste0("data/intermediate/",context,"/processed/tbl2_outcomes_scenarios.rds"))
+saveRDS(outcomes_scenarios_tbl2, paste0("data/intermediate/",context,"/processed/tbl2", tblnam, "_outcomes_scenarios.rds"))
 
 
 
