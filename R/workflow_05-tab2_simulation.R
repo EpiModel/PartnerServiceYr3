@@ -93,7 +93,7 @@ wf <- add_workflow_step(
     output_dir = "data/intermediate/hpc/scenarios_tbl2",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
-    n_rep = 1 * max_cores,                                                                            
+    n_rep = 10 * max_cores,                                                                            
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
@@ -159,7 +159,7 @@ wf <- add_workflow_step(
     output_dir = "data/intermediate/hpc/scenarios_tbl2",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
-    n_rep = 1 * max_cores,                                                                            
+    n_rep = 10 * max_cores,                                                                            
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
@@ -225,7 +225,7 @@ wf <- add_workflow_step(
     output_dir = "data/intermediate/hpc/scenarios_tbl2",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
-    n_rep = 1 * max_cores,                                                                            
+    n_rep = 10 * max_cores,                                                                            
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
@@ -291,7 +291,7 @@ wf <- add_workflow_step(
     output_dir = "data/intermediate/hpc/scenarios_tbl2",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
-    n_rep = 1 * max_cores,                                                                            
+    n_rep = 10 * max_cores,                                                                            
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
@@ -350,7 +350,7 @@ wf <- add_workflow_step(
 # scp -r data/intermediate/hpc/estimates sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc/
   
 # to send workflows to the HPC (Run in R terminal)
-# scp -r workflows/psy3sim_tbl2 sph:projects/epimodel/uonwubi/PartnerServiceYr3/workflows
+# scp -r workflows/psy3tbl2all sph:projects/epimodel/uonwubi/PartnerServiceYr3/workflows
 
 # # to execute jobs
 # chmod +x workflows/put_wf_name_here/start_workflow.sh    
