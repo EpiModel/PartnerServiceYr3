@@ -40,7 +40,11 @@ process_fulldata <- function(file_name, ts) {
       elig.partners.all  = elig.partners + elig.partners.gen2,
       negative.part      = part.scrnd.tst - positive.part,
       negunkPart.indexes.all = negunkPart.indexes + negunkPart.gen2,
-      posPart.indexes.all = posPart.indexes + posPart.gen2) %>% 
+      posPart.indexes.all = posPart.indexes + posPart.gen2,
+      
+      diagCov2 = diag/i.num,
+      artCov2 = artCurr/diag,
+      vSuppCov2 = vSupp/diag) %>% 
     mutate(
       prp.indexes.found.nd = found.indexes.nd / elig.indexes.nd,
       prp.indexes.found.pp = found.indexes.pp / elig.indexes.pp,
@@ -69,7 +73,7 @@ process_fulldata <- function(file_name, ts) {
              #ART
              i.num, 
              diag, 
-             diagCov,
+             diagCov, diagCov2,
              elig.part.start.tx, part.start.tx,
              elig.gen.start.tx, gen.start.tx,
              txStop,
@@ -78,9 +82,9 @@ process_fulldata <- function(file_name, ts) {
              pp.elig.for.reinit, pp.reinit.tx,
              all.reinit.tx,
              artCurr, 
-             artCov, 
+             artCov, artCov2,
              vSupp,
-             vSuppCov,
+             vSuppCov, vSuppCov2,
 
            #Proximal impacts: HIV screening and PS participation
              #PS measures - Indexes
@@ -119,11 +123,23 @@ get_yr10_outcomes <- function(d) {
   d %>%
     filter(time >= max(time) - 52) %>% 
     select(tbl, scenario.num, scenario.new, scenario_name, sim, 
-           incid, prepCov, diagCov, artCov, vSuppCov) %>% 
+           incid, 
+           prepCov, 
+           num, i.num, diag, 
+           diagCov, 
+           artCurr,
+           artCov, 
+           vSupp,
+           vSuppCov,
+           diagCov2, artCov2, vSuppCov2) %>% 
     group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
     summarise(across(c(incid), ~sum (.x, na.rm = T)),
-              across(c(prepCov, diagCov, artCov, vSuppCov), ~ mean(.x, na.rm = T), .names = "{.col}.yr10")) %>% 
-    mutate(ir.yr10 = incid / networks_size * 100) %>% 
+              across(c(prepCov, diagCov, artCov, vSuppCov, 
+                       num, i.num, diag, artCurr, vSupp, 
+                       diagCov2, artCov2, vSuppCov2),
+                     ~ mean(.x, na.rm = T), .names = "{.col}.yr10")) %>% 
+    mutate(ir.yr10 = incid / networks_size * 100,
+           ir2.yr10 = incid / num.yr10 *100) %>% 
     select(tbl, scenario.num, scenario.new, scenario_name, sim, ends_with(".yr10"))
 }
 
