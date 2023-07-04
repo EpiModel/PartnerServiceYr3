@@ -54,6 +54,12 @@ tblnam <- full_intervdata_tbl3$tbl[2]
 saveRDS(full_intervdata_tbl3, paste0("data/intermediate/",context,"/processed/tbl3", 
                                      tblnam, "_fulldata.rds"))
 
+# #get fulldata files from hpc folder for local processing
+# full_intervdata_tbl3 <- readRDS("C:/Users/Uonwubi/OneDrive - Emory University/Desktop/Personal/RSPH EPI Docs/RA2/GitRepos/PartnerServicesYr3/data/intermediate/hpc/processed_06272023/tbl3D_fulldata.rds") %>% 
+#   mutate(diagCov2 = diag/i.num,
+#          artCov2 = artCurr/diag,
+#          vSuppCov2 = vSupp/diag)
+# tblnam <- full_intervdata_tbl3$tbl[2]
 
 
 #B. Process outcome_sims and outcome_scenario data----------------------------------------
@@ -61,6 +67,8 @@ outcomes_sims_tbl3 <- get_outcome_sims_tbl3(full_intervdata_tbl3) %>%
   select(tbl, scenario.num, scenario.new, scenario_name,sim,
          ir.yr10, incid.cum, nia, pia, nnt,
          prepCov.yr10, diagCov.yr10, artCov.yr10, vSuppCov.yr10,
+         i.num.yr10, diag.yr10, artCurr.yr10, vSupp.yr10,
+         diagCov2.yr10, artCov2.yr10, vSuppCov2.yr10,
          prepStartAll,
          
          elig.indexes.nd, found.indexes.nd, prp.indexes.found.nd,
