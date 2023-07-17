@@ -23,7 +23,7 @@ hpc_configs <- swf_configs_rsph(
 
 max_cores <- 32
 cp_dir <- "data/cp_recal"
-
+numsims <- 1 * max_cores
 
 
 #Create workflow
@@ -92,7 +92,7 @@ wf <- add_workflow_step(
     output_dir = "data/intermediate/hpc/scenarios_tbl3",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
-    n_rep = 1 * max_cores,                                                                            
+    n_rep = numsims,                                                                            
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
@@ -157,7 +157,7 @@ wf <- add_workflow_step(
     output_dir = "data/intermediate/hpc/scenarios_tbl3",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
-    n_rep = 1 * max_cores,                                                                            
+    n_rep = numsims,                                                                            
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
@@ -223,7 +223,7 @@ wf <- add_workflow_step(
     output_dir = "data/intermediate/hpc/scenarios_tbl3",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
-    n_rep = 1 * max_cores,                                                                            
+    n_rep = numsims,                                                                            
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
@@ -290,7 +290,7 @@ wf <- add_workflow_step(
     output_dir = "data/intermediate/hpc/scenarios_tbl3",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
-    n_rep = 1 * max_cores,                                                                            
+    n_rep = numsims,                                                                            
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
