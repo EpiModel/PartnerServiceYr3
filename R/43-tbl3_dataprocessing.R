@@ -84,7 +84,8 @@ outcomes_sims_tbl3 <- get_outcome_sims_tbl3(full_intervdata_tbl3) %>%
          tot.part.ident, elig.for.scrn,
          part.scrnd.tst, positive.part, negative.part, 
          
-         part.scrnd.prep, scrnd.neg, scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
+         part.scrnd.prep, scrnd.neg, scrnd.prepon, scrnd.pos, diff.scrnd.pos, 
+         scrnd.noprep, scrnd.noprepnorisk,
          elig.prepStartPart, prepStartPart,
          
          part.start.tx,
