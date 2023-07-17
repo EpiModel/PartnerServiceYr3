@@ -39,6 +39,7 @@ process_fulldata <- function(file_name, ts) {
       found.indexes.all  = found.indexes.nd + found.indexes.pp,
       elig.partners.all  = elig.partners + elig.partners.gen2,
       negative.part      = part.scrnd.tst - positive.part,
+      diff.scrnd.pos     = positive.part - scrnd.pos,
       negunkPart.indexes.all = negunkPart.indexes + negunkPart.gen2,
       posPart.indexes.all = posPart.indexes + posPart.gen2,
       
@@ -62,7 +63,7 @@ process_fulldata <- function(file_name, ts) {
            #Intermediate impacts: PrEP & ART coverage
              #PrEP
              prepElig, 
-             part.scrnd.prep, scrnd.neg, scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
+             part.scrnd.prep, scrnd.neg, scrnd.pos, diff.scrnd.pos, scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
              elig.prepStartPart, prepStartPart,
              elig.prepStartGen, prepStartGen,
              prepStartAll,
@@ -222,7 +223,8 @@ get_sumave_outcomes <- function(d) {
            tot.part.ident, elig.for.scrn,
            part.scrnd.tst, positive.part, negative.part, 
            
-           part.scrnd.prep, scrnd.neg, scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
+           part.scrnd.prep, scrnd.neg, scrnd.pos, diff.scrnd.pos,
+           scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
            elig.prepStartPart, prepStartPart,
            
            part.start.tx,
