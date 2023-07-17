@@ -107,7 +107,7 @@
       "RemoteUsername": "EpiModel",
       "RemoteRepo": "EpiModelHIV-p",
       "RemoteRef": "PartnerServicesYr3",
-      "RemoteSha": "e1624ca7228d654a7d7c2827734f7e205ae8980b",
+      "RemoteSha": "3896c87222bb764510708f20a2796cdd8fc1b499",
       "RemoteHost": "api.github.com",
       "Remotes": "github::EpiModel/ARTnet@main, github::EpiModel/ARTnetData@main",
       "Requirements": [
@@ -122,7 +122,7 @@
         "statnet.common",
         "tergm"
       ],
-      "Hash": "d63527528ec601285268df48abfee508"
+      "Hash": "585d7d596b5d9384380bf3eb3de12cc8"
     },
     "EpiModelHPC": {
       "Package": "EpiModelHPC",
