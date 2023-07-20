@@ -143,69 +143,69 @@ wf <- add_workflow_step(
 
 
 
-#PP maxima table ----------------------------------------------
-#set up scenarios
-scenarios.df.pp <- readr::read_csv("./data/input/scenarios_tbl3_pp.csv")
-scenarios.list.pp <- EpiModel::create_scenario_list(scenarios.df.pp)
-
-#step 5: run the simulations
-wf <- add_workflow_step(
-  wf_summary = wf,
-  step_tmpl = step_tmpl_netsim_scenarios(
-    path_to_restart, param, init, control,
-    scenarios_list = scenarios.list.pp,
-    output_dir = "data/intermediate/hpc/scenarios_tbl3",
-    libraries = "EpiModelHIV",
-    save_pattern = "simple",
-    n_rep = numsims,                                                                            
-    n_cores = max_cores,
-    max_array_size = 999,
-    setup_lines = hpc_configs$r_loader
-  ),
-  sbatch_opts = list(
-    "mail-type" = "FAIL,TIME_LIMIT,END",
-    "cpus-per-task" = max_cores,
-    "time" = "04:00:00",
-    "mem" = "0" # special: all mem on node
-  )
-)
-
-#step 6: run the processing file
-wf <- add_workflow_step(
-  wf_summary = wf,
-  step_tmpl = step_tmpl_do_call_script(
-    r_script = "R/43-tbl3_dataprocessing.R",
-    args = list(
-      ncores = 15,
-      nsteps = 52
-    ),
-    setup_lines = hpc_configs$r_loader
-  ),
-  sbatch_opts = list(
-    "cpus-per-task" = max_cores,
-    "time" = "04:00:00",
-    "mem-per-cpu" = "4G",
-    "mail-type" = "END"
-  )
-)
-
-
-#step 7: remove sim files
-wf <- add_workflow_step(
-  wf_summary = wf,
-  step_tmpl = step_tmpl_do_call_script(
-    r_script = "R/43.2-remove_simfiles_tbl3.R",
-    args = list(
-      ncores = 15),
-    setup_lines = hpc_configs$r_loader
-  ),
-  sbatch_opts = list(
-    "cpus-per-task" = max_cores,
-    "time" = "04:00:00",
-    "mem-per-cpu" = "4G",
-    "mail-type" = "END"
-  )
-)
+# #PP maxima table ----------------------------------------------
+# #set up scenarios
+# scenarios.df.pp <- readr::read_csv("./data/input/scenarios_tbl3_pp.csv")
+# scenarios.list.pp <- EpiModel::create_scenario_list(scenarios.df.pp)
+# 
+# #step 5: run the simulations
+# wf <- add_workflow_step(
+#   wf_summary = wf,
+#   step_tmpl = step_tmpl_netsim_scenarios(
+#     path_to_restart, param, init, control,
+#     scenarios_list = scenarios.list.pp,
+#     output_dir = "data/intermediate/hpc/scenarios_tbl3",
+#     libraries = "EpiModelHIV",
+#     save_pattern = "simple",
+#     n_rep = numsims,                                                                            
+#     n_cores = max_cores,
+#     max_array_size = 999,
+#     setup_lines = hpc_configs$r_loader
+#   ),
+#   sbatch_opts = list(
+#     "mail-type" = "FAIL,TIME_LIMIT,END",
+#     "cpus-per-task" = max_cores,
+#     "time" = "04:00:00",
+#     "mem" = "0" # special: all mem on node
+#   )
+# )
+# 
+# #step 6: run the processing file
+# wf <- add_workflow_step(
+#   wf_summary = wf,
+#   step_tmpl = step_tmpl_do_call_script(
+#     r_script = "R/43-tbl3_dataprocessing.R",
+#     args = list(
+#       ncores = 15,
+#       nsteps = 52
+#     ),
+#     setup_lines = hpc_configs$r_loader
+#   ),
+#   sbatch_opts = list(
+#     "cpus-per-task" = max_cores,
+#     "time" = "04:00:00",
+#     "mem-per-cpu" = "4G",
+#     "mail-type" = "END"
+#   )
+# )
+# 
+# 
+# #step 7: remove sim files
+# wf <- add_workflow_step(
+#   wf_summary = wf,
+#   step_tmpl = step_tmpl_do_call_script(
+#     r_script = "R/43.2-remove_simfiles_tbl3.R",
+#     args = list(
+#       ncores = 15),
+#     setup_lines = hpc_configs$r_loader
+#   ),
+#   sbatch_opts = list(
+#     "cpus-per-task" = max_cores,
+#     "time" = "04:00:00",
+#     "mem-per-cpu" = "4G",
+#     "mail-type" = "END"
+#   )
+# )
 
 
 
