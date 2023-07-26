@@ -81,7 +81,8 @@ outcomes_sims_tbl3 <- get_outcome_sims_tbl3(full_intervdata_tbl3) %>%
          tot.part.ident, elig.for.scrn,
          part.scrnd.tst, positive.part, negative.part, 
          
-         part.scrnd.prep, scrnd.neg, scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
+         part.scrnd.prep, scrnd.neg, scrnd.pos, diff.scrnd.pos, 
+         scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
          elig.prepStartPart, prepStartPart,
          
          part.start.tx,
@@ -108,6 +109,21 @@ outcomes_scenarios_tbl3 <- outcomes_sims_tbl3 %>%
 saveRDS(outcomes_scenarios_tbl3, paste0("data/intermediate/",context,"/processed/tbl3", 
                                         tblnam, "_outcomes_scenarios.rds"))
 
+
+outcomes_scenarios_tbl3 <- outcomes_sims_tbl3 %>%
+  select(- c(sim)) %>%
+  group_by(tbl, scenario.num, scenario.new, scenario_name) %>%
+  summarise(across(everything(),list(
+    low = ~ quantile(.x, 0.025, na.rm = TRUE),
+    med = ~ quantile(.x, 0.50, na.rm = TRUE),
+    high = ~ quantile(.x, 0.975, na.rm = TRUE)
+  ),
+  .names = "{.col}__{.fn}"
+  )) %>% 
+  mutate(across(where(is.numeric), ~round (., 5))) %>% ungroup()%>% 
+  arrange(tbl, scenario.num, scenario.new, scenario_name)
+saveRDS(outcomes_scenarios_tbl3, paste0("data/intermediate/",context,"/processed/tbl3", 
+                                        tblnam, "_outcomes_scenarios.rds"))
 
 
 
