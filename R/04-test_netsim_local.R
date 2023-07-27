@@ -18,6 +18,11 @@ context <- "local"
 source("R/utils-netsim_inputs.R")
 source("R/utils-netsize.R")
 
+epistats <- readRDS("data/intermediate/local/estimates/epistats-local.rds")
+netstats <- readRDS("data/intermediate/local/estimates/netstats-local.rds")
+est      <- readRDS("data/intermediate/local/estimates/netest-local.rds")
+
+
   # #param
   # prep_start <- 1 #52 * 1
   # param <- param.net(
@@ -112,7 +117,10 @@ context <- "local"
 #Libraries
 library("EpiModelHIV")
 
-  
+epistats <- readRDS("data/intermediate/local/estimates/epistats-local.rds")
+netstats <- readRDS("data/intermediate/local/estimates/netstats-local.rds")
+est      <- readRDS("data/intermediate/local/estimates/netest-local.rds")
+
   
   
 #Set up 
@@ -156,6 +164,9 @@ scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #Method 1: run scenarios as on the hpc to output sims of intervention scenarios in batches.
 #n_rep=3 and n_cores=2 (expect 2 output files per scenario)
+#b. reload EMHIV-p package from local (if changes made locally)
+pkgload::load_all("C:/Users/Uonwubi/OneDrive - Emory University/Desktop/Personal/RSPH EPI Docs/RA2/GitRepos/EpiModelHIV-p")
+
 EpiModelHPC::netsim_scenarios(
   path_to_restart, param, init, control, scenarios.list,
   n_rep = 3,
