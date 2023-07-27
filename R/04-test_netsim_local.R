@@ -202,10 +202,10 @@ for (scenario in scenarios_list){
   d_sim[["scenario"]] <- scenario$id
   d_list[[scenario$id]] <-d_sim
 }
-  # undebug(hivtest_msm)
-  # undebug(partident_msm)
-  # undebug(hivtx_msm)
-  # undebug(prep_msm)
+  undebug(hivtest_msm)
+  undebug(partident_msm)
+  undebug(hivtx_msm)
+  undebug(prep_msm)
   
 
   
