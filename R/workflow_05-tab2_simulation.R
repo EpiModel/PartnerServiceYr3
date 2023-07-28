@@ -65,7 +65,7 @@ control <- control_msm(
   truncate.el.cuml = 0,
   verbose = FALSE,
   
-  .traceback.on.error = TRUE,
+  .traceback.on.error = FALSE,
   .dump.frame.on.error = FALSE
   
   #raw.output = FALSE
