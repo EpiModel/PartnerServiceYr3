@@ -75,73 +75,73 @@ control <- control_msm(
 
 
 
-# Simulate HIV epidemic scenarios over estimated networks
-#-----------------------------------------------------------------------------------------
-
-
-# Table 2A ---------------------------------------------
-#set up scenarios
-scenarios.df.A <- readr::read_csv("./data/input/scenarios_tbl2A.csv")
-scenarios.list.A <- EpiModel::create_scenario_list(scenarios.df.A)
-
-#step 2: run the simulations
-wf <- add_workflow_step(
-  wf_summary = wf,
-  step_tmpl = step_tmpl_netsim_scenarios(
-    path_to_restart, param, init, control,
-    scenarios_list = scenarios.list.A,
-    output_dir = "data/intermediate/hpc/scenarios_tbl2",
-    libraries = "EpiModelHIV",
-    save_pattern = "simple",
-    n_rep = 10 * max_cores,                                                                            
-    n_cores = max_cores,
-    max_array_size = 999,
-    setup_lines = hpc_configs$r_loader
-  ),
-  sbatch_opts = list(
-    "mail-type" = "FAIL,TIME_LIMIT,END",
-    "cpus-per-task" = max_cores,
-    "time" = "04:00:00",
-    "mem" = "0" # special: all mem on node
-  )
-)
-
-#step 3: run the processing file
-wf <- add_workflow_step(
-  wf_summary = wf,
-  step_tmpl = step_tmpl_do_call_script(
-    r_script = "R/42-tbl2_dataprocessing.R",
-    args = list(
-      ncores = 15,
-      nsteps = 52
-    ),
-    setup_lines = hpc_configs$r_loader
-  ),
-  sbatch_opts = list(
-    "cpus-per-task" = max_cores,
-    "time" = "04:00:00",
-    "mem-per-cpu" = "4G",
-    "mail-type" = "END"
-  )
-)
-
-
-#step 4: remove sim files
-wf <- add_workflow_step(
-  wf_summary = wf,
-  step_tmpl = step_tmpl_do_call_script(
-    r_script = "R/42.2-remove_simfiles_tbl2.R,
-    args = list(
-      ncores = 15),
-    setup_lines = hpc_configs$r_loader
-  ),
-  sbatch_opts = list(
-    "cpus-per-task" = max_cores,
-    "time" = "04:00:00",
-    "mem-per-cpu" = "4G",
-    "mail-type" = "END"
-  )
-)
+# # Simulate HIV epidemic scenarios over estimated networks
+# #-----------------------------------------------------------------------------------------
+# 
+# 
+# # Table 2A ---------------------------------------------
+# #set up scenarios
+# scenarios.df.A <- readr::read_csv("./data/input/scenarios_tbl2A.csv")
+# scenarios.list.A <- EpiModel::create_scenario_list(scenarios.df.A)
+# 
+# #step 2: run the simulations
+# wf <- add_workflow_step(
+#   wf_summary = wf,
+#   step_tmpl = step_tmpl_netsim_scenarios(
+#     path_to_restart, param, init, control,
+#     scenarios_list = scenarios.list.A,
+#     output_dir = "data/intermediate/hpc/scenarios_tbl2",
+#     libraries = "EpiModelHIV",
+#     save_pattern = "simple",
+#     n_rep = 10 * max_cores,                                                                            
+#     n_cores = max_cores,
+#     max_array_size = 999,
+#     setup_lines = hpc_configs$r_loader
+#   ),
+#   sbatch_opts = list(
+#     "mail-type" = "FAIL,TIME_LIMIT,END",
+#     "cpus-per-task" = max_cores,
+#     "time" = "04:00:00",
+#     "mem" = "0" # special: all mem on node
+#   )
+# )
+# 
+# #step 3: run the processing file
+# wf <- add_workflow_step(
+#   wf_summary = wf,
+#   step_tmpl = step_tmpl_do_call_script(
+#     r_script = "R/42-tbl2_dataprocessing.R",
+#     args = list(
+#       ncores = 15,
+#       nsteps = 52
+#     ),
+#     setup_lines = hpc_configs$r_loader
+#   ),
+#   sbatch_opts = list(
+#     "cpus-per-task" = max_cores,
+#     "time" = "04:00:00",
+#     "mem-per-cpu" = "4G",
+#     "mail-type" = "END"
+#   )
+# )
+# 
+# 
+# #step 4: remove sim files
+# wf <- add_workflow_step(
+#   wf_summary = wf,
+#   step_tmpl = step_tmpl_do_call_script(
+#     r_script = "R/42.2-remove_simfiles_tbl2.R",
+#     args = list(
+#       ncores = 15),
+#     setup_lines = hpc_configs$r_loader
+#   ),
+#   sbatch_opts = list(
+#     "cpus-per-task" = max_cores,
+#     "time" = "04:00:00",
+#     "mem-per-cpu" = "4G",
+#     "mail-type" = "END"
+#   )
+# )
 
 
 
