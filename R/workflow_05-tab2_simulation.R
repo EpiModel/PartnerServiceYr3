@@ -130,7 +130,7 @@ wf <- add_workflow_step(
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
-    r_script = "R/42.2-remove_simfiles.R",
+    r_script = "R/42.2-remove_simfiles_tbl2.R,
     args = list(
       ncores = 15),
     setup_lines = hpc_configs$r_loader
@@ -196,7 +196,7 @@ wf <- add_workflow_step(
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
-    r_script = "R/42.2-remove_simfiles.R",
+    r_script = "R/42.2-remove_simfiles_tbl2.R",
     args = list(
       ncores = 15),
     setup_lines = hpc_configs$r_loader
@@ -262,7 +262,7 @@ wf <- add_workflow_step(
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
-    r_script = "R/42.2-remove_simfiles.R",
+    r_script = "R/42.2-remove_simfiles_tbl2.R",
     args = list(
       ncores = 15),
     setup_lines = hpc_configs$r_loader
@@ -328,7 +328,7 @@ wf <- add_workflow_step(
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
-    r_script = "R/42.2-remove_simfiles.R",
+    r_script = "R/42.2-remove_simfiles_tbl2.R",
     args = list(
       ncores = 15),
     setup_lines = hpc_configs$r_loader
