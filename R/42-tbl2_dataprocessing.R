@@ -58,8 +58,10 @@ saveRDS(full_intervdata_tbl2, paste0("data/intermediate/",context,"/processed/tb
 #B. Process outcome_sims and outcome_scenario data----------------------------------------
 outcomes_sims_tbl2 <- get_outcome_sims_tbl2(full_intervdata_tbl2) %>% 
   select(tbl, scenario.num, scenario.new, scenario_name,sim,
-         ir.yr10, incid.cum, nia, pia, 
+         ir.yr10, incid.cum, nia, pia,
          prepCov.yr10, diagCov.yr10, artCov.yr10, vSuppCov.yr10,
+         i.num.yr10, diag.yr10, artCurr.yr10, vSupp.yr10,
+         diagCov2.yr10, artCov2.yr10, vSuppCov2.yr10,
          prepStartAll,
          
          elig.indexes.nd, found.indexes.nd, prp.indexes.found.nd,
@@ -75,7 +77,8 @@ outcomes_sims_tbl2 <- get_outcome_sims_tbl2(full_intervdata_tbl2) %>%
          tot.part.ident, elig.for.scrn,
          part.scrnd.tst, positive.part, negative.part, 
          
-         part.scrnd.prep, scrnd.neg, scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
+         part.scrnd.prep, scrnd.neg, scrnd.pos, diff.scrnd.pos, 
+         scrnd.prepon, scrnd.noprep, scrnd.noprepnorisk,
          elig.prepStartPart, prepStartPart,
          
          part.start.tx,
