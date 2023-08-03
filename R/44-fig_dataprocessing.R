@@ -59,21 +59,11 @@ outcomes_sims <- get_outcome_sims_tbl3(full_intervdata) %>%
          incid.cum, pia) %>% 
   mutate(scenario.new = stringr::str_split_i(scenario_name, "_", 1),
          part.index.prob = as.numeric(stringr::str_split_i(scenario_name, "_", 2)),
-         part.ppindex.prob = as.numeric(stringr::str_split_i(scenario_name, "_", 3)))
+         part.ppindex.prob = as.numeric(stringr::str_split_i(scenario_name, "_", 3)),
+         tblname = as.numeric(stringr::str_split_i(scenario_name, "_", 4)))
 
-#get unique name for sims and scenario files
-if(outcomes_sims$tbl[1] == "B"){
-  tblname = "base"
-  
-  if(outcomes_sims$tbl[1] == "M"){
-  tblname = "max"
-  }
-  
-  } else{
-    tblname = outcomes_sims$tbl[40]
-    }
-
-saveRDS(outcomes_sims, paste0("data/intermediate/",context,"/processed/figdata_outcomes_sims_",tblname,".rds"))
+tblnam <- outcomes_sims$tblname[2]
+saveRDS(outcomes_sims, paste0("data/intermediate/",context,"/processed/figdata_outcomes_sims_",tblnam,".rds"))
 
 
 
@@ -89,24 +79,28 @@ outcomes_scenarios<- outcomes_sims%>%
   .names = "{.col}")) %>% 
   mutate(across(where(is.numeric), ~round (., 6))) %>% ungroup()%>% 
   mutate(part.index.prob = as.numeric(stringr::str_split_i(scenario_name, "_", 2)),
-         part.ppindex.prob = as.numeric(stringr::str_split_i(scenario_name, "_", 3))) %>% 
-  arrange(tbl, scenario.num, scenario.new, scenario_name)
+         part.ppindex.prob = as.numeric(stringr::str_split_i(scenario_name, "_", 3)),
+         tblname = as.numeric(stringr::str_split_i(scenario_name, "_", 4))) %>% 
+  arrange(tbl, scenario.num, scenario.new, scenario_name, tblname)
 
-saveRDS(outcomes_scenarios, paste0("data/intermediate/",context,"/processed/figdata_outcomes_scenarios_", tblname,".rds"))
+saveRDS(outcomes_scenarios, paste0("data/intermediate/",context,"/processed/figdata_outcomes_scenarios_", tblnam,".rds"))
 
 
 
 
 
 #C. Get contour plot data  ---------------------------------------------------------------
-
-#run loess models on scenarios data and predict on wider grid
-loe.fit <- loess(pia ~ part.index.prob * part.ppindex.prob, outcomes_scenarios)
+#newdata (wider grid)
 xgrid <- seq(min(outcomes_scenarios$part.index.prob), max(outcomes_scenarios$part.index.prob), length.out = 100)
 ygrid <- seq(min(outcomes_scenarios$part.ppindex.prob), max(outcomes_scenarios$part.ppindex.prob), length.out = 100)
 loepreddat <- expand.grid(part.index.prob = xgrid, part.ppindex.prob = ygrid)
-loepreddat$pia <- as.numeric(predict(loe.fit, newdata = loepreddat))
-loepreddat$tbl <- tblname
 
-saveRDS(loepreddat, paste0("data/intermediate/",context,"/processed/figdata_loepreddat_", tblname,".rds"))
+#run loess models on scenarios data 
+loe.fit <- loess(pia ~ part.index.prob * part.ppindex.prob, outcomes_scenarios)
+
+#predict pia in newdata
+loepreddat$pia <- as.numeric(predict(loe.fit, newdata = loepreddat))
+loepreddat$tbl <- tblnam
+
+saveRDS(loepreddat, paste0("data/intermediate/",context,"/processed/figdata_loepreddat_", tblnam,".rds"))
 
