@@ -163,7 +163,6 @@ get_niapiannt_tbl2 <- function(d) {
     group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
     summarise(across(c(incid, found.indexes.all),~ sum(.x, na.rm = TRUE)))  %>% 
     arrange(tbl, sim, scenario.num) %>% 
-    
     group_by(tbl, sim) %>% 
     mutate(base_incid = incid[1]) %>% 
     mutate(nia = base_incid - incid,
@@ -178,7 +177,6 @@ get_niapiannt_tbl3 <- function(d) {
     group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
     summarise(across(c(incid, found.indexes.all),~ sum(.x, na.rm = TRUE)))  %>% 
     arrange(sim, tbl, scenario.num) %>% 
-    
     group_by(sim) %>% 
     mutate(base_incid = incid[1]) %>% 
     mutate(nia = base_incid - incid,
