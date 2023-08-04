@@ -58,7 +58,7 @@ process_fulldata <- function(file_name, ts) {
 
            #Distal impacts: HIV incidence measures
              incid, 
-             num, 
+             num, ir100,
 
            #Intermediate impacts: PrEP & ART coverage
              #PrEP
