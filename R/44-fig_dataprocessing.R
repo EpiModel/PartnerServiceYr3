@@ -30,7 +30,7 @@ suppressMessages({
 })
 
 sims_dir <- paste0("data/intermediate/",context,"/figdata")
-
+save_dir <- paste0("data/intermediate/",context,"processed")
 
 #get sim files
 sim_files <- list.files(
@@ -54,53 +54,49 @@ full_intervdata <- bind_rows(intervds)
 
 
 #B. Process outcome_sims and outcome_scenario data----------------------------------------
-outcomes_sims <- get_outcome_sims_tbl3(full_intervdata) %>% 
+sims.out <- get_outcome_sims_tbl3(full_intervdata) %>% 
   select(tbl, scenario.num, scenario_name, sim,
          incid.cum, pia) %>% 
   mutate(scenario.new = stringr::str_split_i(scenario_name, "_", 1),
-         part.index.prob = as.numeric(stringr::str_split_i(scenario_name, "_", 2)),
-         part.ppindex.prob = as.numeric(stringr::str_split_i(scenario_name, "_", 3)),
-         tblname = as.numeric(stringr::str_split_i(scenario_name, "_", 4)))
+         index_inits = as.numeric(stringr::str_split_i(scenario_name, "_", 2)),
+         partner_idents = as.numeric(stringr::str_split_i(scenario_name, "_", 3)),
+         paramvalues = as.numeric(stringr::str_split_i(scenario_name, "_", 4)))
 
-tblnam <- outcomes_sims$tblname[2]
-saveRDS(outcomes_sims, paste0("data/intermediate/",context,"/processed/figdata_outcomes_sims_",tblnam,".rds"))
+tbl <- sims.out$tbl[2]
+paramvalues <- sims.out$paramvalues[2]
+saveRDS(sims.out, paste0(save_dir, "/figdt_simsout_",tbl,"_",paramvalues,".rds"))
 
-
-
-
-outcomes_scenarios<- outcomes_sims%>%
+scen.out <- sims.out%>%
   select(- c(sim)) %>%
   group_by(tbl, scenario.num, scenario.new, scenario_name) %>%
   summarise(across(everything(),list(
-    #low = ~ quantile(.x, 0.025, na.rm = TRUE),
     med = ~ quantile(.x, 0.50, na.rm = TRUE)
-    #high = ~ quantile(.x, 0.975, na.rm = TRUE)
     ),
   .names = "{.col}")) %>% 
   mutate(across(where(is.numeric), ~round (., 6))) %>% ungroup()%>% 
-  mutate(part.index.prob = as.numeric(stringr::str_split_i(scenario_name, "_", 2)),
-         part.ppindex.prob = as.numeric(stringr::str_split_i(scenario_name, "_", 3)),
-         tblname = as.numeric(stringr::str_split_i(scenario_name, "_", 4))) %>% 
+  mutate(index_inits = as.numeric(stringr::str_split_i(scenario_name, "_", 2)),
+         partner_idents = as.numeric(stringr::str_split_i(scenario_name, "_", 3)),
+         paramvalues = as.numeric(stringr::str_split_i(scenario_name, "_", 4))) %>% 
   arrange(tbl, scenario.num, scenario.new, scenario_name, tblname)
 
-saveRDS(outcomes_scenarios, paste0("data/intermediate/",context,"/processed/figdata_outcomes_scenarios_", tblnam,".rds"))
+saveRDS(scen.out, paste0(save_dir, "/figdt_scenout_",tbl,"_",paramvalues,".rds"))
 
 
 
 
 
 #C. Get contour plot data  ---------------------------------------------------------------
-#newdata (wider grid)
-xgrid <- seq(min(outcomes_scenarios$part.index.prob), max(outcomes_scenarios$part.index.prob), length.out = 100)
-ygrid <- seq(min(outcomes_scenarios$part.ppindex.prob), max(outcomes_scenarios$part.ppindex.prob), length.out = 100)
-loepreddat <- expand.grid(part.index.prob = xgrid, part.ppindex.prob = ygrid)
+griddat <- expand.grid(list(
+  index_inits = seq(min(scen.out$index_inits), max(scen.out$index_inits), length.out = 100),
+  partner_idents = seq(min(scen.out$partner_idents), max(scen.out$partner_idents), length.out = 100)
+  )
+)
+  
+loe.fit <- loess(pia ~ index_inits * partner_idents, scen.out)
 
-#run loess models on scenarios data 
-loe.fit <- loess(pia ~ part.index.prob * part.ppindex.prob, outcomes_scenarios)
+griddat$pia <- as.numeric(predict(loe.fit, newdata = griddat))
+griddat$tbl <- tblnam
+griddat$paramvalues <- paramvalues
 
-#predict pia in newdata
-loepreddat$pia <- as.numeric(predict(loe.fit, newdata = loepreddat))
-loepreddat$tbl <- tblnam
-
-saveRDS(loepreddat, paste0("data/intermediate/",context,"/processed/figdata_loepreddat_", tblnam,".rds"))
+saveRDS(griddat, paste0(save_dir, "/figdt_griddat_", tbl,"_",paramvalues,".rds"))
 
