@@ -6,8 +6,6 @@
 # Setup ----------------------------------------------------------------------------------
 context<-"hpc"
 
-source("R/utils-netsim_inputs.R")
-source("R/utils-netsize.R")
 source("R/utils-tbl_output_functions.R")
 
 
@@ -46,28 +44,28 @@ sim_files <- list.files(
 intervds <- future.apply::future_lapply(
   sim_files,
   process_fulldata,
-  ts = interv_start - (5 * 52) + 1    #gets data from 5 years prior to intervention start
+  ts = 3901 - (5 * 52) + 1    #gets data from 5 years prior to intervention start
 )
 
 
 #Merge all batches  
-full_intervdata_tbl3 <- bind_rows(intervds)
+fulldata_tbl3 <- bind_rows(intervds)
 
-tblnam <- full_intervdata_tbl3$tbl[2]
+tblnam <- fulldata_tbl3$tbl[2]
 
-saveRDS(full_intervdata_tbl3, paste0(save_dir, "/tbl3", tblnam, "_fulldata.rds"))
+saveRDS(fulldata_tbl3, paste0(save_dir, "/tbl3", tblnam, "_fulldata.rds"))
 
 
 
 
 #B. Process outcome_sims and outcome_scenario data----------------------------------------
-base_incid <- get_cumulative_outcomes(full_intervdata_tbl3) %>% 
+base_incid <- get_cumulative_outcomes(fulldata_tbl3) %>% 
   filter(tbl == "A" & scenario_name == "a001base")
 saveRDS(base_incid, paste0(save_dir, "/baseincid/tbl3", tblnam, "_baseincid.rds"))
 
 
 
-outcomes_sims_tbl3 <- get_outcome_sims_tbl3(full_intervdata_tbl3) %>% 
+outcomes_sims_tbl3 <- get_outcome_sims_tbl3(fulldata_tbl3) %>% 
   select(tbl, scenario.num, scenario.new, scenario_name,sim,
          ir.yr10, incid.cum, nia, pia, nnt,
          prepCov.yr10, diagCov.yr10, artCov.yr10, vSuppCov.yr10,
