@@ -7,7 +7,7 @@ library(dplyr)
 process_fulldata <- function(file_name, ts) {
   
   # file_name <-sim_files[1]
-  # ts <- interv_start - (5 * 52) + 1
+  # ts <- 3901 - (5 * 52) + 1
   
   # keep only the file name without extension and split around `__`
   name_elts <- fs::path_file(file_name) %>%
