@@ -1,14 +1,16 @@
 ##
 ## 42. Processing counterfactual scenarios
 ##
+
+
+# Setup ----------------------------------------------------------------------------------
 context<-"hpc"
 
-# Setup ------------------------------------------------------------------------
-#get context and scenarios functions
-source("R/utils-netsim_inputs.R")
-source("R/utils-netsize.R")
 source("R/utils-tbl_output_functions.R")
 
+
+sims_dir <- paste0("data/intermediate/",context,"/figdata")
+save_dir <- paste0("data/intermediate/",context,"/processed")
 
 
 #get batch info
@@ -19,7 +21,7 @@ batches_infos <- EpiModelHPC::get_scenarios_batches_infos(
 
 
 
-#A. Process intervdata ------------------------------------------------------------------------
+#A. Process intervdata -------------------------------------------------------------------
 install.packages("future.apply")
 suppressMessages({
   library("EpiModelHIV")
@@ -29,8 +31,6 @@ suppressMessages({
   library("ggplot2")
 })
 
-sims_dir <- paste0("data/intermediate/",context,"/figdata")
-save_dir <- paste0("data/intermediate/",context,"processed")
 
 #get sim files
 sim_files <- list.files(
@@ -44,59 +44,90 @@ sim_files <- list.files(
 intervds <- future.apply::future_lapply(
   sim_files,
   process_fulldata,
-  ts = interv_start - (5 * 52) + 1   #gets data from 5 years prior to intervention start
+  ts = 3901 - (5 * 52) + 1   #gets data from 5 years prior to intervention start
 )
 
 
 #Merge all batches  
-full_intervdata <- bind_rows(intervds)
-
-
-
-#B. Process outcome_sims and outcome_scenario data----------------------------------------
-sims.out <- get_outcome_sims_tbl3(full_intervdata) %>% 
-  select(tbl, scenario.num, scenario_name, sim,
-         incid.cum, pia) %>% 
+fulldata <- bind_rows(intervds) %>% 
+  select(tbl, scenario.num, scenario_name, sim, time, incid, found.indexes.all) %>% 
   mutate(scenario.new = stringr::str_split_i(scenario_name, "_", 1),
-         index_inits = as.numeric(stringr::str_split_i(scenario_name, "_", 2)),
-         partner_idents = as.numeric(stringr::str_split_i(scenario_name, "_", 3)),
-         paramvalues = as.numeric(stringr::str_split_i(scenario_name, "_", 4)))
-
-tbl <- sims.out$tbl[2]
-paramvalues <- sims.out$paramvalues[2]
-saveRDS(sims.out, paste0(save_dir, "/figdt_simsout_",tbl,"_",paramvalues,".rds"))
-
-scen.out <- sims.out%>%
-  select(- c(sim)) %>%
-  group_by(tbl, scenario.num, scenario.new, scenario_name) %>%
-  summarise(across(everything(),list(
-    med = ~ quantile(.x, 0.50, na.rm = TRUE)
-    ),
-  .names = "{.col}")) %>% 
-  mutate(across(where(is.numeric), ~round (., 6))) %>% ungroup()%>% 
-  mutate(index_inits = as.numeric(stringr::str_split_i(scenario_name, "_", 2)),
-         partner_idents = as.numeric(stringr::str_split_i(scenario_name, "_", 3)),
-         paramvalues = as.numeric(stringr::str_split_i(scenario_name, "_", 4))) %>% 
-  arrange(tbl, scenario.num, scenario.new, scenario_name, tblname)
-
-saveRDS(scen.out, paste0(save_dir, "/figdt_scenout_",tbl,"_",paramvalues,".rds"))
+         psval = stringr::str_split_i(scenario_name, "_", 4))
 
 
 
+if(fulldata$scenario_name [1] == "a001base") {
+  saveRDS(fulldata, paste0(save_dir, "/fulldata_basemodel.rds"))
+}
 
 
-#C. Get contour plot data  ---------------------------------------------------------------
-griddat <- expand.grid(list(
-  index_inits = seq(min(scen.out$index_inits), max(scen.out$index_inits), length.out = 100),
-  partner_idents = seq(min(scen.out$partner_idents), max(scen.out$partner_idents), length.out = 100)
-  )
-)
+
+if(fulldata$scenario_name [1] != "a001base"){
   
-loe.fit <- loess(pia ~ index_inits * partner_idents, scen.out)
+  tblnam <- fulldata$tbl[2]
+  psval <- fulldata$psval[2]
+  
+  saveRDS(fulldata, paste0(save_dir, "/fulldata_",tblnam,"_",psval,".rds"))
+  
+  
+  #B. Get pia
+  #-----------------------------------------------------------------------------------------
+  base_df <- readRDS(paste0(save_dir, "/fulldata_basemodel.rds", sep="")) %>% 
+    filter(time > 5 * 52) %>% 
+    group_by(tbl, scenario.num, scenario_name, sim) %>%
+    summarise(across(c(incid, found.indexes.all), ~ sum(.x, na.rm = TRUE))) %>% 
+    ungroup() %>% 
+    summarise(base_incid = median(incid),
+              base_foundindexes = median(found.indexes.all))
+  
+  base_incid <- base_df$base_incid
+  
+  piatbl <- fulldata %>% 
+    filter(time > 5 * 52) %>% 
+    group_by(tbl, scenario.num, scenario_name, sim) %>%
+    summarise(across(c(incid, found.indexes.all), ~ sum(.x, na.rm = TRUE))) %>% 
+    mutate(pia = (base_incid - incid) / base_incid) %>% 
+    ungroup() %>% 
+    mutate(across(where(is.numeric), ~round (., 6))) %>% ungroup()%>% 
+    group_by(tbl, scenario.num, scenario_name) %>% 
+    summarise(pia = median(pia)) %>% 
+    mutate(scenario.new = stringr::str_split_i(scenario_name, "_", 1),
+           x = as.numeric(stringr::str_split_i(scenario_name, "_", 2)),
+           y = as.numeric(stringr::str_split_i(scenario_name, "_", 3)),
+           psval = stringr::str_split_i(scenario_name, "_", 4)) %>% 
+    arrange(tbl, scenario.num)
+    
+  saveRDS(piatbl, paste0(save_dir, "/piatbl_",tblnam,"_",psval,".rds"))
+  
+  
+  
+  #C. Get contour plot data  
+  #---------------------------------------------------------------------------------------
+  griddat <- expand.grid(list(
+    x = seq(min(piatbl$x), max(piatbl$x), length.out = 100),
+    y = seq(min(piatbl$y), max(piatbl$y), length.out = 100)
+    ))
+  
+  fit <- loess(pia ~ x * y, piatbl)
+  
+  griddat$pia <- as.numeric(predict(fit, newdata = griddat))
+  griddat$tbl <- tblnam
+  griddat$psval <- psval
+  
+  saveRDS(griddat, paste0(save_dir, "/griddat_", tblnam,"_",psval,".rds"))
 
-griddat$pia <- as.numeric(predict(loe.fit, newdata = griddat))
-griddat$tbl <- tblnam
-griddat$paramvalues <- paramvalues
+}
 
-saveRDS(griddat, paste0(save_dir, "/figdt_griddat_", tbl,"_",paramvalues,".rds"))
+
+
+
+
+
+
+
+
+
+
+
+
 
