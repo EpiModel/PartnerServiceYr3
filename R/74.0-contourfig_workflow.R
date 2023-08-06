@@ -68,134 +68,71 @@ control <- control_msm(
 )
 
 
-#Scenario 0: Base model (no grid) -----------------------
-scenarios.df <- readr::read_csv("./data/input/base_nogrid.csv")
-scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
-
-    #Simulate HIV epidemic 
-    wf <- add_workflow_step(
-      wf_summary = wf,
-      step_tmpl = step_tmpl_netsim_scenarios(
-        path_to_restart, param, init, control,
-        scenarios_list = scenarios.list,
-        output_dir = "data/intermediate/hpc/figdata",
-        libraries = "EpiModelHIV",
-        save_pattern = "simple",
-        n_rep = numsims,                                                                            
-        n_cores = max_cores,
-        max_array_size = 999,
-        setup_lines = hpc_configs$r_loader
-      ),
-      sbatch_opts = list(
-        "mail-type" = "FAIL,TIME_LIMIT",
-        "cpus-per-task" = max_cores,
-        "time" = "04:00:00",
-        "mem" = "0" # special: all mem on node
-      )
-    )
-    
-    #Process output
-    wf <- add_workflow_step(
-      wf_summary = wf,
-      step_tmpl = step_tmpl_do_call_script(
-        r_script = "R/74.1-contourfig_outputprocess.R",
-        args = list(
-          ncores = 15,
-          nsteps = 52
-        ),
-        setup_lines = hpc_configs$r_loader
-      ),
-      sbatch_opts = list(
-        "cpus-per-task" = max_cores,
-        "time" = "04:00:00",
-        "mem-per-cpu" = "4G",
-        "mail-type" = "END"
-      )
-    )
-    
-    #remove files (to clear mem space)
-    wf <- add_workflow_step(
-      wf_summary = wf,
-      step_tmpl = step_tmpl_do_call_script(
-        r_script = "R/74.2-contourfig_removefiles.R",
-        args = list(
-          ncores = 15),
-        setup_lines = hpc_configs$r_loader
-      ),
-      sbatch_opts = list(
-        "cpus-per-task" = max_cores,
-        "time" = "04:00:00",
-        "mem-per-cpu" = "4G",
-        "mail-type" = "END"
-      )
-    )
-
-
-#Scenario 1a: Base / Base PS values -----------------------
-scenarios.df <- readr::read_csv("./data/input/contour_base_base.csv")
-scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
-
-    #Simulate HIV epidemic 
-    wf <- add_workflow_step(
-      wf_summary = wf,
-      step_tmpl = step_tmpl_netsim_scenarios(
-        path_to_restart, param, init, control,
-        scenarios_list = scenarios.list,
-        output_dir = "data/intermediate/hpc/figdata",
-        libraries = "EpiModelHIV",
-        save_pattern = "simple",
-        n_rep = numsims,                                                                            
-        n_cores = max_cores,
-        max_array_size = 999,
-        setup_lines = hpc_configs$r_loader
-      ),
-      sbatch_opts = list(
-        "mail-type" = "FAIL,TIME_LIMIT",
-        "cpus-per-task" = max_cores,
-        "time" = "04:00:00",
-        "mem" = "0" # special: all mem on node
-      )
-    )
-    
-    #Process output
-    wf <- add_workflow_step(
-      wf_summary = wf,
-      step_tmpl = step_tmpl_do_call_script(
-        r_script = "R/74.1-contourfig_outputprocess.R",
-        args = list(
-          ncores = 15,
-          nsteps = 52
-        ),
-        setup_lines = hpc_configs$r_loader
-      ),
-      sbatch_opts = list(
-        "cpus-per-task" = max_cores,
-        "time" = "04:00:00",
-        "mem-per-cpu" = "4G",
-        "mail-type" = "END"
-      )
-    )
-
-    #remove files (to clear mem space)
-    wf <- add_workflow_step(
-      wf_summary = wf,
-      step_tmpl = step_tmpl_do_call_script(
-        r_script = "R/74.2-contourfig_removefiles.R",
-        args = list(
-          ncores = 15),
-        setup_lines = hpc_configs$r_loader
-      ),
-      sbatch_opts = list(
-        "cpus-per-task" = max_cores,
-        "time" = "04:00:00",
-        "mem-per-cpu" = "4G",
-        "mail-type" = "END"
-      )
-    )
+# #Scenario 0: Base model (no grid) -----------------------
+# scenarios.df <- readr::read_csv("./data/input/base_nogrid.csv")
+# scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
+# 
+#     #Simulate HIV epidemic 
+#     wf <- add_workflow_step(
+#       wf_summary = wf,
+#       step_tmpl = step_tmpl_netsim_scenarios(
+#         path_to_restart, param, init, control,
+#         scenarios_list = scenarios.list,
+#         output_dir = "data/intermediate/hpc/figdata",
+#         libraries = "EpiModelHIV",
+#         save_pattern = "simple",
+#         n_rep = numsims,                                                                            
+#         n_cores = max_cores,
+#         max_array_size = 999,
+#         setup_lines = hpc_configs$r_loader
+#       ),
+#       sbatch_opts = list(
+#         "mail-type" = "FAIL,TIME_LIMIT",
+#         "cpus-per-task" = max_cores,
+#         "time" = "04:00:00",
+#         "mem" = "0" # special: all mem on node
+#       )
+#     )
+#     
+#     #Process output
+#     wf <- add_workflow_step(
+#       wf_summary = wf,
+#       step_tmpl = step_tmpl_do_call_script(
+#         r_script = "R/74.1-contourfig_outputprocess.R",
+#         args = list(
+#           ncores = 15,
+#           nsteps = 52
+#         ),
+#         setup_lines = hpc_configs$r_loader
+#       ),
+#       sbatch_opts = list(
+#         "cpus-per-task" = max_cores,
+#         "time" = "04:00:00",
+#         "mem-per-cpu" = "4G",
+#         "mail-type" = "END"
+#       )
+#     )
+#     
+#     #remove files (to clear mem space)
+#     wf <- add_workflow_step(
+#       wf_summary = wf,
+#       step_tmpl = step_tmpl_do_call_script(
+#         r_script = "R/74.2-contourfig_removefiles.R",
+#         args = list(
+#           ncores = 15),
+#         setup_lines = hpc_configs$r_loader
+#       ),
+#       sbatch_opts = list(
+#         "cpus-per-task" = max_cores,
+#         "time" = "04:00:00",
+#         "mem-per-cpu" = "4G",
+#         "mail-type" = "END"
+#       )
+#     )
 
 
-#Scenario 1b: Base / Max PS values -----------------------
-scenarios.df <- readr::read_csv("./data/input/contour_base_max.csv")
+#Scenario 1a: Base / Base PS values 1 -----------------------
+scenarios.df <- readr::read_csv("./data/input/contour_base_base1.csv")
 scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
 
     #Simulate HIV epidemic 
@@ -256,11 +193,70 @@ scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
       )
     )
 
+#Scenario 1a: Base / Base PS values 2 -----------------------
+scenarios.df <- readr::read_csv("./data/input/contour_base_base2.csv")
+scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
 
-
-
-#Scenario 2a: PP / Base PS values -----------------------
-scenarios.df <- readr::read_csv("./data/input/contour_pp_base.csv")
+    #Simulate HIV epidemic 
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_netsim_scenarios(
+        path_to_restart, param, init, control,
+        scenarios_list = scenarios.list,
+        output_dir = "data/intermediate/hpc/figdata",
+        libraries = "EpiModelHIV",
+        save_pattern = "simple",
+        n_rep = numsims,                                                                            
+        n_cores = max_cores,
+        max_array_size = 999,
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "mail-type" = "FAIL,TIME_LIMIT",
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem" = "0" # special: all mem on node
+      )
+    )
+    
+    #Process output
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_do_call_script(
+        r_script = "R/74.1-contourfig_outputprocess.R",
+        args = list(
+          ncores = 15,
+          nsteps = 52
+        ),
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem-per-cpu" = "4G",
+        "mail-type" = "END"
+      )
+    )
+    
+    #remove files (to clear mem space)
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_do_call_script(
+        r_script = "R/74.2-contourfig_removefiles.R",
+        args = list(
+          ncores = 15),
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem-per-cpu" = "4G",
+        "mail-type" = "END"
+      )
+    )
+    
+#Scenario 1b: Base / Max PS values 1 -----------------------
+scenarios.df <- readr::read_csv("./data/input/contour_base_max1.csv")
 scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
 
     #Simulate HIV epidemic 
@@ -321,9 +317,199 @@ scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
       )
     )
 
+
+#Scenario 1b: Base / Max PS values 2 -----------------------
+scenarios.df <- readr::read_csv("./data/input/contour_base_max2.csv")
+scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
+
+    #Simulate HIV epidemic 
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_netsim_scenarios(
+        path_to_restart, param, init, control,
+        scenarios_list = scenarios.list,
+        output_dir = "data/intermediate/hpc/figdata",
+        libraries = "EpiModelHIV",
+        save_pattern = "simple",
+        n_rep = numsims,                                                                            
+        n_cores = max_cores,
+        max_array_size = 999,
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "mail-type" = "FAIL,TIME_LIMIT",
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem" = "0" # special: all mem on node
+      )
+    )
     
-#Scenario 2b: PP / Max PS values -----------------------
-scenarios.df <- readr::read_csv("./data/input/contour_pp_max.csv")
+    #Process output
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_do_call_script(
+        r_script = "R/74.1-contourfig_outputprocess.R",
+        args = list(
+          ncores = 15,
+          nsteps = 52
+        ),
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem-per-cpu" = "4G",
+        "mail-type" = "END"
+      )
+    )
+    
+    #remove files (to clear mem space)
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_do_call_script(
+        r_script = "R/74.2-contourfig_removefiles.R",
+        args = list(
+          ncores = 15),
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem-per-cpu" = "4G",
+        "mail-type" = "END"
+      )
+    )
+    
+
+
+#Scenario 2a: PP / Base PS values 1 -----------------------
+scenarios.df <- readr::read_csv("./data/input/contour_pp_base1.csv")
+scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
+
+    #Simulate HIV epidemic 
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_netsim_scenarios(
+        path_to_restart, param, init, control,
+        scenarios_list = scenarios.list,
+        output_dir = "data/intermediate/hpc/figdata",
+        libraries = "EpiModelHIV",
+        save_pattern = "simple",
+        n_rep = numsims,                                                                            
+        n_cores = max_cores,
+        max_array_size = 999,
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "mail-type" = "FAIL,TIME_LIMIT",
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem" = "0" # special: all mem on node
+      )
+    )
+    
+    #Process output
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_do_call_script(
+        r_script = "R/74.1-contourfig_outputprocess.R",
+        args = list(
+          ncores = 15,
+          nsteps = 52
+        ),
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem-per-cpu" = "4G",
+        "mail-type" = "END"
+      )
+    )
+
+    #remove files (to clear mem space)
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_do_call_script(
+        r_script = "R/74.2-contourfig_removefiles.R",
+        args = list(
+          ncores = 15),
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem-per-cpu" = "4G",
+        "mail-type" = "END"
+      )
+    )
+
+  
+#Scenario 2a: PP / Base PS values 2 -----------------------
+scenarios.df <- readr::read_csv("./data/input/contour_pp_base2.csv")
+scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
+
+    #Simulate HIV epidemic 
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_netsim_scenarios(
+        path_to_restart, param, init, control,
+        scenarios_list = scenarios.list,
+        output_dir = "data/intermediate/hpc/figdata",
+        libraries = "EpiModelHIV",
+        save_pattern = "simple",
+        n_rep = numsims,                                                                            
+        n_cores = max_cores,
+        max_array_size = 999,
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "mail-type" = "FAIL,TIME_LIMIT",
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem" = "0" # special: all mem on node
+      )
+    )
+    
+    #Process output
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_do_call_script(
+        r_script = "R/74.1-contourfig_outputprocess.R",
+        args = list(
+          ncores = 15,
+          nsteps = 52
+        ),
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem-per-cpu" = "4G",
+        "mail-type" = "END"
+      )
+    )
+    
+    #remove files (to clear mem space)
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_do_call_script(
+        r_script = "R/74.2-contourfig_removefiles.R",
+        args = list(
+          ncores = 15),
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem-per-cpu" = "4G",
+        "mail-type" = "END"
+      )
+    )
+    
+    
+#Scenario 2b: PP / Max PS values 1 -----------------------
+scenarios.df <- readr::read_csv("./data/input/contour_pp_max1.csv")
 scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
   
     #Simulate HIV epidemic 
@@ -386,8 +572,71 @@ scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
     
 
     
-#Scenario 3a: Wave2 / Base PS values -----------------------
-scenarios.df <- readr::read_csv("./data/input/contour_wv2_base.csv")
+#Scenario 2b: PP / Max PS values 2 -----------------------
+scenarios.df <- readr::read_csv("./data/input/contour_pp_max2.csv")
+scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
+
+    #Simulate HIV epidemic 
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_netsim_scenarios(
+        path_to_restart, param, init, control,
+        scenarios_list = scenarios.list,
+        output_dir = "data/intermediate/hpc/figdata",
+        libraries = "EpiModelHIV",
+        save_pattern = "simple",
+        n_rep = numsims,                                                                            
+        n_cores = max_cores,
+        max_array_size = 999,
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "mail-type" = "FAIL,TIME_LIMIT",
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem" = "0" # special: all mem on node
+      )
+    )
+    
+    #Process output
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_do_call_script(
+        r_script = "R/74.1-contourfig_outputprocess.R",
+        args = list(
+          ncores = 15,
+          nsteps = 52
+        ),
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem-per-cpu" = "4G",
+        "mail-type" = "END"
+      )
+    )
+    
+    #remove files (to clear mem space)
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_do_call_script(
+        r_script = "R/74.2-contourfig_removefiles.R",
+        args = list(
+          ncores = 15),
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem-per-cpu" = "4G",
+        "mail-type" = "END"
+      )
+    )
+    
+    
+#Scenario 3a: Wave2 / Base PS values 1 -----------------------
+scenarios.df <- readr::read_csv("./data/input/contour_wv2_base1.csv")
 scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
     
     #Simulate HIV epidemic 
@@ -431,6 +680,69 @@ scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
       )
     )
 
+    #remove files (to clear mem space)
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_do_call_script(
+        r_script = "R/74.2-contourfig_removefiles.R",
+        args = list(
+          ncores = 15),
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem-per-cpu" = "4G",
+        "mail-type" = "END"
+      )
+    )
+
+    
+#Scenario 3a: Wave2 / Base PS values 2 -----------------------
+scenarios.df <- readr::read_csv("./data/input/contour_wv2_base2.csv")
+scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
+
+    #Simulate HIV epidemic 
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_netsim_scenarios(
+        path_to_restart, param, init, control,
+        scenarios_list = scenarios.list,
+        output_dir = "data/intermediate/hpc/figdata",
+        libraries = "EpiModelHIV",
+        save_pattern = "simple",
+        n_rep = numsims,                                                                            
+        n_cores = max_cores,
+        max_array_size = 999,
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "mail-type" = "FAIL,TIME_LIMIT",
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem" = "0" # special: all mem on node
+      )
+    )
+    
+    #Process output
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_do_call_script(
+        r_script = "R/74.1-contourfig_outputprocess.R",
+        args = list(
+          ncores = 15,
+          nsteps = 52
+        ),
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem-per-cpu" = "4G",
+        "mail-type" = "END"
+      )
+    )
+    
     #remove files (to clear mem space)
     wf <- add_workflow_step(
       wf_summary = wf,
@@ -450,7 +762,7 @@ scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
     
     
 #Scenario 3b: Wave2 / Max PS values -----------------------
-scenarios.df <- readr::read_csv("./data/input/contour_wv2_max.csv")
+scenarios.df <- readr::read_csv("./data/input/contour_wv2_max1.csv")
 scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
     
     #Simulate HIV epidemic 
@@ -512,10 +824,198 @@ scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
     )
 
 
+  
+#Scenario 3b: Wave2 / Max PS values 2-----------------------
+scenarios.df <- readr::read_csv("./data/input/contour_wv2_max2.csv")
+scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
+
+    #Simulate HIV epidemic 
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_netsim_scenarios(
+        path_to_restart, param, init, control,
+        scenarios_list = scenarios.list,
+        output_dir = "data/intermediate/hpc/figdata",
+        libraries = "EpiModelHIV",
+        save_pattern = "simple",
+        n_rep = numsims,                                                                            
+        n_cores = max_cores,
+        max_array_size = 999,
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "mail-type" = "FAIL,TIME_LIMIT",
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem" = "0" # special: all mem on node
+      )
+    )
+    
+    #Process output
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_do_call_script(
+        r_script = "R/74.1-contourfig_outputprocess.R",
+        args = list(
+          ncores = 15,
+          nsteps = 52
+        ),
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem-per-cpu" = "4G",
+        "mail-type" = "END"
+      )
+    )
+    
+    #remove files (to clear mem space)
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_do_call_script(
+        r_script = "R/74.2-contourfig_removefiles.R",
+        args = list(
+          ncores = 15),
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem-per-cpu" = "4G",
+        "mail-type" = "END"
+      )
+    )
     
 
-#Scenario 4a: Both / Base PS values -----------------------
-scenarios.df <- readr::read_csv("./data/input/contour_both_base.csv")
+#Scenario 4a: Both / Base PS values 1 -----------------------
+scenarios.df <- readr::read_csv("./data/input/contour_both_base1.csv")
+scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
+
+    #Simulate HIV epidemic 
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_netsim_scenarios(
+        path_to_restart, param, init, control,
+        scenarios_list = scenarios.list,
+        output_dir = "data/intermediate/hpc/figdata",
+        libraries = "EpiModelHIV",
+        save_pattern = "simple",
+        n_rep = numsims,                                                                            
+        n_cores = max_cores,
+        max_array_size = 999,
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "mail-type" = "FAIL,TIME_LIMIT",
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem" = "0" # special: all mem on node
+      )
+    )
+    
+    #Process output
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_do_call_script(
+        r_script = "R/74.1-contourfig_outputprocess.R",
+        args = list(
+          ncores = 15,
+          nsteps = 52
+        ),
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem-per-cpu" = "4G",
+        "mail-type" = "END"
+      )
+    )
+
+    #remove files (to clear mem space)
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_do_call_script(
+        r_script = "R/74.2-contourfig_removefiles.R",
+        args = list(
+          ncores = 15),
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem-per-cpu" = "4G",
+        "mail-type" = "END"
+      )
+    )
+ 
+    
+#Scenario 4a: Both / Base PS values 2 -----------------------
+scenarios.df <- readr::read_csv("./data/input/contour_both_base2.csv")
+scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
+    
+    #Simulate HIV epidemic 
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_netsim_scenarios(
+        path_to_restart, param, init, control,
+        scenarios_list = scenarios.list,
+        output_dir = "data/intermediate/hpc/figdata",
+        libraries = "EpiModelHIV",
+        save_pattern = "simple",
+        n_rep = numsims,                                                                            
+        n_cores = max_cores,
+        max_array_size = 999,
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "mail-type" = "FAIL,TIME_LIMIT",
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem" = "0" # special: all mem on node
+      )
+    )
+    
+    #Process output
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_do_call_script(
+        r_script = "R/74.1-contourfig_outputprocess.R",
+        args = list(
+          ncores = 15,
+          nsteps = 52
+        ),
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem-per-cpu" = "4G",
+        "mail-type" = "END"
+      )
+    )
+    
+    #remove files (to clear mem space)
+    wf <- add_workflow_step(
+      wf_summary = wf,
+      step_tmpl = step_tmpl_do_call_script(
+        r_script = "R/74.2-contourfig_removefiles.R",
+        args = list(
+          ncores = 15),
+        setup_lines = hpc_configs$r_loader
+      ),
+      sbatch_opts = list(
+        "cpus-per-task" = max_cores,
+        "time" = "04:00:00",
+        "mem-per-cpu" = "4G",
+        "mail-type" = "END"
+      )
+    )
+    
+    
+#Scenario 4b: Both / Max PS values 1 -----------------------
+scenarios.df <- readr::read_csv("./data/input/contour_both_max1.csv")
 scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
 
     #Simulate HIV epidemic 
@@ -576,9 +1076,9 @@ scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
       )
     )
     
-    
-#Scenario 4b: Both / Max PS values -----------------------
-scenarios.df <- readr::read_csv("./data/input/contour_both_max.csv")
+
+#Scenario 4b: Both / Max PS values 2 -----------------------
+scenarios.df <- readr::read_csv("./data/input/contour_both_max2.csv")
 scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
 
     #Simulate HIV epidemic 
@@ -621,7 +1121,7 @@ scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
         "mail-type" = "END"
       )
     )
-
+    
     #remove files (to clear mem space)
     wf <- add_workflow_step(
       wf_summary = wf,
@@ -639,8 +1139,8 @@ scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
       )
     )
     
-
-
+    
+    
 
 # to send restart file to the HPC (Run in R terminal)
 # scp -r data/intermediate/hpc/estimates sph: /projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc/
