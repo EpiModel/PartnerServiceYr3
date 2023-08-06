@@ -26,7 +26,7 @@ process_fulldata <- function(file_name, ts) {
     mutate(time=row_number()) %>% 
     ungroup() %>% 
     mutate(sim2=ifelse(batch_number > 1,
-                       sim + ((batch_number-1) * max_cores),
+                       sim + ((batch_number-1) * 32),
                        sim)) %>% 
     select(-sim) %>%
     rename(sim=sim2) %>%
