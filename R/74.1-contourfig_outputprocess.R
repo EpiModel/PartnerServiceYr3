@@ -66,8 +66,9 @@ if(fulldata$scenario_name [1] != "a001base"){
   
   tblnam <- fulldata$tbl[2]
   psval <- fulldata$psval[2]
+  scetop <- fulldata$scenario.new[2]
   
-  saveRDS(fulldata, paste0(save_dir, "/fulldata_",tblnam,"_",psval,".rds"))
+  saveRDS(fulldata, paste0(save_dir, "/fulldata_",scetop,"_",psval,".rds"))
   
   
   #B. Get pia
@@ -97,24 +98,24 @@ if(fulldata$scenario_name [1] != "a001base"){
            psval = stringr::str_split_i(scenario_name, "_", 4)) %>% 
     arrange(tbl, scenario.num)
     
-  saveRDS(piatbl, paste0(save_dir, "/piatbl_",tblnam,"_",psval,".rds"))
+  saveRDS(piatbl, paste0(save_dir, "/piatbl_",scetop,"_",psval,".rds"))
   
   
   
-  #C. Get contour plot data  
-  #---------------------------------------------------------------------------------------
-  griddat <- expand.grid(list(
-    x = seq(min(piatbl$x), max(piatbl$x), length.out = 100),
-    y = seq(min(piatbl$y), max(piatbl$y), length.out = 100)
-    ))
-  
-  fit <- loess(pia ~ x * y, piatbl)
-  
-  griddat$pia <- as.numeric(predict(fit, newdata = griddat))
-  griddat$tbl <- tblnam
-  griddat$psval <- psval
-  
-  saveRDS(griddat, paste0(save_dir, "/griddat_", tblnam,"_",psval,".rds"))
+  # #C. Get contour plot data  
+  # #---------------------------------------------------------------------------------------
+  # griddat <- expand.grid(list(
+  #   x = seq(min(piatbl$x), max(piatbl$x), length.out = 100),
+  #   y = seq(min(piatbl$y), max(piatbl$y), length.out = 100)
+  #   ))
+  # 
+  # fit <- loess(pia ~ x * y, piatbl)
+  # 
+  # griddat$pia <- as.numeric(predict(fit, newdata = griddat))
+  # griddat$tbl <- tblnam
+  # griddat$psval <- psval
+  # 
+  # saveRDS(griddat, paste0(save_dir, "/griddat_", tblnam,"_",psval,".rds"))
 
 }
 
