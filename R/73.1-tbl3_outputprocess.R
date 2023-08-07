@@ -51,20 +51,12 @@ intervds <- future.apply::future_lapply(
 #Merge all batches  
 fulldata_tbl3 <- bind_rows(intervds)
 
-tblnam <- fulldata_tbl3$tbl[2]
-
-saveRDS(fulldata_tbl3, paste0(save_dir, "/tbl3", tblnam, "_fulldata.rds"))
+saveRDS(fulldata_tbl3, paste0(save_dir, "/tbl3_fulldata.rds"))
 
 
 
 
 #B. Process outcome_sims and outcome_scenario data----------------------------------------
-base_incid <- get_cumulative_outcomes(fulldata_tbl3) %>% 
-  filter(tbl == "A" & scenario_name == "a001base")
-saveRDS(base_incid, paste0(save_dir, "/baseincid/tbl3", tblnam, "_baseincid.rds"))
-
-
-
 outcomes_sims_tbl3 <- get_outcome_sims_tbl3(fulldata_tbl3) %>% 
   select(tbl, scenario.num, scenario.new, scenario_name,sim,
          ir.yr10, incid.cum, nia, pia, nnt,
@@ -94,7 +86,7 @@ outcomes_sims_tbl3 <- get_outcome_sims_tbl3(fulldata_tbl3) %>%
          part.reinit.tx,
          gen.start.tx,
          pp.reinit.tx)
-saveRDS(outcomes_sims_tbl3, paste0(save_dir, "/tbl3", tblnam, "_outcomes_sims.rds"))
+saveRDS(outcomes_sims_tbl3, paste0(save_dir, "/tbl3_outcomes_sims.rds"))
 
 
 
@@ -113,7 +105,7 @@ outcomes_scenarios_tbl3 <- outcomes_sims_tbl3 %>%
   mutate(across(where(is.numeric), ~round (., 5))) %>% 
   ungroup()%>% 
   arrange(tbl, scenario.num, scenario.new, scenario_name)
-saveRDS(outcomes_scenarios_tbl3, paste0(save_dir, "/tbl3",tblnam, "_outcomes_scenarios.rds"))
+saveRDS(outcomes_scenarios_tbl3, paste0(save_dir, "/tbl3_outcomes_scenarios.rds"))
 
 
 
