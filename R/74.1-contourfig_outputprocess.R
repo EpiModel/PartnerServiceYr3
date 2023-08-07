@@ -6,9 +6,6 @@
 # Setup ----------------------------------------------------------------------------------
 context<-"hpc"
 
-source("R/utils-tbl_output_functions.R")
-
-
 sims_dir <- paste0("data/intermediate/",context,"/figdata")
 save_dir <- paste0("data/intermediate/",context,"/processed")
 
@@ -41,14 +38,53 @@ sim_files <- list.files(
 
 
 #Process each batch in parallel 
+process_sim <- function(file_name, ts) {
+  
+  # file_name <-sim_files[1]
+  # ts <- 3901 - (5 * 52) + 1
+  
+  # keep only the file name without extension and split around `__`
+  name_elts <- fs::path_file(file_name) %>%
+    fs::path_ext_remove() %>%
+    strsplit(split = "__")
+  
+  scenario_name <- name_elts[[1]][2]
+  batch_number <- as.numeric(name_elts[[1]][3])
+  
+  d <- as_tibble(readRDS(file_name))
+  
+  d <- d %>%
+    mutate(scenario_name = scenario_name, batch_number = batch_number) %>% 
+    group_by(scenario_name, batch_number, sim) %>% 
+    filter(time >= ts) %>% 
+    mutate(time=row_number()) %>% 
+    ungroup() %>% 
+    mutate(sim2=ifelse(batch_number > 1,
+                       sim + ((batch_number-1) * 32),
+                       sim)) %>% 
+    select(-sim) %>%
+    rename(sim=sim2) %>%
+    mutate(
+      tbl                     = toupper(substr(scenario_name, 1, 1)),
+      scenario.num            = as.numeric(substr(scenario_name, 2, 4)),
+      scenario.new            = substr(scenario_name, 5, nchar(scenario_name))
+    ) %>% 
+    ungroup() %>% 
+    mutate(found.indexes.all  = found.indexes.nd + found.indexes.pp) %>% 
+    select(tbl, scenario.num, scenario.new, scenario_name, batch_number, sim, time, 
+           incid, num, ir100, found.indexes.all) %>%
+    arrange(tbl, scenario.num, scenario.new, scenario_name, batch_number, sim) %>%
+    
+    return(d)
+}
+
 intervds <- future.apply::future_lapply(
   sim_files,
-  process_fulldata,
+  process_sim,
   ts = 3901 - (5 * 52) + 1   #gets data from 5 years prior to intervention start
 )
 
-
-#Merge all batches  
+#Merge batches  
 fulldata <- bind_rows(intervds) %>% 
   select(tbl, scenario.num, scenario_name, sim, time, incid, found.indexes.all) %>% 
   mutate(scenario.new = stringr::str_split_i(scenario_name, "_", 1),
