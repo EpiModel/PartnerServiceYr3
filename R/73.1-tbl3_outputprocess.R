@@ -1,5 +1,5 @@
 ##
-## 42. Processing counterfactual scenarios
+## 42. Processing counterfactual scenarios - Table 3
 ##
 
 
