@@ -1,5 +1,5 @@
 ##
-## PSY3 model simulations (calibrated models)
+## PSY3 model simulations (calibrated models) - Table 3
 ##
 
 
@@ -28,7 +28,7 @@ numsims <- 10 * max_cores
 
 #Create workflow
 wf <- create_workflow(
-  wf_name = "psy3tbl3comb",
+  wf_name = "psy3tbl3",
   default_sbatch_opts = hpc_configs$default_sbatch_opts
 )
 
@@ -68,7 +68,7 @@ control <- control_msm(
 )
 
 
-#Scenarios
+# Table 3 Scenarios
 scenarios.df<- rbind(
                     readr::read_csv("./data/input/scenarios_tbl3A.csv"),
                     readr::read_csv("./data/input/scenarios_tbl3B.csv"),
@@ -78,7 +78,7 @@ scenarios.df<- rbind(
 scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
 
 
-#HIV epidemic simulation
+# HIV epidemic simulation
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_netsim_scenarios(
@@ -101,7 +101,7 @@ wf <- add_workflow_step(
 )
 
 
-#Process scenarios
+# Process output
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
@@ -121,7 +121,7 @@ wf <- add_workflow_step(
 )
 
 
-#Clear files (sims and log)
+# Clear files (sims and log)
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
@@ -148,7 +148,7 @@ wf <- add_workflow_step(
 # scp -r data/intermediate/hpc/estimates sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc/
   
 # to send workflows to the HPC (Run in R terminal)
-# scp -r workflows/psy3tbl3comb sph:projects/epimodel/uonwubi/PartnerServiceYr3/workflows
+# scp -r workflows/psy3tbl3 sph:projects/epimodel/uonwubi/PartnerServiceYr3/workflows
 
 # to get the data back after simulations (Run in R terminal)
 # scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc data/intermediate
