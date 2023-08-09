@@ -1,5 +1,5 @@
 ##
-## 42. Remove sim files after processing for contour plot data
+## Remove sim and log files after processing for table 3 simulations
 ##
 
 
@@ -13,7 +13,7 @@ file.remove(file.path(sims_dir, files_to_delete_1))
 
 
 #remove log files
-log_dir <- paste0("workflows/psy3tbl3comb/log")
+log_dir <- paste0("workflows/psy3tbl3/log")
 
-files_to_delete_2 <- dir(path = log_dir, pattern = "^psy3tbl3comb_step.*out$")
+files_to_delete_2 <- dir(path = log_dir, pattern = "^psy3tbl3_step.*out$")
 file.remove(file.path(log_dir, files_to_delete_2))
