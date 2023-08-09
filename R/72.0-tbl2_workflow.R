@@ -1,5 +1,5 @@
 ##
-## 10. Epidemic Model Parameter Calibration, HPC setup
+## PSY3 model simulations (calibrated models) - Table 2
 ##
 
 
@@ -27,17 +27,15 @@ numsims <- 10 * max_cores
 
 
 #Create workflow
-#-----------------------------------------------------------------------------------------
 wf <- create_workflow(
-  wf_name = "psy3tbl2all",
+  wf_name = "psy3tbl2",
   default_sbatch_opts = hpc_configs$default_sbatch_opts
 )
 
 
 
 
-#Step 1: Update renv (from GitHub project repo)
-#-----------------------------------------------------------------------------------------
+#Update renv (from GitHub project repo)
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_renv_restore(
@@ -49,7 +47,7 @@ wf <- add_workflow_step(
 
 
 
-#Set up simulation inputs
+# Simulate HIV epidemic scenarios over estimated networks
 #-----------------------------------------------------------------------------------------
 source("R/utils-netsim_inputs.R")
 source("R/utils-netsize.R") 
@@ -64,32 +62,25 @@ control <- control_msm(
   cumulative.edgelist = TRUE,
   truncate.el.cuml = 0,
   verbose = FALSE,
-  
   .traceback.on.error = FALSE,
   .dump.frame.on.error = FALSE
-  
   #raw.output = FALSE
 )
 
 
 
 
+# Table 2A --------------------
+# scenarios
+scenarios.df <- readr::read_csv("./data/input/scenarios_tbl2A.csv")
+scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
 
-# Simulate HIV epidemic scenarios over estimated networks
-#-----------------------------------------------------------------------------------------
-
-
-# Table 2A ---------------------------------------------
-#set up scenarios
-scenarios.df.A <- readr::read_csv("./data/input/scenarios_tbl2A.csv")
-scenarios.list.A <- EpiModel::create_scenario_list(scenarios.df.A)
-
-#step 2: run the simulations
+# HIV epidemic simulation
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_netsim_scenarios(
     path_to_restart, param, init, control,
-    scenarios_list = scenarios.list.A,
+    scenarios_list = scenarios.list,
     output_dir = "data/intermediate/hpc/scenarios_tbl2",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
@@ -106,7 +97,7 @@ wf <- add_workflow_step(
   )
 )
 
-#step 3: run the processing file
+# Process output
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
@@ -126,7 +117,7 @@ wf <- add_workflow_step(
 )
 
 
-#step 4: remove sim files
+# Clear files (sims and log)
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
@@ -145,21 +136,21 @@ wf <- add_workflow_step(
 
 
 
-# Table 2B ----------------------------------------------
-#set up scenarios
-scenarios.df.B <- readr::read_csv("./data/input/scenarios_tbl2B.csv")
-scenarios.list.B <- EpiModel::create_scenario_list(scenarios.df.B)
+# Table 2B --------------------
+# scenarios
+scenarios.df <- readr::read_csv("./data/input/scenarios_tbl2B.csv")
+scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
 
-#step 5: run the simulations
+# HIV epidemic simulation
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_netsim_scenarios(
     path_to_restart, param, init, control,
-    scenarios_list = scenarios.list.B,
+    scenarios_list = scenarios.list,
     output_dir = "data/intermediate/hpc/scenarios_tbl2",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
-    n_rep = numsims,                                                                            
+    n_rep = numsims,
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
@@ -172,7 +163,7 @@ wf <- add_workflow_step(
   )
 )
 
-#step 6: run the processing file
+# Process output
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
@@ -192,7 +183,7 @@ wf <- add_workflow_step(
 )
 
 
-#step 7: remove sim files
+# Clear files (sims and log)
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
@@ -211,21 +202,21 @@ wf <- add_workflow_step(
 
 
 
-# Table 2C ----------------------------------------
-#set up scenarios
-scenarios.df.C <- readr::read_csv("./data/input/scenarios_tbl2C.csv")
-scenarios.list.C <- EpiModel::create_scenario_list(scenarios.df.C)
+# Table 2C --------------------
+# scenarios
+scenarios.df <- readr::read_csv("./data/input/scenarios_tbl2C.csv")
+scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
 
-#step 8: run the simulations
+# HIV epidemic simulation
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_netsim_scenarios(
     path_to_restart, param, init, control,
-    scenarios_list = scenarios.list.C,
+    scenarios_list = scenarios.list,
     output_dir = "data/intermediate/hpc/scenarios_tbl2",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
-    n_rep = numsims,                                                                            
+    n_rep = numsims,
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
@@ -238,7 +229,7 @@ wf <- add_workflow_step(
   )
 )
 
-#step 9: run the processing file
+# Process output
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
@@ -258,7 +249,7 @@ wf <- add_workflow_step(
 )
 
 
-#step 10: remove sim files
+# Clear files (sims and log)
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
@@ -277,21 +268,22 @@ wf <- add_workflow_step(
 
 
 
-# Table 2D -------------------------------------------
-#set up scenarios
-scenarios.df.D <- readr::read_csv("./data/input/scenarios_tbl2D.csv")
-scenarios.list.D <- EpiModel::create_scenario_list(scenarios.df.D)
 
-#step 11: run the simulations
+# Table 2D --------------------
+# scenarios
+scenarios.df <- readr::read_csv("./data/input/scenarios_tbl2D.csv")
+scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
+
+# HIV epidemic simulation
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_netsim_scenarios(
     path_to_restart, param, init, control,
-    scenarios_list = scenarios.list.D,
+    scenarios_list = scenarios.list,
     output_dir = "data/intermediate/hpc/scenarios_tbl2",
     libraries = "EpiModelHIV",
     save_pattern = "simple",
-    n_rep = numsims,                                                                            
+    n_rep = numsims,
     n_cores = max_cores,
     max_array_size = 999,
     setup_lines = hpc_configs$r_loader
@@ -304,7 +296,7 @@ wf <- add_workflow_step(
   )
 )
 
-#step 12: run the processing file
+# Process output
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
@@ -324,7 +316,7 @@ wf <- add_workflow_step(
 )
 
 
-#step 13: remove sim files
+# Clear files (sims and log)
 wf <- add_workflow_step(
   wf_summary = wf,
   step_tmpl = step_tmpl_do_call_script(
@@ -350,7 +342,7 @@ wf <- add_workflow_step(
 # scp -r data/intermediate/hpc/estimates sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc/
   
 # to send workflows to the HPC (Run in R terminal)
-# scp -r workflows/psy3tbl2all sph:projects/epimodel/uonwubi/PartnerServiceYr3/workflows
+# scp -r workflows/psy3tbl2 sph:projects/epimodel/uonwubi/PartnerServiceYr3/workflows
 
 # # to execute jobs
 # chmod +x workflows/put_wf_name_here/start_workflow.sh    
