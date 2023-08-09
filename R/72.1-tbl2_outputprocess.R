@@ -1,14 +1,15 @@
 ##
-## 42. Processing counterfactual scenarios
+## 42. Processing counterfactual scenarios - Table 2
 ##
+
+# Setup ----------------------------------------------------------------------------------
 context<-"hpc"
 
-# Setup ------------------------------------------------------------------------
-#get context and scenarios functions
-source("R/utils-netsim_inputs.R")
-source("R/utils-netsize.R")
 source("R/utils-tbl_output_functions.R")
 
+
+sims_dir <- paste0("data/intermediate/",context,"/scenarios_tbl2")
+save_dir <- paste0("data/intermediate/",context,"/processed")
 
 
 #get batch info
@@ -19,7 +20,8 @@ batches_infos <- EpiModelHPC::get_scenarios_batches_infos(
 
 
 
-#A. Process intervdata ------------------------------------------------------------------------
+
+#A. Process intervdata -------------------------------------------------------------------
 install.packages("future.apply")
 suppressMessages({
   library("EpiModelHIV")
@@ -28,8 +30,6 @@ suppressMessages({
   library("dplyr")
   library("ggplot2")
 })
-
-sims_dir <- paste0("data/intermediate/",context,"/scenarios_tbl2")
 
 
 #get sim files
@@ -49,14 +49,17 @@ intervds <- future.apply::future_lapply(
 
 
 #Merge all batches  
-full_intervdata_tbl2 <- bind_rows(intervds)
-tblnam <- full_intervdata_tbl2$tbl[2]
+fulldata_tbl2 <- bind_rows(intervds)
 
-saveRDS(full_intervdata_tbl2, paste0("data/intermediate/",context,"/processed/tbl2", tblnam, "_fulldata.rds"))
+tblnam <- fulldata_tbl2$tbl[2]
+
+saveRDS(fulldata_tbl2, paste0(save_dir, "/tbl2", tblnam, "_fulldata.rds"))
+
+
 
 
 #B. Process outcome_sims and outcome_scenario data----------------------------------------
-outcomes_sims_tbl2 <- get_outcome_sims_tbl2(full_intervdata_tbl2) %>% 
+outcomes_sims_tbl2 <- get_outcome_sims_tbl2(fulldata_tbl2) %>% 
   select(tbl, scenario.num, scenario.new, scenario_name,sim,
          ir.yr10, incid.cum, nia, pia,
          prepCov.yr10, diagCov.yr10, artCov.yr10, vSuppCov.yr10,
@@ -85,7 +88,8 @@ outcomes_sims_tbl2 <- get_outcome_sims_tbl2(full_intervdata_tbl2) %>%
          part.reinit.tx,
          gen.start.tx,
          pp.reinit.tx)
-saveRDS(outcomes_sims_tbl2, paste0("data/intermediate/",context,"/processed/tbl2", tblnam, "_outcomes_sims.rds"))
+saveRDS(outcomes_sims_tbl2, paste0(save_dir, "/tbl2", tblnam, "_outcomes_sims.rds"))
+
 
 
 outcomes_scenarios_tbl2 <- outcomes_sims_tbl2 %>%
@@ -100,7 +104,7 @@ outcomes_scenarios_tbl2 <- outcomes_sims_tbl2 %>%
   )) %>% 
   mutate(across(where(is.numeric), ~round (., 5))) %>% ungroup()%>% 
   arrange(tbl, scenario.num, scenario.new, scenario_name)
-saveRDS(outcomes_scenarios_tbl2, paste0("data/intermediate/",context,"/processed/tbl2", tblnam, "_outcomes_scenarios.rds"))
+saveRDS(outcomes_scenarios_tbl2, paste0(save_dir, "/tbl2", tblnam, "_outcomes_scenarios.rds"))
 
 
 
