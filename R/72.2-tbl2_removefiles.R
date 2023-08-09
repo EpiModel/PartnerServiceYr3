@@ -1,5 +1,5 @@
 ##
-## 42. Remove sim and log files after processing for table 2 simulations
+## Remove sim and log files after processing for table 2 simulations
 ##
 
 #remove sim files
@@ -12,7 +12,7 @@ file.remove(file.path(sims_dir, files_to_delete_1))
 
 
 #remove log files
-log_dir <- paste0("workflows/psy3tbl2all/log")
+log_dir <- paste0("workflows/psy3tbl2/log")
 
-files_to_delete_2 <- dir(path = log_dir, pattern = "^psy3tbl2all_step.*out$")
+files_to_delete_2 <- dir(path = log_dir, pattern = "^psy3tbl2_step.*out$")
 file.remove(file.path(log_dir, files_to_delete_2))
