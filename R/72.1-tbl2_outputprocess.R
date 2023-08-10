@@ -44,7 +44,7 @@ sim_files <- list.files(
 intervds <- future.apply::future_lapply(
   sim_files,
   process_fulldata,
-  ts = interv_start - (5 * 52) + 1   #gets data from 5 years prior to intervention start
+  ts = 3901 - (5 * 52) + 1   #gets data from 5 years prior to intervention start
 )
 
 
