@@ -71,31 +71,31 @@ control <- control_msm(
 
 
 # Table 2A --------------------
-# # scenarios
-# scenarios.df <- readr::read_csv("./data/input/scenarios_tbl2A.csv")
-# scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
-# 
-# # HIV epidemic simulation
-# wf <- add_workflow_step(
-#   wf_summary = wf,
-#   step_tmpl = step_tmpl_netsim_scenarios(
-#     path_to_restart, param, init, control,
-#     scenarios_list = scenarios.list,
-#     output_dir = "data/intermediate/hpc/scenarios_tbl2",
-#     libraries = "EpiModelHIV",
-#     save_pattern = "simple",
-#     n_rep = numsims,
-#     n_cores = max_cores,
-#     max_array_size = 999,
-#     setup_lines = hpc_configs$r_loader
-#   ),
-#   sbatch_opts = list(
-#     "mail-type" = "FAIL,TIME_LIMIT,END",
-#     "cpus-per-task" = max_cores,
-#     "time" = "04:00:00",
-#     "mem" = "0" # special: all mem on node
-#   )
-# )
+# scenarios
+scenarios.df <- readr::read_csv("./data/input/scenarios_tbl2A.csv")
+scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
+
+# HIV epidemic simulation
+wf <- add_workflow_step(
+  wf_summary = wf,
+  step_tmpl = step_tmpl_netsim_scenarios(
+    path_to_restart, param, init, control,
+    scenarios_list = scenarios.list,
+    output_dir = "data/intermediate/hpc/scenarios_tbl2",
+    libraries = "EpiModelHIV",
+    save_pattern = "simple",
+    n_rep = numsims,
+    n_cores = max_cores,
+    max_array_size = 999,
+    setup_lines = hpc_configs$r_loader
+  ),
+  sbatch_opts = list(
+    "mail-type" = "FAIL,TIME_LIMIT,END",
+    "cpus-per-task" = max_cores,
+    "time" = "04:00:00",
+    "mem" = "0" # special: all mem on node
+  )
+)
 
 # Process output
 wf <- add_workflow_step(
