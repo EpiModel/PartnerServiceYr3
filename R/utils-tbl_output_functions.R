@@ -158,7 +158,7 @@ get_yr10_outcomes <- function(d) {
              )
       ) %>% 
     mutate(
-      ir.yr10 = incid / networks_size * 100,
+      ir.yr10 = incid / 100000 * 100,
       ir2.yr10 = incid / num.yr10 *100
       ) %>% 
     select(tbl, scenario.num, scenario.new, scenario_name, sim, ends_with(".yr10"))
