@@ -56,7 +56,8 @@ process_fulldata <- function(file_name, ts) {
       prp.partners.found.gen1 = found.partners / elig.partners,
       prp.partners.found.gen2 = found.partners.gen2 / elig.partners.gen2,
       prp.partners.found.all  = found.partners.all / elig.partners.all,
-      partners.per.index      = found.partners.all / found.indexes.all
+      partners.per.index      = found.partners.all / found.indexes.all,
+      prp.allPP.eligandnic    = elig.indexes.pp / num.PP
       ) %>% 
     select(
       tbl, scenario.num, scenario.new, scenario_name, batch_number, sim, time,
@@ -115,7 +116,7 @@ process_fulldata <- function(file_name, ts) {
       tot.tests, 
       tot.tests.ibt, 
       tot.tests.ibtNegunk, tot.tests.ibtPrEP, tot.tests.ibtPP,
-      eligPP.for.retest, pp.tests.nic,pp.tests.ic,
+      num.PP, eligPP.for.retest, eligPPforRetest.rxnaive, eligPPforRetest.ooc,
       tot.part.ident, elig.for.scrn, part.scrnd.tst, positive.part, negative.part
       ) %>%
     arrange(tbl, scenario.num, scenario.new, scenario_name, batch_number, sim) %>%
@@ -233,7 +234,8 @@ get_yrMu_outcomes <- function(d) {
       prp.partners.found.gen1,
       prp.partners.found.gen2,
       prp.partners.found.all,
-      partners.per.index
+      partners.per.index,
+      prp.allPP.eligandnic
       ) %>% 
     group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
     summarise(across(
@@ -252,10 +254,14 @@ get_sumave_outcomes <- function(d) {
     select(
       tbl, scenario.num, scenario.new, scenario_name, sim, 
       prepStartAll, 
-      elig.indexes.nd, found.indexes.nd, 
-      elig.indexes.pp, found.indexes.pp, 
+      # elig.indexes.nd, found.indexes.nd, 
+      # elig.indexes.pp, found.indexes.pp, 
+      # elig.indexes.all, found.indexes.all,
+      
+      elig.indexes.nd, found.indexes.nd,
+      num.PP, elig.indexes.pp, eligPPforRetest.rxnaive, eligPPforRetest.ooc, found.indexes.pp,
       elig.indexes.all, found.indexes.all,
-     
+      
       elig.partners, found.partners, negunkPart.indexes, posPart.indexes,
       elig.partners.gen2, found.partners.gen2, posPart.gen2, negunkPart.gen2, 
       elig.partners.all, found.partners.all, negunkPart.indexes.all, posPart.indexes.all,
@@ -270,7 +276,8 @@ get_sumave_outcomes <- function(d) {
       part.start.tx,
       part.reinit.tx,
       gen.start.tx,
-      pp.reinit.tx) %>% 
+      pp.reinit.tx
+      ) %>% 
     group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
     summarise(across(
       everything(), 
@@ -291,15 +298,27 @@ get_outcome_sims_tbl2 <- function(d){
   d_yrmean    <- get_sumave_outcomes(d)
   
   #merge files
-  d_join0 <- left_join(d_yr10, d_cum, 
-                       by = c("tbl","scenario.num", "scenario.new","scenario_name", "sim"))
-  d_join1 <- left_join(d_join0, d_niapiannt, 
-                       by = c("tbl","scenario.num", "scenario.new","scenario_name", "sim"))
-  d_join2 <- left_join(d_join1, d_yrMu, 
-                       by = c("tbl","scenario.num", "scenario.new","scenario_name", "sim"))
+  d_join0 <- left_join(
+    d_yr10, 
+    d_cum, 
+    by = c("tbl","scenario.num", "scenario.new","scenario_name", "sim")
+    )
+  d_join1 <- left_join(
+    d_join0, 
+    d_niapiannt, 
+    by = c("tbl","scenario.num", "scenario.new","scenario_name", "sim")
+    )
+  d_join2 <- left_join(
+    d_join1, 
+    d_yrMu, 
+    by = c("tbl","scenario.num", "scenario.new","scenario_name", "sim")
+    )
   
-  left_join(d_join2, d_yrmean, 
-            by = c("tbl","scenario.num", "scenario.new","scenario_name", "sim"))
+  left_join(
+    d_join2, 
+    d_yrmean, 
+    by = c("tbl","scenario.num", "scenario.new","scenario_name", "sim")
+    )
 }
 
 
