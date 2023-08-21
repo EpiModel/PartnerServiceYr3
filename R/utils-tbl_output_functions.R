@@ -47,7 +47,8 @@ process_fulldata <- function(file_name, ts) {
       posPart.indexes.all     = posPart.indexes + posPart.gen2,
       diagCov2                = diag/i.num,
       artCov2                 = artCurr/diag,
-      vSuppCov2               = vSupp/diag
+      vSuppCov2               = vSupp/diag,
+      numPP                   = i.prev.dx * num
       ) %>% 
     mutate(
       prp.indexes.found.nd    = found.indexes.nd / elig.indexes.nd,
@@ -57,7 +58,7 @@ process_fulldata <- function(file_name, ts) {
       prp.partners.found.gen2 = found.partners.gen2 / elig.partners.gen2,
       prp.partners.found.all  = found.partners.all / elig.partners.all,
       partners.per.index      = found.partners.all / found.indexes.all,
-      prp.allPP.eligandnic    = elig.indexes.pp / num.PP
+      prp.allPP.eligandnic    = elig.indexes.pp / numPP
       ) %>% 
     select(
       tbl, scenario.num, scenario.new, scenario_name, batch_number, sim, time,
@@ -116,10 +117,10 @@ process_fulldata <- function(file_name, ts) {
       tot.tests, 
       tot.tests.ibt, 
       tot.tests.ibtNegunk, tot.tests.ibtPrEP, tot.tests.ibtPP,
-      num.PP, eligPP.for.retest, eligPPforRetest.rxnaive, eligPPforRetest.ooc,
+      i.prev.dx, numPP, eligPP.for.retest, prp.allPP.eligandnic, eligPPforRetest.rxnaive, eligPPforRetest.ooc,
       tot.part.ident, elig.for.scrn, part.scrnd.tst, positive.part, negative.part
       ) %>%
-    arrange(tbl, scenario.num, scenario.new, scenario_name, batch_number, sim) %>%
+    arrange(tbl, scenario.num, scenario.new, scenario_name, batch_number, sim)
     
     return(d)
 }
@@ -177,10 +178,8 @@ get_niapiannt_tbl2 <- function(d) {
       ) %>% 
     group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
     summarise(across(
-      c(incid, found.indexes.all),
-      ~ sum(.x, na.rm = TRUE)
-      )
-      )  %>% 
+      c(incid, found.indexes.all), ~ sum(.x, na.rm = TRUE)
+      ))  %>% 
     arrange(tbl, sim, scenario.num) %>% 
     group_by(tbl, sim) %>% 
     mutate(base_incid = incid[1]) %>% 
@@ -195,8 +194,8 @@ get_niapiannt_tbl2 <- function(d) {
 
 get_niapiannt_tbl3 <- function(d) {
   
-  base_df <- readRDS(paste0(save_dir, "/baseincid/tbl3A_baseincid.rds", sep=""))
-  base_incid <- base_df$incid
+  # base_df <- readRDS(paste0(save_dir, "/baseincid/tbl3A_baseincid.rds", sep=""))
+  # base_incid <- base_df$incid
   
   d %>% 
     filter(time > 5 * 52) %>% 
@@ -206,10 +205,11 @@ get_niapiannt_tbl3 <- function(d) {
       ) %>% 
     group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
     summarise(across(
-      c(incid, found.indexes.all),
-      ~ sum(.x, na.rm = TRUE)
-      )
-      )  %>% 
+      c(incid, found.indexes.all), ~ sum(.x, na.rm = TRUE)
+      ))  %>% 
+    arrange(tbl, sim, scenario.num) %>% 
+    group_by(sim) %>% 
+    mutate(base_incid = incid[1]) %>% 
     mutate(
       nia = base_incid - incid,
       pia = (base_incid - incid) / base_incid
@@ -259,7 +259,7 @@ get_sumave_outcomes <- function(d) {
       # elig.indexes.all, found.indexes.all,
       
       elig.indexes.nd, found.indexes.nd,
-      num.PP, elig.indexes.pp, eligPPforRetest.rxnaive, eligPPforRetest.ooc, found.indexes.pp,
+      numPP, elig.indexes.pp, eligPPforRetest.rxnaive, eligPPforRetest.ooc, found.indexes.pp,
       elig.indexes.all, found.indexes.all,
       
       elig.partners, found.partners, negunkPart.indexes, posPart.indexes,
