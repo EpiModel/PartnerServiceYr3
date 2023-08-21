@@ -48,7 +48,9 @@ process_fulldata <- function(file_name, ts) {
       diagCov2                = diag/i.num,
       artCov2                 = artCurr/diag,
       vSuppCov2               = vSupp/diag,
-      numPP                   = i.prev.dx * num
+      numPP.1                 = (i.prev.dx * num) / 52,
+      numPP.2                 = allPrevPos /52,
+      eligPPforRetest.ooc     = eligPP.for.retest - eligPPforRetest.rxnaive
       ) %>% 
     mutate(
       prp.indexes.found.nd    = found.indexes.nd / elig.indexes.nd,
@@ -58,7 +60,9 @@ process_fulldata <- function(file_name, ts) {
       prp.partners.found.gen2 = found.partners.gen2 / elig.partners.gen2,
       prp.partners.found.all  = found.partners.all / elig.partners.all,
       partners.per.index      = found.partners.all / found.indexes.all,
-      prp.allPP.eligandnic    = elig.indexes.pp / numPP
+      prp.allPP.eligandnic1   = elig.indexes.pp / numPP.1,
+      prp.allPP.eligandnic2   = elig.indexes.pp / numPP.2,
+      prp.eligPP.rxnaive      = eligPPforRetest.rxnaive / eligPP.for.retest
       ) %>% 
     select(
       tbl, scenario.num, scenario.new, scenario_name, batch_number, sim, time,
@@ -117,14 +121,14 @@ process_fulldata <- function(file_name, ts) {
       tot.tests, 
       tot.tests.ibt, 
       tot.tests.ibtNegunk, tot.tests.ibtPrEP, tot.tests.ibtPP,
-      i.prev.dx, numPP, eligPP.for.retest, prp.allPP.eligandnic, eligPPforRetest.rxnaive, eligPPforRetest.ooc,
+      i.prev.dx, numPP.1, allPrevPos, numPP.2, eligPP.for.retest, prp.allPP.eligandnic1, prp.allPP.eligandnic2,
+      eligPPforRetest.rxnaive, prp.eligPP.rxnaive, eligPPforRetest.ooc,
       tot.part.ident, elig.for.scrn, part.scrnd.tst, positive.part, negative.part
       ) %>%
     arrange(tbl, scenario.num, scenario.new, scenario_name, batch_number, sim)
     
     return(d)
 }
-
 
 
 #Function 2a: Get cumulative HIV incidence over 10 yr intervention period ----------------
@@ -235,7 +239,10 @@ get_yrMu_outcomes <- function(d) {
       prp.partners.found.gen2,
       prp.partners.found.all,
       partners.per.index,
-      prp.allPP.eligandnic
+      i.prev.dx, 
+      prp.allPP.eligandnic1,
+      prp.allPP.eligandnic2,
+      prp.eligPP.rxnaive
       ) %>% 
     group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
     summarise(across(
@@ -259,7 +266,7 @@ get_sumave_outcomes <- function(d) {
       # elig.indexes.all, found.indexes.all,
       
       elig.indexes.nd, found.indexes.nd,
-      numPP, elig.indexes.pp, eligPPforRetest.rxnaive, eligPPforRetest.ooc, found.indexes.pp,
+      numPP.1, allPrevPos, numPP.2, eligPP.for.retest, eligPPforRetest.rxnaive, eligPPforRetest.ooc, found.indexes.pp,
       elig.indexes.all, found.indexes.all,
       
       elig.partners, found.partners, negunkPart.indexes, posPart.indexes,
