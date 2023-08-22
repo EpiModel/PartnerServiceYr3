@@ -49,7 +49,7 @@ process_fulldata <- function(file_name, ts) {
       artCov2                 = artCurr/diag,
       vSuppCov2               = vSupp/diag,
       numPP.1                 = (i.prev.dx * num) / 52,
-      numPP.2                 = allPrevPos /52,
+      #numPP.2                 = allPrevPos /52,
       eligPPforRetest.ooc     = eligPP.for.retest - eligPPforRetest.rxnaive
       ) %>% 
     mutate(
@@ -61,7 +61,7 @@ process_fulldata <- function(file_name, ts) {
       prp.partners.found.all  = found.partners.all / elig.partners.all,
       partners.per.index      = found.partners.all / found.indexes.all,
       prp.allPP.eligandnic1   = elig.indexes.pp / numPP.1,
-      prp.allPP.eligandnic2   = elig.indexes.pp / numPP.2,
+      #prp.allPP.eligandnic2   = elig.indexes.pp / numPP.2,
       prp.eligPP.rxnaive      = eligPPforRetest.rxnaive / eligPP.for.retest
       ) %>% 
     select(
@@ -121,7 +121,7 @@ process_fulldata <- function(file_name, ts) {
       tot.tests, 
       tot.tests.ibt, 
       tot.tests.ibtNegunk, tot.tests.ibtPrEP, tot.tests.ibtPP,
-      i.prev.dx, numPP.1, allPrevPos, numPP.2, eligPP.for.retest, prp.allPP.eligandnic1, prp.allPP.eligandnic2,
+      i.prev.dx, numPP.1, eligPP.for.retest, prp.allPP.eligandnic1, 
       eligPPforRetest.rxnaive, prp.eligPP.rxnaive, eligPPforRetest.ooc,
       tot.part.ident, elig.for.scrn, part.scrnd.tst, positive.part, negative.part
       ) %>%
@@ -139,7 +139,6 @@ get_cumulative_outcomes <- function(d) {
     group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
     summarise(across(c(incid),~ sum(.x, na.rm = TRUE), .names = "{.col}.cum")) 
 }
-
 
 
 #Function 2b: Get mean in yr-10 (process measures) ---------------------------------------
@@ -241,7 +240,7 @@ get_yrMu_outcomes <- function(d) {
       partners.per.index,
       i.prev.dx, 
       prp.allPP.eligandnic1,
-      prp.allPP.eligandnic2,
+      #prp.allPP.eligandnic2,
       prp.eligPP.rxnaive
       ) %>% 
     group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
@@ -266,7 +265,8 @@ get_sumave_outcomes <- function(d) {
       # elig.indexes.all, found.indexes.all,
       
       elig.indexes.nd, found.indexes.nd,
-      numPP.1, allPrevPos, numPP.2, eligPP.for.retest, eligPPforRetest.rxnaive, eligPPforRetest.ooc, found.indexes.pp,
+      numPP.1, eligPP.for.retest, eligPPforRetest.rxnaive, eligPPforRetest.ooc, 
+      elig.indexes.pp, found.indexes.pp,
       elig.indexes.all, found.indexes.all,
       
       elig.partners, found.partners, negunkPart.indexes, posPart.indexes,
