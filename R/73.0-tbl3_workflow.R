@@ -68,37 +68,37 @@ control <- control_msm(
 )
 
 
-# Table 3 Scenarios
-scenarios.df<- rbind(
-                    readr::read_csv("./data/input/scenarios_tbl3A.csv"),
-                    readr::read_csv("./data/input/scenarios_tbl3B.csv"),
-                    readr::read_csv("./data/input/scenarios_tbl3C.csv"),
-                    readr::read_csv("./data/input/scenarios_tbl3D.csv")
-                    )
-scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
-
-
-# HIV epidemic simulation
-wf <- add_workflow_step(
-  wf_summary = wf,
-  step_tmpl = step_tmpl_netsim_scenarios(
-    path_to_restart, param, init, control,
-    scenarios_list = scenarios.list,
-    output_dir = "data/intermediate/hpc/scenarios_tbl3",
-    libraries = "EpiModelHIV",
-    save_pattern = "simple",
-    n_rep = numsims,
-    n_cores = max_cores,
-    max_array_size = 999,
-    setup_lines = hpc_configs$r_loader
-  ),
-  sbatch_opts = list(
-    "mail-type" = "FAIL,TIME_LIMIT,END",
-    "cpus-per-task" = max_cores,
-    "time" = "04:00:00",
-    "mem" = "0" # special: all mem on node
-  )
-)
+# # Table 3 Scenarios
+# scenarios.df<- rbind(
+#                     readr::read_csv("./data/input/scenarios_tbl3A.csv"),
+#                     readr::read_csv("./data/input/scenarios_tbl3B.csv"),
+#                     readr::read_csv("./data/input/scenarios_tbl3C.csv"),
+#                     readr::read_csv("./data/input/scenarios_tbl3D.csv")
+#                     )
+# scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
+# 
+# 
+# # HIV epidemic simulation
+# wf <- add_workflow_step(
+#   wf_summary = wf,
+#   step_tmpl = step_tmpl_netsim_scenarios(
+#     path_to_restart, param, init, control,
+#     scenarios_list = scenarios.list,
+#     output_dir = "data/intermediate/hpc/scenarios_tbl3",
+#     libraries = "EpiModelHIV",
+#     save_pattern = "simple",
+#     n_rep = numsims,
+#     n_cores = max_cores,
+#     max_array_size = 999,
+#     setup_lines = hpc_configs$r_loader
+#   ),
+#   sbatch_opts = list(
+#     "mail-type" = "FAIL,TIME_LIMIT,END",
+#     "cpus-per-task" = max_cores,
+#     "time" = "04:00:00",
+#     "mem" = "0" # special: all mem on node
+#   )
+# )
 
 
 # Process output
