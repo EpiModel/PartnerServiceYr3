@@ -121,22 +121,22 @@ wf <- add_workflow_step(
 )
 
 
-# Clear files (sims and log)
-wf <- add_workflow_step(
-  wf_summary = wf,
-  step_tmpl = step_tmpl_do_call_script(
-    r_script = "R/73.2-tbl3_removefiles.R",
-    args = list(
-      ncores = 15),
-    setup_lines = hpc_configs$r_loader
-  ),
-  sbatch_opts = list(
-    "cpus-per-task" = max_cores,
-    "time" = "04:00:00",
-    "mem-per-cpu" = "4G",
-    "mail-type" = "END"
-  )
-)
+# # Clear files (sims and log)
+# wf <- add_workflow_step(
+#   wf_summary = wf,
+#   step_tmpl = step_tmpl_do_call_script(
+#     r_script = "R/73.2-tbl3_removefiles.R",
+#     args = list(
+#       ncores = 15),
+#     setup_lines = hpc_configs$r_loader
+#   ),
+#   sbatch_opts = list(
+#     "cpus-per-task" = max_cores,
+#     "time" = "04:00:00",
+#     "mem-per-cpu" = "4G",
+#     "mail-type" = "END"
+#   )
+# )
 
 
 
