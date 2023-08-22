@@ -70,7 +70,7 @@ outcomes_sims_tbl3 <- get_outcome_sims_tbl3(fulldata_tbl3) %>%
          # elig.indexes.all, found.indexes.all, prp.indexes.found.all,
          
          elig.indexes.nd, found.indexes.nd, prp.indexes.found.nd,
-         numPP.1, allPrevPos, numPP.2, eligPP.for.retest, prp.allPP.eligandnic1, prp.allPP.eligandnic2, 
+         numPP.1, eligPP.for.retest, prp.allPP.eligandnic1,  
          eligPPforRetest.rxnaive, prp.eligPP.rxnaive, eligPPforRetest.ooc, 
          elig.indexes.pp, found.indexes.pp, prp.indexes.found.pp,
          elig.indexes.all, found.indexes.all, prp.indexes.found.all,
