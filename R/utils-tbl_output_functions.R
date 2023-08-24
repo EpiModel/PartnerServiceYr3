@@ -49,8 +49,7 @@ process_fulldata <- function(file_name, ts) {
       artCov2                 = artCurr/diag,
       vSuppCov2               = vSupp/diag,
       numPP.1                 = (i.prev.dx * num) / 52,
-      #numPP.2                 = allPrevPos /52,
-      eligPPforRetest.ooc     = eligPP.for.retest - eligPPforRetest.rxnaive
+      eligPP.for.retest       = eligPP.for.retest / 52,
       ) %>% 
     mutate(
       prp.indexes.found.nd    = found.indexes.nd / elig.indexes.nd,
@@ -61,7 +60,7 @@ process_fulldata <- function(file_name, ts) {
       prp.partners.found.all  = found.partners.all / elig.partners.all,
       partners.per.index      = found.partners.all / found.indexes.all,
       prp.allPP.eligandnic1   = elig.indexes.pp / numPP.1,
-      #prp.allPP.eligandnic2   = elig.indexes.pp / numPP.2,
+      eligPPforRetest.ooc     = eligPP.for.retest - eligPPforRetest.rxnaive,
       prp.eligPP.rxnaive      = eligPPforRetest.rxnaive / eligPP.for.retest
       ) %>% 
     select(
