@@ -50,6 +50,7 @@ process_fulldata <- function(file_name, ts) {
       vSuppCov2               = vSupp/diag,
       numPP.1                 = (i.prev.dx * num) / 52,
       eligPP.for.retest       = eligPP.for.retest / 52,
+      recent.ppretested2      = recent.ppretested / 52,
       ) %>% 
     mutate(
       prp.indexes.found.nd    = found.indexes.nd / elig.indexes.nd,
@@ -61,7 +62,8 @@ process_fulldata <- function(file_name, ts) {
       partners.per.index      = found.partners.all / found.indexes.all,
       prp.allPP.eligandnic1   = elig.indexes.pp / numPP.1,
       eligPPforRetest.ooc     = eligPP.for.retest - eligPPforRetest.rxnaive,
-      prp.eligPP.rxnaive      = eligPPforRetest.rxnaive / eligPP.for.retest
+      prp.eligPP.rxnaive      = eligPPforRetest.rxnaive / eligPP.for.retest,
+      prp.eligPP.ooc          = eligPPforRetest.ooc / eligPP.for.retest
       ) %>% 
     select(
       tbl, scenario.num, scenario.new, scenario_name, batch_number, sim, time,
@@ -101,7 +103,7 @@ process_fulldata <- function(file_name, ts) {
       #Proximal impacts: HIV screening and PS participation
       #PS measures - Indexes
       recent.newdiagn, elig.indexes.nd, found.indexes.nd, prp.indexes.found.nd,
-      recent.ppretested, elig.indexes.pp, found.indexes.pp, prp.indexes.found.pp,
+      recent.ppretested, recent.ppretested2, elig.indexes.pp, found.indexes.pp, prp.indexes.found.pp,
       recent.indexes.all, elig.indexes.all, found.indexes.all, prp.indexes.found.all,
      
       #PS measures - Wave 1 partners
@@ -240,7 +242,8 @@ get_yrMu_outcomes <- function(d) {
       i.prev.dx, 
       prp.allPP.eligandnic1,
       #prp.allPP.eligandnic2,
-      prp.eligPP.rxnaive
+      prp.eligPP.rxnaive,
+      prp.eligPP.ooc
       ) %>% 
     group_by(tbl, scenario.num, scenario.new, scenario_name, sim) %>%
     summarise(across(
@@ -264,7 +267,7 @@ get_sumave_outcomes <- function(d) {
       # elig.indexes.all, found.indexes.all,
       
       elig.indexes.nd, found.indexes.nd,
-      numPP.1, eligPP.for.retest, eligPPforRetest.rxnaive, eligPPforRetest.ooc, 
+      numPP.1, eligPP.for.retest, eligPPforRetest.rxnaive, eligPPforRetest.ooc, recent.ppretested, recent.ppretested2,
       elig.indexes.pp, found.indexes.pp,
       elig.indexes.all, found.indexes.all,
       
