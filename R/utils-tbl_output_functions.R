@@ -62,9 +62,10 @@ process_fulldata <- function(file_name, ts) {
       partners.per.index      = found.partners.all / found.indexes.all,
       prp.allPP.eligandnic1   = elig.indexes.pp / numPP.1,
       eligPPforRetest.ooc     = eligPP.for.retest - eligPPforRetest.rxnaive,
-      prp.eligPP.rxnaive      = eligPPforRetest.rxnaive / eligPP.for.retest,
-      prp.eligPP.ooc          = eligPPforRetest.ooc / eligPP.for.retest
+      prp.eligPP.rxnaive      = eligPPforRetest.rxnaive / eligPP.for.retest
       ) %>% 
+    mutate(
+      prp.eligPP.ooc          = eligPPforRetest.ooc / eligPP.for.retest) %>% 
     select(
       tbl, scenario.num, scenario.new, scenario_name, batch_number, sim, time,
 
