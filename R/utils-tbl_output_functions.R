@@ -124,7 +124,7 @@ process_fulldata <- function(file_name, ts) {
       tot.tests.ibt, 
       tot.tests.ibtNegunk, tot.tests.ibtPrEP, tot.tests.ibtPP,
       i.prev.dx, numPP.1, eligPP.for.retest, prp.allPP.eligandnic1, 
-      eligPPforRetest.rxnaive, prp.eligPP.rxnaive, eligPPforRetest.ooc,
+      eligPPforRetest.rxnaive, prp.eligPP.rxnaive, eligPPforRetest.ooc, prp.eligPP.ooc, 
       tot.part.ident, elig.for.scrn, part.scrnd.tst, positive.part, negative.part
       ) %>%
     arrange(tbl, scenario.num, scenario.new, scenario_name, batch_number, sim)
