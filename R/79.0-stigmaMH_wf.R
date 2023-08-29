@@ -76,13 +76,6 @@ wf <- add_workflow_step(
 # to send workflows to the HPC (Run in R terminal)
 # scp -r workflows/pba_stigMH sph:projects/epimodel/uonwubi/PartnerServiceYr3/workflows
 
-# to get the data back after simulations (Run in R terminal)
-# scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc data/intermediate
-
 # to get only the processed files back
-# scp -r sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc/processed data/intermediate/hpc/
-
-# scp -r sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/intermediate/hpc/scenarios_tbl3 data/intermediate/hpc/
-  
-# scp -r sph:/projects/epimodel/uonwubi/PartnerServiceYr3/workflows/modeltest/log data/intermediate/
+# scp -r sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/aim1/output data/aim1/
 
