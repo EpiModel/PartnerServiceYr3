@@ -8,6 +8,7 @@
 #-----------------------------------------------------------------------------------------
 library("slurmworkflow")
 library("tidyr")
+library("magrittr")
 library("dplyr")
 
 hpc_configs <- swf_configs_rsph(
