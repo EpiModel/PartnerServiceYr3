@@ -8,14 +8,9 @@ rm(list = ls())
 
 # libraries
 install.packages("pacman")
-pacman::p_load("haven",
-               "labelled",
-               "MCMCprecision",
+pacman::p_load("MCMCprecision",
                "fastDummies",
-               "dplyr",
-               "tidyverse",
-               "arsenal",
-               "MplusAutomation")
+               "dplyr")
 
 
 mplus_dir <- paste0("data/aim1/mplusdat")
