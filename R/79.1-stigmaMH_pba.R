@@ -9,8 +9,8 @@ rm(list = ls())
 # libraries
 install.packages("MCMCprecision")
 install.packages("fastDummies")
-install.packages("dplyr")
-install.packages("magrittr")
+library("dplyr")
+library("tidyr")
 
 
 
