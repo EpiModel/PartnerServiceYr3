@@ -7,10 +7,9 @@ rm(list = ls())
 
 
 # libraries
-install.packages("pacman")
-pacman::p_load("MCMCprecision",
-               "fastDummies",
-               "dplyr")
+install.packages("MCMCprecision")
+install.packages("fastDummies")
+install.packages("dplyr")
 
 
 mplus_dir <- paste0("data/aim1/mplusdat")
