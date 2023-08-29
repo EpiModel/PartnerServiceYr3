@@ -3,14 +3,15 @@
 # step 4: Misclassification bias adjustment of risk model 
 
 
-rm(list = ls())
+#rm(list = ls())
 
 
 # libraries
 install.packages("MCMCprecision")
 install.packages("fastDummies")
-library("dplyr")
 library("tidyr")
+library("dplyr")
+library("ggplot2")
 
 
 
