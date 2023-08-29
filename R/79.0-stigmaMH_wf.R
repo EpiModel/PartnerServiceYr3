@@ -35,6 +35,17 @@ wf <- create_workflow(
 
 
 
+#Update renv (from GitHub project repo)
+wf <- add_workflow_step(
+  wf_summary = wf,
+  step_tmpl = step_tmpl_renv_restore(
+    git_branch = "main",
+    setup_lines = hpc_configs$r_loader
+  ),
+  sbatch_opts = hpc_configs$renv_sbatch_opts
+)
+
+
 
 # Misclassification bias adjustment
 wf <- add_workflow_step(
