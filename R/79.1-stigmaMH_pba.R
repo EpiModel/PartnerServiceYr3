@@ -256,7 +256,7 @@ for (i in 1: M) {
 saveRDS(smiadj, paste0(save_dir, "/smiadj.rds"))
 
 #proportion of observations reclassified per iteration
-prp_obs_chg <- as.data.frame(cbind(c_clchgprp, nc_clchg_prp)) 
+prp_obs_chg <- as.data.frame(cbind(c_clchg_prp, nc_clchg_prp)) 
 saveRDS(prp_obs_chg, paste0(save_dir, "/prp_obs_chg.rds"))
 
 
