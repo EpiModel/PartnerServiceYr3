@@ -7,8 +7,11 @@
 # Setup 
 #-----------------------------------------------------------------------------------------
 library("slurmworkflow")
+library("EpiModelHPC")
 library("tidyr")
 library("dplyr")
+library("ggplot2")
+
 
 hpc_configs <- swf_configs_rsph(
   partition = "preemptable",
