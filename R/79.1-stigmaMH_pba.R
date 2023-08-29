@@ -10,6 +10,8 @@ rm(list = ls())
 install.packages("MCMCprecision")
 install.packages("fastDummies")
 install.packages("dplyr")
+install.packages("magrittr")
+
 
 
 mplus_dir <- paste0("data/aim1/mplusdat")
