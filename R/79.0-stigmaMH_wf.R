@@ -14,7 +14,7 @@ library("ggplot2")
 
 
 hpc_configs <- swf_configs_rsph(
-  partition = "preemptable",
+  partition = "epimodel",
   r_version = "4.2.1",
   git_version = "2.35.1",
   mail_user = "uonwubi@emory.edu"
@@ -70,7 +70,7 @@ wf <- add_workflow_step(
 
 
 
-# to send restart file to the HPC (Run in R terminal)
+# to send mplus newdata file to the HPC (Run in R terminal)
 # scp -r data/aim1/mplusdat sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/aim1
   
 # to send workflows to the HPC (Run in R terminal)
