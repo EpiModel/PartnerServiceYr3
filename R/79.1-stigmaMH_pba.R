@@ -110,7 +110,7 @@ nc_stigma_new <- rep(NA, nrow(nc_dat))
 
 
 smiadj <- as.data.frame(matrix(NA, M, 7))
-
+smiadj.boot <- as.data.frame(matrix(NA, M, 7))
 
 
 #pba
@@ -222,7 +222,7 @@ for (i in 1: M) {
   c_dat_reclass <- cbind(c_dat, c_stigma_new)    #merge new class with dat
   nc_dat_reclass <- cbind(nc_dat, nc_stigma_new)
   
-  
+  #create reconstructed data and create the stigpoor var with new stigma variable
   dat_reclass <- rbind(c_dat_reclass %>% rename(stigma_new = c_stigma_new), 
                        nc_dat_reclass %>% rename(stigma_new = nc_stigma_new)) %>% 
     rename(stigma_orig = stigma)
@@ -246,14 +246,24 @@ for (i in 1: M) {
            stigpoor30 = stigpoor_7,
            stigpoor40 = stigpoor_8) 
   
-  #outcome regression with reclassified df
+  #outcome regression with reconstructed data 
+  #(for bias-adjusted estimates & 95% SI incorporating error from bias params only)
   smiadj[i,] <- getComRefPRs(dat_reclass2, "smi")$est.adj 
+  
+  #bias-adjusted estimates & 95% CI incorporating total error
+    #get bootstrapped sample
+    bootsample.ids <- sample(1:nrow(dat_reclass2), size=nrow(dat_reclass2), replace = T)
+    bootsample <- dat_reclass2[bootsample.ids,]
+    
+    smiadj.boot[i,] <- getComRefPRs(bootsample, "smi")$est.adj 
+  
 }
 
 
 #save products
 #reg output
 saveRDS(smiadj, paste0(save_dir, "/smiadj.rds"))
+saveRDS(smiadj.boot, paste0(save_dir, "/smiadj.boot.rds"))
 
 #proportion of observations reclassified per iteration
 prp_obs_chg <- as.data.frame(cbind(c_clchg_prp, nc_clchg_prp)) 
