@@ -31,10 +31,11 @@ process_fulldata <- function(file_name, ts) {
     select(-sim) %>%
     rename(sim=sim2) %>%
     mutate(
-      tbl                     = toupper(substr(scenario_name,1,1)),
+      tbl0                     = toupper(substr(scenario_name,1,1)),
       scenario.num            = as.numeric(substr(scenario_name,2,4)),
       scenario.new            = substr(scenario_name,5,nchar(scenario_name))
       ) %>% 
+    mutate(tbl = factor(tbl, levels=c("A","B","P","C"))) %>% 
     ungroup() %>% 
     mutate(
       recent.indexes.all      = recent.newdiagn + recent.ppretested,
