@@ -22,7 +22,6 @@ hpc_configs <- swf_configs_rsph(
 
 max_cores <- 32
 cp_dir <- "data/cp_recal"
-#numsims <- 10 * max_cores
 
 
 
@@ -57,7 +56,7 @@ wf <- add_workflow_step(
   ),
   sbatch_opts = list(
     "cpus-per-task" = max_cores,
-    "time" = "04:00:00",
+    "time" = "24:00:00",
     "mem-per-cpu" = "4G",
     "mail-type" = "END"
   )
