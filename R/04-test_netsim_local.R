@@ -1,137 +1,89 @@
+#  
+# Base model testing (running netsim() on local PC)
+# 
 
 
-# Netsim on local: Base model testing ----------------------------------------------------
-# ----------------------------------------------------------------------------------------
-# ----------------------------------------------------------------------------------------
-
-## Example interactive epidemic simulation run script with basic parameterization
-## and all parameters defined in `param_msm`, with example of writing/debugging modules
-
-#Libraries
 library("EpiModelHIV")
+
 
 context <- "local"
 
 
-#Set up inputs 
-#~~~~~~~~~~~~
+
+#Test with uncalibrated model (no restart.rds file) 
+#-----------------------------------------------------------------------------------------
 source("R/utils-netsim_inputs.R")
 source("R/utils-netsize.R")
 
+
 epistats <- readRDS("data/intermediate/local/estimates/epistats-local.rds")
 netstats <- readRDS("data/intermediate/local/estimates/netstats-local.rds")
 est      <- readRDS("data/intermediate/local/estimates/netest-local.rds")
 
 
-  # #param
-  # prep_start <- 1 #52 * 1
-  # param <- param.net(
-  #   data.frame.params = readr::read_csv("data/input/params.csv"),
-  #   netstats          = netstats,
-  #   epistats          = epistats,
-  #   
-  #   part.ident.start       = prep_start,                                                        
-  #   prevpos.retest.start   = prep_start + 10,
-  #   second.genps.start     = prep_start + 15,
-  #   prep.start        = prep_start,
-  #   riskh.start       = prep_start) #prep_start - 53)
-  # #print(param)
-  
-  # #init
-  # #Note: For models with bacterial STIs, these must be initialized here with non-zero values
-  # init <- init_msm(
-  #   prev.ugc = 0.1,
-  #   prev.rct = 0.1,
-  #   prev.rgc = 0.1,
-  #   prev.uct = 0.1)
+control <- control_msm(
+  nsteps = nsteps,
+  nsims = 1,                          #change num of sims
+  ncores = 1)
 
 
-  
-#Simulate epidemic over estimated networks and examine output 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#run 1 sim only
-  
-  #control
-  control <- control_msm(
-    nsteps = 120,
-    nsims = 1,
-    ncores = 1)
-  
-  #run netsim
-  sim <- netsim(est, param, init, control)
+sim <- netsim(est, param, init, control)
 
-  #check output
-    print(sim)
-    
-    par(mar = c(3, 3, 2, 2), mgp = c(2, 1, 0))
-    plot(sim, y = "i.num", main = "Prevalence")
-    plot(sim, y = "ir100", main = "Incidence")
-  
-    # df <- as.data.frame(sim)
-    # head(df)
-    # tail(df)
 
-  
-#run >1 sim 
-  #control
-  control <- control_msm(
-    nsteps = 120,
-    nsims = 2,   #change to desired number of sims
-    ncores = 2)
-  
-  sim <- netsim(est, param, init, control)
+#check output
+print(sim)
+par(mar = c(3, 3, 2, 2), mgp = c(2, 1, 0))
+plot(sim, y = "i.num", main = "Prevalence")
+plot(sim, y = "ir100", main = "Incidence")
 
-  par(mfrow = c(2, 1))
-  plot(sim, y = "i.num", main = "Prevalence")
-  plot(sim, y = "ir100", main = "Incidence")
+df <- as.data.frame(sim)
+head(df)
+tail(df)
+
+
+#De-bugging 
+pkgload::load_all("C:/Users/Uonwubi/OneDrive - Emory University/Desktop/Personal/RSPH EPI Docs/RA2/GitRepos/EpiModelHIV-p")
+
+control <- control_msm(
+  nsteps = 120,
+  nsims = 1,
+  ncores = 1,
+)
+
+# debug(partident_msm) 
+# debug(hivtest_msm)
+# debug(prep_msm)
+sim <- netsim(est, param, init, control)
+# undebug(partident_msm)
+# undebug(hivtest_msm)
+# undebug(prep_msm)
 
   
-#De-bugging EMHIV-p in base model 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  pkgload::load_all("C:/Users/Uonwubi/OneDrive - Emory University/Desktop/Personal/RSPH EPI Docs/RA2/GitRepos/EpiModelHIV-p")
 
-  control <- control_msm(
-    nsteps = 120,
-    nsims = 1,
-    ncores = 1,
-  )
 
-  # debug(partident_msm) 
-  # debug(hivtest_msm)
-  # debug(prep_msm)
-  sim <- netsim(est, param, init, control)
-  # undebug(partident_msm)
-  # undebug(hivtest_msm)
-  # undebug(prep_msm)
 
   
-  
-
-# Testing scenarios on local -------------------------------------------------------------
-# ----------------------------------------------------------------------------------------
-# ----------------------------------------------------------------------------------------
-#source("R/utils-0_project_settings.R")
+#Test with calibrated model (has restart.rds file - local) 
+#-----------------------------------------------------------------------------------------
 rm(list = ls())
+
+
 context <- "local"
 
-#Libraries
+
 library("EpiModelHIV")
+
 
 epistats <- readRDS("data/intermediate/local/estimates/epistats-local.rds")
 netstats <- readRDS("data/intermediate/local/estimates/netstats-local.rds")
 est      <- readRDS("data/intermediate/local/estimates/netest-local.rds")
 
-  
-  
-#Set up 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#inputs (includes params and init set up)
+
 source("R/utils-netsim_inputs.R")
 source("R/utils-targets.R")
 source("R/utils-netsize.R")
 
 
-#controls
 control <- control_msm(
   start               = restart_time,
   nsteps              = nsteps,
@@ -153,23 +105,18 @@ control <- control_msm(
 # )
 # scenarios_list <- EpiModel::create_scenario_list(scenarios_df)
   
-scenarios.df <- readr::read_csv("./data/input/scenarios_tbl3_base.csv")
+scenarios.df <- readr::read_csv("./data/input/scenarios_tbl3A.csv")
 scenarios.list <- EpiModel::create_scenario_list(scenarios.df)
 
 
 
-
-
-# Simulate HIV epidemic
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#Method 1: run scenarios as on the hpc to output sims of intervention scenarios in batches.
-#n_rep=3 and n_cores=2 (expect 2 output files per scenario)
-#b. reload EMHIV-p package from local (if changes made locally)
+#Method 1: run scenarios as on the hpc ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# (will output sims of intervention scenarios in batches)
 pkgload::load_all("C:/Users/Uonwubi/OneDrive - Emory University/Desktop/Personal/RSPH EPI Docs/RA2/GitRepos/EpiModelHIV-p")
 
 EpiModelHPC::netsim_scenarios(
   path_to_restart, param, init, control, scenarios.list,
-  n_rep = 3,
+  n_rep = 1,
   n_cores = max_cores,
   output_dir = paste0("data/intermediate/",context,"/scenarios"),
   libraries = "EpiModelHIV",
@@ -179,15 +126,12 @@ list.files(paste0("data/intermediate/",context,"/scenarios"))
  
       
  
-#Method 2 (use to debug in scenario testing)
-#a. list to hold the sim results
-d_list <- vector(mode = "list", length = length(scenarios_list))
-names(d_list) <- names(scenarios_list)
+#Method 2: Use to debug in scenario testing ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+d_list <- vector(mode = "list", length = length(scenarios.list))
+names(d_list) <- names(scenarios.list)
 
-#b. reload EMHIV-p package from local (if changes made locally)
 pkgload::load_all("C:/Users/Uonwubi/OneDrive - Emory University/Desktop/Personal/RSPH EPI Docs/RA2/GitRepos/EpiModelHIV-p")
 
-#run control()
 control <- control_msm(
   simno = 1,
   nsteps = nsteps,
@@ -195,13 +139,13 @@ control <- control_msm(
   ncores = 1,
   verbose = TRUE)
 
-#run netsim() looped over the scenarios
-  # debug(partident_msm)
-  # debug(hivtest_msm)
-  # debug(prep_msm)
-  # debug(hivtx_msm)
-  #options(error = recover)
-for (scenario in scenarios_list){
+# debug(partident_msm)
+# debug(hivtest_msm)
+# debug(prep_msm)
+# debug(hivtx_msm)
+# options(error = recover)
+# if(at>=3121) browser()
+for (scenario in scenarios.list){
   print(scenario$id)
   sc.param <- use_scenario(param, scenario)
   sim <- netsim(est, sc.param, init, control)
@@ -222,8 +166,7 @@ for (scenario in scenarios_list){
   
   
   
-#Process output
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#process output data and save
-source("R/33-local_tbl3_dataprocessing.R")
+#Process output (scenario testing)
+#-----------------------------------------------------------------------------------------
+source("R/04.3-tbl3_outputprocess_local.R")
   
