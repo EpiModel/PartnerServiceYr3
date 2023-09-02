@@ -27,7 +27,6 @@ path_to_restart <- paste0(est_dir, "restart-", context, ".rds")
 
 
 
-
 # Define relevant times
 calibration_length <- 52 * 60
 restart_time       <- calibration_length + 1                       
