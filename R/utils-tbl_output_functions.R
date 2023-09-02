@@ -35,7 +35,7 @@ process_fulldata <- function(file_name, ts) {
       scenario.num            = as.numeric(substr(scenario_name,2,4)),
       scenario.new            = substr(scenario_name,5,nchar(scenario_name))
       ) %>% 
-    mutate(tbl = factor(tbl, levels=c("A","B","P","C"))) %>% 
+    mutate(tbl = factor(tbl0, levels=c("A","B","P","C"))) %>% 
     ungroup() %>% 
     mutate(
       recent.indexes.all      = recent.newdiagn + recent.ppretested,
@@ -61,7 +61,7 @@ process_fulldata <- function(file_name, ts) {
       prp.partners.found.gen2 = found.partners.gen2 / elig.partners.gen2,
       prp.partners.found.all  = found.partners.all / elig.partners.all,
       partners.per.index      = found.partners.all / found.indexes.all,
-      prp.allPP.eligandnic1   = elig.indexes.pp / numPP.1,
+      prp.allPP.eligandnic1   = eligPP.for.retest / numPP.1,
       eligPPforRetest.ooc     = eligPP.for.retest - eligPPforRetest.rxnaive,
       prp.eligPP.rxnaive      = eligPPforRetest.rxnaive / eligPP.for.retest
       ) %>% 
