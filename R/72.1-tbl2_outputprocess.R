@@ -67,7 +67,13 @@ outcomes_sims_tbl2 <- get_outcome_sims_tbl2(fulldata_tbl2) %>%
          diagCov2.yr10, artCov2.yr10, vSuppCov2.yr10,
          prepStartAll,
          
+         # elig.indexes.nd, found.indexes.nd, prp.indexes.found.nd,
+         # elig.indexes.pp, found.indexes.pp, prp.indexes.found.pp,
+         # elig.indexes.all, found.indexes.all, prp.indexes.found.all,
+         
          elig.indexes.nd, found.indexes.nd, prp.indexes.found.nd,
+         numPP.1, eligPP.for.retest, prp.allPP.eligandnic1,  
+         eligPPforRetest.rxnaive, prp.eligPP.rxnaive, eligPPforRetest.ooc, prp.eligPP.ooc, recent.ppretested, recent.ppretested2,
          elig.indexes.pp, found.indexes.pp, prp.indexes.found.pp,
          elig.indexes.all, found.indexes.all, prp.indexes.found.all,
          
