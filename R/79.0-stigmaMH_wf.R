@@ -14,7 +14,7 @@ library("ggplot2")
 
 
 hpc_configs <- swf_configs_rsph(
-  partition = "preemptable",
+  partition = "epimodel",
   r_version = "4.2.1",
   git_version = "2.35.1",
   mail_user = "uonwubi@emory.edu"
@@ -56,7 +56,7 @@ wf <- add_workflow_step(
   ),
   sbatch_opts = list(
     "cpus-per-task" = max_cores,
-    "time" = "48:00:00",
+    "time" = "336:00:00",
     "mem-per-cpu" = "4G",
     "mail-type" = "END"
   )
