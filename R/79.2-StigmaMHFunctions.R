@@ -195,7 +195,7 @@ getComRefPRs <- function(dat, outcome){
 
 
 # Function: get RERI_RR with CI using bootstrapped method
-reri_bootci <- function(df, outcome, M){
+reri_bootci <- function(df, outcome){
   #df <- df_14; M<-10; outcome<-"smi"
   
   #get reri
@@ -209,73 +209,29 @@ reri_bootci <- function(df, outcome, M){
   si <- (exp(coef(fit)[2] + coef(fit)[3] + coef(fit)[17]) - 1)/(( exp(coef(fit)[2]) - 1) + (exp(coef(fit)[3]) - 1))
   multinter <- exp(coef(fit)[2] + coef(fit)[3] + coef(fit)[17])/(exp(coef(fit)[2]) * exp(coef(fit)[3]))
   
-  #get bootstrapped 95% ci
-  boot.reri <- boot.ap <- boot.si <- rep(NA, M)
-  boot.multinter <- rep(NA, M)
-  
-  set.seed(123)
-  for(i in 1:M){
-    bootsample.ids <- sample(1:nrow(df), size=nrow(df), replace = T)
-    bootsample <- df[bootsample.ids,]  
-    
-    fit <- glm(formula = paste0(outcome," ~ ", "stigma_rec*poor +  
-                               age1 + age2 + age3 + raceb + raceh + raceo + fb +  
-                               regw + regmw + regs + urblsu + urbsmu + urbr", collapse = ""),
-               data = bootsample, family = poisson(link="log")); summary(fit)
-    
-    boot.reri[i] <- exp(coef(fit)[2] + coef(fit)[3] + coef(fit)[17]) - exp(coef(fit)[2]) - exp(coef(fit)[3]) + 1
-    boot.ap [i] <- boot.reri[i]/(exp(coef(fit)[2] + coef(fit)[3] + coef(fit)[17]))
-    boot.si [i] <- (exp(coef(fit)[2] + coef(fit)[3] + coef(fit)[17]) - 1) / (( exp(coef(fit)[2]) - 1) + (exp(coef(fit)[3]) - 1))
-    boot.multinter[i] <- exp(coef(fit)[2] + coef(fit)[3] + coef(fit)[17])/(exp(coef(fit)[2]) * exp(coef(fit)[3]))
-  }
-  
-  reri.ll <- quantile(boot.reri, na.rm=T, p=0.025); reri.ul <- quantile(boot.reri, na.rm=T, p=0.975)
-  reri_ci<- cbind(reri, reri.ll, reri.ul)
-  
-  ap.ll <- quantile(boot.ap, na.rm=T, p=0.025); ap.ul <- quantile(boot.ap, na.rm=T, p=0.975)
-  ap_ci<- cbind(ap, ap.ll, ap.ul)
+  tbl <- as.data.frame(cbind(reri, ap, multinter))
 
-  si.ll <- quantile(boot.si, na.rm=T, p=0.025); si.ul <- quantile(boot.si, na.rm=T, p=0.975)
-  si_ci<- cbind(si, si.ll, si.ul)
-
-  multinter.ll <- quantile(boot.multinter, na.rm=T, p=0.025); multinter.ul <- quantile(boot.multinter, na.rm=T, p=0.975)
-  multinter_ci<- cbind(multinter, multinter.ll, multinter.ul)
-  
-  tbl <- as.data.frame(cbind(reri_ci, ap_ci, si_ci, multinter_ci))
-  boot.df <- as.data.frame(cbind(boot.reri, boot.ap, boot.si, boot.multinter))
-  
-  return(list(
-    tbl = as.data.frame(tbl),
-    boot.df = as.data.frame(boot.df)
-    ))
+  return(list(tbl = as.data.frame(tbl)))
   
 }
 
 
-getRERIs <- function(dat, outcome, M){
+getRERIs <- function(dat, outcome){
   #dat<-latvardat2; outcome<-"smi"; M<-50
   
   df_14 <- dat %>% filter(stigma %in% c(1,4)) %>% mutate(stigma_rec = ifelse(stigma==4, 0, 1))
   df_24 <- dat %>% filter(stigma %in% c(2,4)) %>% mutate(stigma_rec = ifelse(stigma==4, 0, 1))
   df_34 <- dat %>% filter(stigma %in% c(3,4)) %>% mutate(stigma_rec = ifelse(stigma==4, 0, 1))
   
-  sp14_vcomref <- reri_bootci(df_14, outcome, M)
-  sp24_vcomref <- reri_bootci(df_24, outcome, M)
-  sp34_vcomref <- reri_bootci(df_34, outcome, M)
+  sp14_vcomref <- reri_bootci(df_14, outcome)
+  sp24_vcomref <- reri_bootci(df_24, outcome)
+  sp34_vcomref <- reri_bootci(df_34, outcome)
   
-  reri_tbl <- as.data.frame((rbind(sp14_vcomref$tbl, sp24_vcomref$tbl, sp34_vcomref$tbl))) %>% 
+  reri_tbl <- (rbind(sp14_vcomref$tbl, sp24_vcomref$tbl, sp34_vcomref$tbl)) %>% 
     tibble::remove_rownames() %>% 
     mutate(stigpoor = as.numeric(row_number())) %>% 
     select(stigpoor, everything())
   
-  sp14_bootdf <- as.data.frame(sp14_vcomref$boot.df)
-  sp24_bootdf <- as.data.frame(sp24_vcomref$boot.df)
-  sp34_bootdf <- as.data.frame(sp34_vcomref$boot.df)
-  
   return(list(
-    reri_tbl = as.data.frame(reri_tbl),
-    sp14_bootdf = as.data.frame(sp14_bootdf),
-    sp24_bootdf = as.data.frame(sp24_bootdf),
-    sp34_bootdf = as.data.frame(sp34_bootdf)
-    ))
+    reri_tbl = reri_tbl))
 }
