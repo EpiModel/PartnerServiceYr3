@@ -19,72 +19,40 @@ mplus_dir <- paste0("data/aim1/mplusdat")
 save_dir <- paste0("data/aim1/output")
 
 
-#Validation data 
+
+#Get validation data 
 #-----------------------------------------------------------------------------------------
-#cases
-valtbl_c <- cbind(
-  c(0.897, 0,     0.045, 0.021),
-  c(0,     0.882, 0.028, 0.062),
-  c(0.081, 0.024, 0.896, 0.029),
-  c(0.021, 0.094, 0.031, 0.888),
-  c(190,   453,   261,   475  )
-)
-colnames(valtbl_c) <- c("1","4","2","3","tot")
-valdat_c <- tibble::rownames_to_column(as.data.frame(valtbl_c),var = "likely") %>% 
-  mutate(s_class = ifelse(likely == 1, 1, 
-                          ifelse(likely==2, 4, 
-                                 ifelse(likely==3,2, 3)))) %>% 
-  arrange(s_class) %>% 
-  select(s_class,"1","2","3","4","tot") %>% 
-  mutate(across(c(2:5), ~ round(.x * tot, 0)))
-
-
-#non-cases
-valtbl_nc <- cbind(
-  c(0.877, 0.060, 0.015, 0.013),
-  c(0.006, 0.877, 0.034, 0    ),
-  c(0.029, 0.063, 0.847, 0.060),
-  c(0.035, 0,     0.104, 0.926),
-  c(551,   512,   1922,  2355 )
-)
-colnames(valtbl_nc) <- c("2","1","3","4","tot")
-valdat_nc <- tibble::rownames_to_column(as.data.frame(valtbl_nc),var = "likely") %>% 
-  mutate(s_class = ifelse(likely == 1, 2, 
-                          ifelse(likely==2, 1, 
-                                 ifelse(likely==3,3, 4)))) %>% 
-  arrange(s_class) %>% 
-  select(s_class,"1","2","3","4","tot") %>% 
-  mutate(across(c(2:5), ~ round(.x * tot, 0)))
+c_valdat <- readRDS(paste0(mplus_dir, "/c_valdat.rds"))
+nc_valdat <- readRDS(paste0(mplus_dir, "/nc_valdat.rds"))
 
 
 
-
-# PBA
+#Run PBA
 #-----------------------------------------------------------------------------------------
-source("R/79.2-DistalMHFunctions.R")
+source("R/79.2-StigmaMHFunctions.R")
 
-#shape stats
-c_alpha_c1 <- valdat_c[1,2]; c_tot_c1 <- valdat_c[1,6]
-c_alpha_c2 <- valdat_c[2,3]; c_tot_c2 <- valdat_c[2,6]
-c_alpha_c3 <- valdat_c[3,4]; c_tot_c3 <- valdat_c[3,6]
-c_alpha_c4 <- valdat_c[4,5]; c_tot_c4 <- valdat_c[4,6]
-c_rclv_c1 <- c(valdat_c[1,3],valdat_c[1,4], valdat_c[1,5])
-c_rclv_c2 <- c(valdat_c[2,2],valdat_c[2,4], valdat_c[2,5])
-c_rclv_c3 <- c(valdat_c[3,2],valdat_c[3,3], valdat_c[3,5])
-c_rclv_c4 <- c(valdat_c[4,2],valdat_c[4,3], valdat_c[4,4])
+#shape stats  - beta dist and dirichlet dist
+c_alpha_c1 <- c_valdat[1,1]; c_tot_c1 <- c_valdat[1,5]
+c_alpha_c2 <- c_valdat[2,2]; c_tot_c2 <- c_valdat[2,5]
+c_alpha_c3 <- c_valdat[3,3]; c_tot_c3 <- c_valdat[3,5]
+c_alpha_c4 <- c_valdat[4,4]; c_tot_c4 <- c_valdat[4,5]
+c_rclv_c1 <- c(c_valdat[1,2],c_valdat[1,3], c_valdat[1,4])
+c_rclv_c2 <- c(c_valdat[2,1],c_valdat[2,3], c_valdat[2,4])
+c_rclv_c3 <- c(c_valdat[3,1],c_valdat[3,2], c_valdat[3,4])
+c_rclv_c4 <- c(c_valdat[4,1],c_valdat[4,2], c_valdat[4,3])
 
-nc_alpha_c1 <- valdat_c[1,2]; nc_tot_c1 <- valdat_c[1,6]
-nc_alpha_c2 <- valdat_c[2,3]; nc_tot_c2 <- valdat_c[2,6]
-nc_alpha_c3 <- valdat_c[3,4]; nc_tot_c3 <- valdat_c[3,6]
-nc_alpha_c4 <- valdat_c[4,5]; nc_tot_c4 <- valdat_c[4,6]
-nc_rclv_c1 <- c(valdat_c[1,3],valdat_c[1,4], valdat_c[1,5])
-nc_rclv_c2 <- c(valdat_c[2,2],valdat_c[2,4], valdat_c[2,5])
-nc_rclv_c3 <- c(valdat_c[3,2],valdat_c[3,3], valdat_c[3,5])
-nc_rclv_c4 <- c(valdat_c[4,2],valdat_c[4,3], valdat_c[4,4])
+nc_alpha_c1 <- nc_valdat[1,1]; nc_tot_c1 <- nc_valdat[1,5]
+nc_alpha_c2 <- nc_valdat[2,2]; nc_tot_c2 <- nc_valdat[2,5]
+nc_alpha_c3 <- nc_valdat[3,3]; nc_tot_c3 <- nc_valdat[3,5]
+nc_alpha_c4 <- nc_valdat[4,4]; nc_tot_c4 <- nc_valdat[4,5]
+nc_rclv_c1 <- c(nc_valdat[1,2],nc_valdat[1,3], nc_valdat[1,4])
+nc_rclv_c2 <- c(nc_valdat[2,1],nc_valdat[2,3], nc_valdat[2,4])
+nc_rclv_c3 <- c(nc_valdat[3,1],nc_valdat[3,2], nc_valdat[3,4])
+nc_rclv_c4 <- c(nc_valdat[4,1],nc_valdat[4,2], nc_valdat[4,3])
 
 
 #iterations and empty vectors/dfs
-M <- 50 * 1000
+M <- 100 # * 1000
 
 c_ppv <- nc_ppv <-as.data.frame(matrix(NA, M, 4))
 c_rclp_c1 <- c_rclp_c2 <- c_rclp_c3  <- c_rclp_c4 <- as.data.frame(matrix(NA, M, 3))
@@ -261,7 +229,7 @@ for (i in 1: M) {
 
 
 #save products
-#reg output
+#reg est
 saveRDS(smiadj, paste0(save_dir, "/smiadj.rds"))
 saveRDS(smiadj.boot, paste0(save_dir, "/smiadj.boot.rds"))
 
