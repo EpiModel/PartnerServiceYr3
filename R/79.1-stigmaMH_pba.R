@@ -80,6 +80,11 @@ nc_stigma_new <- rep(NA, nrow(nc_dat))
 smiadj <- as.data.frame(matrix(NA, M, 7))
 smiadj.boot <- as.data.frame(matrix(NA, M, 7))
 
+emmtbl <- as.data.frame(matrix(NA, M, 9))
+colnames(emmtbl) <- c("multinter_14", "reri_14", "ap_14",
+                      "multinter_24", "reri_24", "ap_24",
+                      "multinter_34", "reri_34", "ap_34")
+
 
 #pba
 set.seed(123)
@@ -226,7 +231,12 @@ for (i in 1: M) {
     bootsample <- dat_reclass2[bootsample.ids,]
     
     smiadj.boot[i,] <- getComRefPRs(bootsample, "smi")$est.adj 
-  
+    
+    #get emm metrics 
+    emmtbl0 <- getRERIs(bootsample, "smi", 1)$reri_tbl %>% 
+      select(stigpoor, multinter, reri, ap) 
+    emmtbl[i,] <- c(emmtbl0[1,2:4], emmtbl0[2,2:4], emmtbl0[3,2:4])
+   
 }
 
 
@@ -235,6 +245,7 @@ for (i in 1: M) {
 #reg est
 saveRDS(smiadj, paste0(save_dir, "/smiadj.rds"))
 saveRDS(smiadj.boot, paste0(save_dir, "/smiadj.boot.rds"))
+saveRDS(emmtbl, paste0(save_dir, "/emmtbl.rds"))
 
 #proportion of observations reclassified per iteration
 prp_obs_chg <- as.data.frame(cbind(c_clchg_prp, nc_clchg_prp)) 
