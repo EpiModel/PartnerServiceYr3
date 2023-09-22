@@ -232,11 +232,11 @@ for (i in 1: M) {
     
     smiadj.boot[i,] <- getComRefPRs(bootsample, "smi")$est.adj 
     
-    #get emm metrics 
-    emmtbl0 <- getRERIs(bootsample, "smi", 1)$reri_tbl %>% 
-      select(stigpoor, multinter, reri, ap) 
+    #get emm metrics
+    emmtbl0 <- data.frame(getRERIs(bootsample, "smi")$reri_tbl) %>%
+      select(stigpoor, multinter, reri, ap)
     emmtbl[i,] <- c(emmtbl0[1,2:4], emmtbl0[2,2:4], emmtbl0[3,2:4])
-   
+
 }
 
 
