@@ -60,8 +60,8 @@ nc_rclp_c1 <- nc_rclp_c2 <- nc_rclp_c3  <- nc_rclp_c4 <- as.data.frame(matrix(NA
 c_clchg_prp <- nc_clchg_prp <- rep(NA, M)
 
 
-latvardat <- readRDS(paste0(mplus_dir, "/newdata.rds")) %>%
-  mutate(stigma = ifelse(N==1,2, ifelse(N==2,3, ifelse(N==3,1, N))))
+latvardat <- readRDS(paste0(mplus_dir, "/newdata.rds")) %>% mutate(stigma=N) %>% 
+  filter(!is.na(POOR))
 names(latvardat) <- tolower(names(latvardat))
 
 c_dat <- latvardat %>% filter(smi == 1)
@@ -132,6 +132,7 @@ for (i in 1: M) {
   #C. Determine whether to reclassify each obs
   #cases
   for (j in 1:nrow(c_dat)){
+    #j<-1
     #trial (keep or reclassify)
     c_index_class[j] = c_stigma_orig[j]                          #get stigma class for index obs
     c_index_ppv[j]   = c_ppv[i, c_index_class[j]]                #get ppv corresp. to class
@@ -157,6 +158,7 @@ for (i in 1: M) {
     }
   }
   
+
   #non-cases
   for (j in 1:nrow(nc_dat)){
     #trial (keep or reclassify)
@@ -226,6 +228,7 @@ for (i in 1: M) {
     smiadj.boot[i,] <- getComRefPRs(bootsample, "smi")$est.adj 
   
 }
+
 
 
 #save products
