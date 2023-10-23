@@ -22,7 +22,7 @@ hpc_configs <- swf_configs_rsph(
 
 max_cores <- 32
 cp_dir <- "data/cp_recal"
-numsims <- 3 * max_cores
+numsims <- 2 #3 * max_cores
 
 
 
