@@ -73,7 +73,7 @@ wf <- add_workflow_step(
 # scp -r data/aim1/mplusdat sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/aim1
   
 # to send workflows to the HPC (Run in R terminal)
-# scp -r workflows/pba_stigMH sph:projects/epimodel/uonwubi/PartnerServiceYr3/workflows
+# scp -r workflows/S1_PBA sph:projects/epimodel/uonwubi/PartnerServiceYr3/workflows
 
 # to get only the processed files back
 # scp -r sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/aim1/output data/aim1/
