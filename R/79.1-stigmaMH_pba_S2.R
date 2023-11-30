@@ -15,7 +15,7 @@ library("ggplot2")
 
 
 
-mplus_dir <- paste0("data/aim1/mplusdat")
+mplus_dir <- paste0("data/aim1/mplusdat_mh")
 save_dir <- paste0("data/aim1/output")
 
 
@@ -52,7 +52,7 @@ s2_nc_rclv_c4 <- c(s2_nc_valdat[4,1],s2_nc_valdat[4,2], s2_nc_valdat[4,3])
 
 
 #iterations and empty vectors/dfs
-M <- 100 * 1000
+M <- 10 * 1000
 
 s2_c_ppv <- s2_nc_ppv <-as.data.frame(matrix(NA, M, 4))
 s2_c_rclp_c1 <- s2_c_rclp_c2 <- s2_c_rclp_c3  <- s2_c_rclp_c4 <- as.data.frame(matrix(NA, M, 3))
