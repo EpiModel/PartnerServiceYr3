@@ -28,7 +28,7 @@ cp_dir <- "data/cp_recal"
 
 #Create workflow
 wf <- create_workflow(
-  wf_name = "S3_PBA",
+  wf_name = "s3_pba",
   default_sbatch_opts = hpc_configs$default_sbatch_opts
 )
 
@@ -70,10 +70,10 @@ wf <- add_workflow_step(
 
 #rds files to be transferred to hpc - newdata, c_valdat and nc_valdat
 #to send folder (mplusdat has all 3 rds files)
-# scp -r data/aim1/mplusdat sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/aim1
-  
+# scp -r data/aim1/mplusdat_mh sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/aim1
+
 # to send workflows to the HPC (Run in R terminal)
-# scp -r workflows/S1_PBA sph:projects/epimodel/uonwubi/PartnerServiceYr3/workflows
+# scp -r workflows/s3_pba sph:projects/epimodel/uonwubi/PartnerServiceYr3/workflows
 
 # to get only the processed files back
 # scp -r sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/aim1/output data/aim1/
