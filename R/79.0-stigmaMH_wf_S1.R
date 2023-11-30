@@ -28,7 +28,7 @@ cp_dir <- "data/cp_recal"
 
 #Create workflow
 wf <- create_workflow(
-  wf_name = "S1_PBA",
+  wf_name = "s1_pba",
   default_sbatch_opts = hpc_configs$default_sbatch_opts
 )
 
