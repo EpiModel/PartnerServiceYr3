@@ -70,10 +70,10 @@ wf <- add_workflow_step(
 
 #rds files to be transferred to hpc - newdata, c_valdat and nc_valdat
 #to send folder (mplusdat has all 3 rds files)
-# scp -r data/aim1/mplusdat sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/aim1
+# scp -r data/aim1/mplusdat_mh sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/aim1
   
 # to send workflows to the HPC (Run in R terminal)
-# scp -r workflows/pba_stigMH sph:projects/epimodel/uonwubi/PartnerServiceYr3/workflows
+# scp -r workflows/s1_pba sph:projects/epimodel/uonwubi/PartnerServiceYr3/workflows
 
 # to get only the processed files back
 # scp -r sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/aim1/output data/aim1/
