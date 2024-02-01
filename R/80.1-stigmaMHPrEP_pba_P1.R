@@ -52,7 +52,7 @@ p1_nc_rclv_c4 <- c(p1_nc_valdat[4,1],p1_nc_valdat[4,2], p1_nc_valdat[4,3])
 
 
 #iterations and empty vectors/dfs
-M <- 10 #* 100
+M <- 10 * 100
 
 p1_c_ppv <- p1_nc_ppv <-as.data.frame(matrix(NA, M, 4))
 p1_c_rclp_c1 <- p1_c_rclp_c2 <- p1_c_rclp_c3  <- p1_c_rclp_c4 <- as.data.frame(matrix(NA, M, 3))
