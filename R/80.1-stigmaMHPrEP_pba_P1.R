@@ -1,7 +1,7 @@
 #
 # Association between sexual stigma and mental health distress
 # step 4: Misclassification bias adjustment of risk model 
-#
+
 
 #rm(list = ls())
 
@@ -52,7 +52,7 @@ p1_nc_rclv_c4 <- c(p1_nc_valdat[4,1],p1_nc_valdat[4,2], p1_nc_valdat[4,3])
 
 
 #iterations and empty vectors/dfs
-M <- 100 #* 1000
+M <- 10 #* 100
 
 p1_c_ppv <- p1_nc_ppv <-as.data.frame(matrix(NA, M, 4))
 p1_c_rclp_c1 <- p1_c_rclp_c2 <- p1_c_rclp_c3  <- p1_c_rclp_c4 <- as.data.frame(matrix(NA, M, 3))
@@ -76,13 +76,9 @@ p1_nc_index_ppv <- p1_nc_index_class <- p1_nc_keepclass <- rep(NA, nrow(p1_nc_da
 p1_nc_stigma_new <- rep(NA, nrow(p1_nc_dat))
 
 
-p1_baadj <- as.data.frame(matrix(NA, M, 7))
-p1_baadj.boot <- as.data.frame(matrix(NA, M, 7))
+p1_pusedadj <- as.data.frame(matrix(NA, M, 7))
+p1_pusedadj.boot <- as.data.frame(matrix(NA, M, 7))
 
-# p1_emmtbl <- as.data.frame(matrix(NA, M, 9))
-# colnames(p1_emmtbl) <- c("multinter_14", "reri_14", "ap_14",
-#                       "multinter_24", "reri_24", "ap_24",
-#                       "multinter_34", "reri_34", "ap_34")
 
 
 #pba
@@ -207,6 +203,7 @@ for (i in 1: M) {
     mutate(stigsmi = as.character(row_number())) %>% 
     mutate(stigsmi.cat = paste0("stigsmi", stigsmi, sep = ""))
   
+  
   dat_reclass2 <- left_join(dat_reclass, exp_grps, by = c("stigma_new" = "stigma","smi")) %>% 
     rename(stigma = stigma_new) %>% 
     fastDummies::dummy_cols(., select_columns = "stigma") %>% 
@@ -218,56 +215,54 @@ for (i in 1: M) {
            stigsmi10 = stigsmi_5,
            stigsmi20 = stigsmi_6,
            stigsmi30 = stigsmi_7,
-           stigsmi40 = stigsmi_8)
+           stigsmi40 = stigsmi_8) 
   
   #outcome regression with reconstructed data 
-  #(for bias-adjusted estimates & 95% SI incorporating error from bias params only)
-  #add ip weights
-  dat_reclass_ipw <- ipwdat(dat_reclass2)    
-  #fit gee models with the comref var, weighted with the ip weights
-  p1_baadj[i,] <- ipwComref(dat_reclass_ipw, "p_used")$est
+  #add ipweights
+  dat_reclass2_ipw <- ipwdat(dat_reclass2)
+  
+  #poisson gee with comref (for bias-adjusted estimates & 95% SI incorporating error from bias params only)
+  p1_pusedadj[i,] <- ipwComref(dat_reclass2_ipw, "p_used")$est_adj 
+  
   
   #bias-adjusted estimates & 95% CI incorporating total error
     #get bootstrapped sample
     bootsample.ids <- sample(1:nrow(dat_reclass2), size=nrow(dat_reclass2), replace = T)
     bootsample <- dat_reclass2[bootsample.ids,]
     
+    #add ipweights
     bootsample_ipw <- ipwdat(bootsample)
-    p1_baadj.boot[i,] <- ipwComref(bootsample_ipw, "p_used")$est
     
-    # #get emm metrics
-    # emmtbl0 <- data.frame(getRERIs(bootsample, "smi")$reri_tbl) %>%
-    #   select(stigpoor, multinter, reri, ap)
-    # p1_emmtbl[i,] <- c(emmtbl0[1,2:4], emmtbl0[2,2:4], emmtbl0[3,2:4])
-
+    #poisson gee with comref (total error)
+    p1_pusedadj.boot[i,] <- ipwComref(bootsample_ipw, "p_used")$est_adj 
+    
 }
 
 
 
 #save products
 #reg est
-saveRDS(p1_baadj, paste0(save_dir, "/p1_baadj.rds"))
-saveRDS(p1_baadj.boot, paste0(save_dir, "/p1_baadj.boot.rds"))
-#saveRDS(p1_emmtbl, paste0(save_dir, "/p1_emmtbl.rds"))
+saveRDS(p1_pusedadj, paste0(save_dir, "/p1_pusedadj.rds"))
+saveRDS(p1_pusedadj.boot, paste0(save_dir, "/p1_pusedadj.boot.rds"))
 
 #proportion of observations reclassified per iteration
 prp_obs_chg <- as.data.frame(cbind(p1_c_clchg_prp, p1_nc_clchg_prp)) 
 saveRDS(prp_obs_chg, paste0(save_dir, "/p1_prp_obs_chg.rds"))
 
 
-p1_c_df<-as.data.frame(cbind(
-  p1_c_stigma_orig = p1_c_stigma_orig, 
-  p1_c_index_class = p1_c_index_class, 
-  p1_c_index_ppv = p1_c_index_ppv, 
-  p1_c_keepclass = p1_c_keepclass,
-  p1_c_stigma_new = p1_c_stigma_new))
-saveRDS(p1_c_df, paste0(save_dir, "/p1_c_df.rds"))
-
-
-p1_nc_df<-as.data.frame(cbind(
-  p1_nc_stigma_orig = p1_nc_stigma_orig, 
-  p1_nc_index_class = p1_nc_index_class, 
-  p1_nc_index_ppv = p1_nc_index_ppv, 
-  p1_nc_keepclass = p1_nc_keepclass,
-  p1_nc_stigma_new = p1_nc_stigma_new))
-saveRDS(p1_nc_df, paste0(save_dir, "/p1_nc_df.rds"))
+# p1_c_df<-as.data.frame(cbind(
+#   p1_c_stigma_orig = p1_c_stigma_orig, 
+#   p1_c_index_class = p1_c_index_class, 
+#   p1_c_index_ppv = p1_c_index_ppv, 
+#   p1_c_keepclass = p1_c_keepclass,
+#   p1_c_stigma_new = p1_c_stigma_new))
+# saveRDS(p1_c_df, paste0(save_dir, "/p1_c_df.rds"))
+# 
+# 
+# p1_nc_df<-as.data.frame(cbind(
+#   p1_nc_stigma_orig = p1_nc_stigma_orig, 
+#   p1_nc_index_class = p1_nc_index_class, 
+#   p1_nc_index_ppv = p1_nc_index_ppv, 
+#   p1_nc_keepclass = p1_nc_keepclass,
+#   p1_nc_stigma_new = p1_nc_stigma_new))
+# saveRDS(p1_nc_df, paste0(save_dir, "/p1_nc_df.rds"))
