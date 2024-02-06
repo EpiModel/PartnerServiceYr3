@@ -8,7 +8,7 @@
 #step 1: add ipweights to dataset
 ipwdat <- function(dat){
   #dat<-latvardat_ind
-  dat <- dat %>%  fastDummies::dummy_cols(., select_columns = "stigma")
+  dat <- dat %>%  arrange(id) %>% fastDummies::dummy_cols(., select_columns = "stigma")
   
   #step 1: Regress smi on all confounders (logistic regression) & create ip weights
   smi.fit.denom <- glm(smi ~ stigma_1 + stigma_2 + stigma_3 + age1 + age2 + age3 +  
