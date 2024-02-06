@@ -25,6 +25,14 @@ save_dir <- paste0("data/aim1/output")
 p2_c_valdat <- readRDS(paste0(mplus_dir, "/p2_c_valdat.rds"))
 p2_nc_valdat <- readRDS(paste0(mplus_dir, "/p2_nc_valdat.rds"))
 
+#For noadh cases: due to small sample size, will add 1 to zero spots (except for conversions btw class 1 and 4) to reduce non assignment 
+#to some classes during reclassification and bottstrapping
+p2_c_valdat
+p2_c_valdat <- replace(p2_c_valdat, p2_c_valdat == 0, 1); p2_c_valdat
+p2_c_valdat[1,4] <- 0
+p2_c_valdat[4,1] <- 0
+p2_c_valdat[1,5] <- 8; p2_c_valdat[2,5] <- 25; p2_c_valdat[3,5] <- 30; p2_c_valdat[4,5] <- 26
+
 
 
 #Run PBA
