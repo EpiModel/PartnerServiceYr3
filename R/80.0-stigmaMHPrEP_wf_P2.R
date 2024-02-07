@@ -73,7 +73,7 @@ wf <- add_workflow_step(
 # scp -r data/aim1/mplusdat_prep sph:projects/epimodel/uonwubi/PartnerServiceYr3/data/aim1
   
 # to send workflows to the HPC (Run in R terminal)
-# scp -r workflows/p1_pba sph:projects/epimodel/uonwubi/PartnerServiceYr3/workflows
+# scp -r workflows/p2_pba sph:projects/epimodel/uonwubi/PartnerServiceYr3/workflows
 
 # to execute jobs
 # chmod +x workflows/put_wf_name_here/start_workflow.sh    
