@@ -11,22 +11,20 @@
   "Packages": {
     "ARTnet": {
       "Package": "ARTnet",
-      "Version": "2.7.0",
+      "Version": "2.9.3",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "EpiModel",
       "RemoteRepo": "ARTnet",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "99a5318766a3fc6eb8253755a0d378de6376b974",
+      "RemoteRef": "main",
+      "RemoteSha": "4114a59a797c74801f770d00eef2002f11256901",
       "RemoteHost": "api.github.com",
-      "Remotes": "github::EpiModel/ARTnetData@main,\r github::EpiModel/EpiModelHIV-p@main",
+      "Remotes": "github::EpiModel/ARTnetData@main",
       "Requirements": [
-        "ARTnetData",
         "EpiModel",
         "R",
         "dplyr"
-      ],
-      "Hash": "44d3b42aad95b3acfb1da119d160e26b"
+      ]
     },
     "ARTnetData": {
       "Package": "ARTnetData",
